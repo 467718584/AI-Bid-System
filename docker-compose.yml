@@ -1,110 +1,156 @@
 version: '3.8'
 
 services:
-  # PostgreSQL数据库
+  # PostgreSQL 16 with pgvector
   postgres:
-    image: postgres:16
-    container_name: ai-bid-postgres
+    image: pgvector/pgvector:pg16
+    container_name: aidbid-postgres
     environment:
-      POSTGRES_DB: ai_bid
-      POSTGRES_USER: ai_bid_admin
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: aidbid
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
-    networks:
-      - ai-bid-network
-    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ai_bid_admin -d ai_bid"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - aidbid-network
 
-  # Redis缓存
+  # Redis
   redis:
-    image: redis:7
-    container_name: ai-bid-redis
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    image: redis:7-alpine
+    container_name: aidbid-redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
-    networks:
-      - ai-bid-network
-    restart: unless-stopped
+    command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # MinIO对象存储
-  minio:
-    image: minio/minio
-    container_name: ai-bid-minio
-    environment:
-      MINIO_ROOT_USER: ${MINIO_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_data:/data
     networks:
-      - ai-bid-network
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+      - aidbid-network
 
-  # Chroma向量数据库
-  chroma:
-    image: chromadb/chroma:0.4.22
-    container_name: ai-bid-chroma
-    ports:
-      - "8000:8000"
-    volumes:
-      - chroma_data:/chroma/chroma_db
-    networks:
-      - ai-bid-network
-    restart: unless-stopped
-
-  # 网关服务
+  # Gateway Service
   gateway:
     build:
-      context: ./ai-bid-gateway
-      dockerfile: Dockerfile
-    container_name: ai-bid-gateway
+      context: .
+      dockerfile: ai-bid-gateway/Dockerfile
+    container_name: aidbid-gateway
     ports:
-      - "8080:8080"
+      - "${GATEWAY_PORT:-8080}:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=${PROFILE}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - aidbid-network
+
+  # User Service
+  user-service:
+    build:
+      context: .
+      dockerfile: ai-bid-user/Dockerfile
+    container_name: aidbid-user
+    ports:
+      - "${USER_PORT:-8081}:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
       - DB_HOST=postgres
-      - DB_PASSWORD=${DB_PASSWORD}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+      - DB_PORT=5432
+      - DB_NAME=aidbid
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
-      - ai-bid-network
-    restart: unless-stopped
+      - aidbid-network
+
+  # Project Service
+  project-service:
+    build:
+      context: .
+      dockerfile: ai-bid-project/Dockerfile
+    container_name: aidbid-project
+    ports:
+      - "${PROJECT_PORT:-8082}:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=aidbid
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aidbid-network
+
+  # Material Service
+  material-service:
+    build:
+      context: .
+      dockerfile: ai-bid-material/Dockerfile
+    container_name: aidbid-material
+    ports:
+      - "${MATERIAL_PORT:-8083}:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=aidbid
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aidbid-network
+
+  # Document Service
+  document-service:
+    build:
+      context: .
+      dockerfile: ai-bid-document/Dockerfile
+    container_name: aidbid-document
+    ports:
+      - "${DOCUMENT_PORT:-8084}:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=aidbid
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - aidbid-network
+
+networks:
+  aidbid-network:
+    driver: bridge
 
 volumes:
   postgres_data:
   redis_data:
-  minio_data:
-  chroma_data:
-
-networks:
-  ai-bid-network:
-    driver: bridge
