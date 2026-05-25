@@ -119,6 +119,36 @@ docker-compose up -d postgres redis minio
 java -jar ai-bid-system.jar
 ```
 
+## 🐍 Python AI服务模块
+
+本项目包含两个Python AI微服务，提供RAG知识库和标书智能生成能力。
+
+### ai-bid-knowledge 服务
+
+| 端口 | 功能 |
+|------|------|
+| 8086 | RAG知识库服务 |
+
+- 知识库CRUD操作
+- 向量语义检索
+- RAG智能问答
+
+### ai-bid-ai 服务
+
+| 端口 | 功能 |
+|------|------|
+| 8087 | AI标书智能服务 |
+
+- 文档解析（PDF/DOCX/TXT）
+- 技术标/资信标生成
+- 标书改写优化
+- 合规性检测
+
+```bash
+# 启动AI服务
+docker-compose up -d knowledge ai
+```
+
 ## 📄 License
 
 MIT License

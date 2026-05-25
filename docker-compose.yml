@@ -39,6 +39,19 @@ services:
     networks:
       - aidbid-network
 
+  # Chroma Vector Database
+  chroma:
+    image: chromadb/chroma:0.4.22
+    container_name: aidbid-chroma
+    ports:
+      - "${CHROMA_PORT:-8000}:8000"
+    volumes:
+      - chroma_data:/chroma/chroma_data
+    environment:
+      - IS_PERSISTENT=TRUE
+    networks:
+      - aidbid-network
+
   # Gateway Service
   gateway:
     build:
@@ -147,6 +160,63 @@ services:
     networks:
       - aidbid-network
 
+  # Knowledge Service (RAG Knowledge Base)
+  knowledge:
+    build:
+      context: .
+      dockerfile: ai-bid-knowledge/Dockerfile
+    container_name: aidbid-knowledge
+    ports:
+      - "${KNOWLEDGE_PORT:-8086}:8086"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-minimax}
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY:-}
+      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL:-https://api.minimax.chat/v1}
+      - MINIMAX_MODEL=${MINIMAX_MODEL:-abab6-chat}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
+      - QWEN_API_KEY=${QWEN_API_KEY:-}
+      - QWEN_BASE_URL=${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/api/v1}
+      - QWEN_MODEL=${QWEN_MODEL:-qwen-turbo}
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-shibing624/text2vec-base-chinese}
+      - EMBEDDING_DEVICE=${EMBEDDING_DEVICE:-cpu}
+    depends_on:
+      chroma:
+        condition: service_started
+    networks:
+      - aidbid-network
+
+  # AI Service (Bid Generation & Processing)
+  ai:
+    build:
+      context: .
+      dockerfile: ai-bid-ai/Dockerfile
+    container_name: aidbid-ai
+    ports:
+      - "${AI_PORT:-8087}:8087"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-minimax}
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY:-}
+      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL:-https://api.minimax.chat/v1}
+      - MINIMAX_MODEL=${MINIMAX_MODEL:-abab6-chat}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
+      - QWEN_API_KEY=${QWEN_API_KEY:-}
+      - QWEN_BASE_URL=${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/api/v1}
+      - QWEN_MODEL=${QWEN_MODEL:-qwen-turbo}
+      - KNOWLEDGE_SERVICE_URL=http://knowledge:8086
+      - MAX_TOKENS=${MAX_TOKENS:-8192}
+      - TEMPERATURE=${TEMPERATURE:-0.7}
+    depends_on:
+      knowledge:
+        condition: service_started
+    networks:
+      - aidbid-network
+
 networks:
   aidbid-network:
     driver: bridge
@@ -154,3 +224,4 @@ networks:
 volumes:
   postgres_data:
   redis_data:
+  chroma_data:
