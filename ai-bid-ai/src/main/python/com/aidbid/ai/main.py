@@ -10,6 +10,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .llm_gateway import LLMGateway, LLMFactory
+from .document_parser import DocumentParser, ParsedDocument
+from .document_exporter import DocumentExporter
 from .prompts import (
     TECHNICAL_BID_OUTLINE_PROMPT,
     TECHNICAL_BID_CONTENT_PROMPT,
@@ -88,6 +90,19 @@ class BidRewriteRequest(BaseModel):
     target_style: str = Field(default="professional")
 
 
+class DocumentParseFileRequest(BaseModel):
+    """文档文件解析请求（Base64编码）"""
+    file_content: str  # Base64编码的文件内容
+    file_name: str
+    file_type: str  # pdf, docx, doc, zf
+
+
+class DocumentExportRequest(BaseModel):
+    """文档导出请求"""
+    report_type: str = Field(..., description="报告类型: analysis/compliance/summary")
+    data: Dict[str, Any]
+
+
 # ============================================================
 # 异步LLM服务包装
 # ============================================================
@@ -136,6 +151,8 @@ app.add_middleware(
 )
 
 llm_wrapper = AsyncLLMWrapper(provider="minimax")
+document_parser = DocumentParser()
+document_exporter = DocumentExporter()
 
 
 # ============================================================
@@ -197,9 +214,9 @@ async def generate_content(req: ContentRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/ai/parse/document")
-async def parse_document(req: ParseRequest):
-    """解析招标文件"""
+@app.post("/api/ai/document/parse-ai")
+async def parse_document_with_ai(req: ParseRequest):
+    """AI辅助解析招标文件（基于LLM）"""
     try:
         prompt = BID_DOCUMENT_PARSE_PROMPT.format(content=req.content[:8000])
         messages = [{"role": "user", "content": prompt}]
@@ -338,6 +355,92 @@ async def rewrite_bid(request: BidRewriteRequest):
         }
     except Exception as e:
         logger.error(f"Bid rewrite failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================
+# API Endpoints - 文档解析与导出
+# ============================================================
+
+@app.post("/api/ai/document/parse")
+async def parse_document_file(req: DocumentParseFileRequest):
+    """解析文档文件（PDF/Word）"""
+    try:
+        import base64
+
+        # 解码Base64内容
+        file_content = base64.b64decode(req.file_content)
+
+        # 解析文档
+        parsed = await document_parser.parse(
+            file_content=file_content,
+            file_name=req.file_name,
+            file_type=req.file_type
+        )
+
+        return {
+            "code": 200,
+            "data": {
+                "file_name": parsed.file_name,
+                "file_type": parsed.file_type,
+                "content_length": len(parsed.content),
+                "basic_info": parsed.basic_info,
+                "scoring_method": parsed.scoring_method,
+                "compliance_items": parsed.compliance_items,
+                "disqualification_items": parsed.disqualification_items,
+                "preview": parsed.content[:500] if parsed.content else ""
+            }
+        }
+    except Exception as e:
+        logger.error(f"Document file parsing failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/ai/document/export")
+async def export_document(req: DocumentExportRequest):
+    """导出Word文档"""
+    try:
+        report_type = req.report_type.lower()
+        data = req.data
+
+        if report_type == "analysis":
+            content = document_exporter.export_analysis_report(data)
+        elif report_type == "compliance":
+            content = document_exporter.export_compliance_report(data)
+        elif report_type == "summary":
+            content = document_exporter.export_bid_summary(data)
+        else:
+            raise ValueError(f"Unsupported report type: {report_type}")
+
+        import base64
+        return {
+            "code": 200,
+            "data": {
+                "file_content": base64.b64encode(content).decode("utf-8"),
+                "file_name": f"{report_type}_report.docx"
+            }
+        }
+    except Exception as e:
+        logger.error(f"Document export failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/ai/document/parse-ai")
+async def parse_document_with_ai(req: ParseRequest):
+    """AI辅助解析招标文件（基于LLM）"""
+    try:
+        prompt = BID_DOCUMENT_PARSE_PROMPT.format(content=req.content[:8000])
+        messages = [{"role": "user", "content": prompt}]
+        response = await llm_wrapper.chat(messages)
+
+        try:
+            result = json.loads(response)
+        except:
+            result = {"raw_response": response}
+
+        return {"code": 200, "data": result}
+    except Exception as e:
+        logger.error(f"Document parsing failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
