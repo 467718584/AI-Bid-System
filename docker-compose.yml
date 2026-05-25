@@ -51,6 +51,12 @@ services:
       - IS_PERSISTENT=TRUE
     networks:
       - aidbid-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Gateway Service
   gateway:
@@ -185,7 +191,7 @@ services:
       - EMBEDDING_DEVICE=${EMBEDDING_DEVICE:-cpu}
     depends_on:
       chroma:
-        condition: service_started
+        condition: service_healthy
     networks:
       - aidbid-network
 

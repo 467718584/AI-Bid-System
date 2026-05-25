@@ -7,6 +7,7 @@ import json
 import os
 
 from .config import config
+from .chroma_client import get_chroma_client, ChromaClient
 from .models import (
     KnowledgeBase, KnowledgeChunk, RetrieveRequest, RetrieveResponse,
     ChunkCreateRequest, DocumentCreateRequest
@@ -28,6 +29,14 @@ app.add_middleware(
 # 全局向量存储（生产环境应使用ChromaDB）
 _vector_store: Dict[str, List[Dict]] = {}
 _knowledge_bases: Dict[str, KnowledgeBase] = {}
+
+# 初始化ChromaDB
+try:
+    chroma_client = get_chroma_client()
+    logger.info("ChromaDB client initialized")
+except Exception as e:
+    logger.warning(f"ChromaDB init warning: {e}")
+    chroma_client = None
 
 # ============== Models ==============
 
@@ -222,6 +231,47 @@ async def retrieve(kb_id: str, req: RetrieveRequest):
 async def test_retrieval(kb_id: str, req: RetrieveRequest):
     """命中测试"""
     return await retrieve(kb_id, req)
+
+@app.post("/api/knowledge/bases/{kb_id}/vector-retrieve")
+async def vector_retrieve(kb_id: str, req: RetrieveRequest):
+    """基于向量的语义检索"""
+    if chroma_client is None:
+        raise HTTPException(status_code=503, detail="Vector store not available")
+
+    kb = _knowledge_bases.get(kb_id)
+    if not kb:
+        raise HTTPException(status_code=404, detail="Knowledge base not found")
+
+    # 使用OpenAI的embedding API获取查询向量
+    # 实际应该调用AI服务获取embedding
+    query_embedding = [0.0] * 1536  # 占位符，实际需要调用embed接口
+
+    results = chroma_client.search(
+        collection_name=f"kb_{kb_id}",
+        query_embedding=query_embedding,
+        n_results=req.topK
+    )
+
+    return {
+        "code": 200,
+        "data": {
+            "results": [
+                {
+                    "chunkId": rid,
+                    "content": doc,
+                    "similarity": 1.0 - dist if dist else 0.0,
+                    "metadata": meta
+                }
+                for rid, doc, meta, dist in zip(
+                    results.get("ids", []),
+                    results.get("documents", []),
+                    results.get("metadatas", []),
+                    results.get("distances", [])
+                )
+            ],
+            "total": len(results.get("ids", []))
+        }
+    }
 
 # ============== Batch Operations ==============
 
