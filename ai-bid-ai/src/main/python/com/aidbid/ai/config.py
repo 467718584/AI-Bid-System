@@ -8,7 +8,7 @@ class Config:
 
     # LLM 配置
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "minimax")
-    MINIMAX_API_KEY: Optional[str] = os.getenv("MINIMAX_API_KEY")
+    MINIMAX_API_KEY: Optional[str] = os.getenv("MINIMAX_API_KEY") or "sk-cp-ZpS3_cdjkZ282Ux41yYKpAT6uOmYqQ6L3f7rqJ81HFLsVcLC1xeJ5UaUgu5p3BzRqdDVYtTLDxtMuLKZfyiqd_eYuPrHaJzPMRA_BIevVROCws1zs0JsAH4"
     MINIMAX_BASE_URL: str = os.getenv("MINIMAX_BASE_URL", "https://api.minimax.chat/v1")
     MINIMAX_MODEL: str = os.getenv("MINIMAX_MODEL", "abab6-chat")
 

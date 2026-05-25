@@ -2,149 +2,84 @@
 import os
 import logging
 from typing import Optional, Dict, Any, List
+import httpx
+
 from .config import config
 
 logger = logging.getLogger(__name__)
 
 
 class LLMGateway:
-    """LLM统一网关，支持Minimax/DeepSeek/Qwen"""
+    """LLM统一网关"""
 
-    PROVIDER_CONFIGS = {
-        "minimax": {
-            "base_url": "https://api.minimax.chat/v1",
-            "model": "abab6-chat",
-        },
-        "deepseek": {
-            "base_url": "https://api.deepseek.com/v1",
-            "model": "deepseek-chat",
-        },
-        "qwen": {
-            "base_url": "https://dashscope.aliyuncs.com/api/v1",
-            "model": "qwen-turbo",
-        },
-    }
+    def __init__(self, provider: str = "minimax"):
+        self.provider = provider
+        self.api_key = self._get_api_key()
+        self.base_url = self._get_base_url()
+        self.model = self._get_model()
 
-    def __init__(self, provider: Optional[str] = None):
-        self.provider = provider or config.LLM_PROVIDER
-        self._client = None
-        self._initialized = False
-
-    def _get_provider_config(self) -> Dict[str, Any]:
-        """获取当前provider的配置"""
-        return self.PROVIDER_CONFIGS.get(self.provider, self.PROVIDER_CONFIGS["minimax"])
-
-    def _get_api_key(self) -> Optional[str]:
-        """获取API Key"""
+    def _get_api_key(self) -> str:
         if self.provider == "minimax":
-            return config.MINIMAX_API_KEY or os.getenv("MINIMAX_API_KEY")
+            return config.MINIMAX_API_KEY or os.getenv("MINIMAX_API_KEY") or "sk-cp-ZpS3_cdjkZ282Ux41yYKpAT6uOmYqQ6L3f7rqJ81HFLsVcLC1xeJ5UaUgu5p3BzRqdDVYtTLDxtMuLKZfyiqd_eYuPrHaJzPMRA_BIevVROCws1zs0JsAH4"
         elif self.provider == "deepseek":
-            return config.DEEPSEEK_API_KEY or os.getenv("DEEPSEEK_API_KEY")
+            return config.DEEPSEEK_API_KEY or os.getenv("DEEPSEEK_API_KEY", "")
         elif self.provider == "qwen":
-            return config.QWEN_API_KEY or os.getenv("QWEN_API_KEY")
-        return None
+            return config.QWEN_API_KEY or os.getenv("QWEN_API_KEY", "")
+        return ""
 
     def _get_base_url(self) -> str:
-        """获取Base URL"""
         if self.provider == "minimax":
             return config.MINIMAX_BASE_URL
         elif self.provider == "deepseek":
             return config.DEEPSEEK_BASE_URL
         elif self.provider == "qwen":
             return config.QWEN_BASE_URL
-        return self._get_provider_config()["base_url"]
+        return "https://api.minimax.chat/v1"
 
     def _get_model(self) -> str:
-        """获取模型名称"""
         if self.provider == "minimax":
             return config.MINIMAX_MODEL
         elif self.provider == "deepseek":
             return config.DEEPSEEK_MODEL
         elif self.provider == "qwen":
             return config.QWEN_MODEL
-        return self._get_provider_config()["model"]
+        return "abab6-chat"
 
-    def _initialize_client(self):
-        """初始化LLM客户端"""
-        if self._initialized:
-            return
+    async def chat(self, messages: List[Dict], **kwargs) -> str:
+        """发送对话请求"""
+        url = f"{self.base_url}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": kwargs.get("temperature", 0.7),
+            "max_tokens": kwargs.get("max_tokens", 8192)
+        }
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            response = await client.post(url, json=data, headers=headers)
+            response.raise_for_status()
+            result = response.json()
+            return result["choices"][0]["message"]["content"]
 
-        try:
-            api_key = self._get_api_key()
-            if not api_key:
-                logger.warning(f"Provider {self.provider} API key not found, using mock mode")
-                self._client = None
-                self._initialized = True
-                return
-
-            base_url = self._get_base_url()
-            model = self._get_model()
-
-            if self.provider == "minimax":
-                from langchain_community.chat_models import MiniMaxChat
-                self._client = MiniMaxChat(
-                    model_name=model,
-                    api_key=api_key,
-                    base_url=base_url
-                )
-            elif self.provider in ("deepseek", "qwen"):
-                from langchain_community.chat_models import ChatOpenAI
-                self._client = ChatOpenAI(
-                    model=model,
-                    openai_api_key=api_key,
-                    openai_api_base=base_url
-                )
-
-            self._initialized = True
-            logger.info(f"LLM Gateway initialized with provider: {self.provider}")
-
-        except Exception as e:
-            logger.error(f"Failed to initialize LLM client: {e}")
-            self._client = None
-            self._initialized = True
-
-    @property
-    def client(self):
-        """获取LLM客户端"""
-        if not self._initialized:
-            self._initialize_client()
-        return self._client
-
-    def chat(self, prompt: str, **kwargs) -> str:
-        """通用对话接口"""
-        if self.client is None:
-            return self._mock_response(prompt)
-
-        try:
-            response = self.client.invoke(prompt)
-            return response.content if hasattr(response, 'content') else str(response)
-        except Exception as e:
-            logger.error(f"LLM调用失败: {e}")
-            raise Exception(f"LLM调用失败: {str(e)}")
-
-    def chat_with_messages(self, messages: List[Dict[str, str]], **kwargs) -> str:
-        """带消息历史的对接接口"""
-        if self.client is None:
-            return self._mock_response(str(messages))
-
-        try:
-            from langchain.schema import HumanMessage, SystemMessage
-            langchain_messages = []
-            for msg in messages:
-                if msg.get("role") == "system":
-                    langchain_messages.append(SystemMessage(content=msg["content"]))
-                else:
-                    langchain_messages.append(HumanMessage(content=msg["content"]))
-
-            response = self.client.invoke(langchain_messages)
-            return response.content if hasattr(response, 'content') else str(response)
-        except Exception as e:
-            logger.error(f"LLM调用失败: {e}")
-            raise Exception(f"LLM调用失败: {str(e)}")
-
-    def _mock_response(self, prompt: str) -> str:
-        """模拟响应（用于测试）"""
-        return f"[Mock Response] 已收到请求: {prompt[:100]}..."
+    async def embed(self, texts: List[str]) -> List[List[float]]:
+        """获取文本嵌入向量"""
+        url = f"{self.base_url}/embeddings"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "model": "embo01",
+            "input": texts
+        }
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(url, json=data, headers=headers)
+            response.raise_for_status()
+            result = response.json()
+            return [item["embedding"] for item in result["data"]]
 
 
 class LLMFactory:
@@ -155,7 +90,7 @@ class LLMFactory:
     @classmethod
     def get_gateway(cls, provider: Optional[str] = None) -> LLMGateway:
         """获取指定provider的LLM网关实例"""
-        key = provider or config.LLM_PROVIDER
+        key = provider or "minimax"
         if key not in cls._instances:
             cls._instances[key] = LLMGateway(provider=key)
         return cls._instances[key]
