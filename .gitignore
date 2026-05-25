@@ -1,0 +1,39 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+target/
+dist/
+build/
+*.class
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+.docker/
+
+# Backup
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*.temp
