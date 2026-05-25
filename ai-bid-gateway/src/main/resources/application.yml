@@ -1,0 +1,67 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-bid-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # 用户服务
+        - id: ai-bid-user
+          uri: lb://ai-bid-user
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=1
+        # 项目服务
+        - id: ai-bid-project
+          uri: lb://ai-bid-project
+          predicates:
+            - Path=/api/project/**
+          filters:
+            - StripPrefix=1
+        # 材料服务
+        - id: ai-bid-material
+          uri: lb://ai-bid-material
+          predicates:
+            - Path=/api/material/**
+          filters:
+            - StripPrefix=1
+        # 文档服务
+        - id: ai-bid-document
+          uri: lb://ai-bid-document
+          predicates:
+            - Path=/api/document/**
+          filters:
+            - StripPrefix=1
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    timeout: 3000ms
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
