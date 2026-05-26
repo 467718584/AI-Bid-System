@@ -1,6 +1,8 @@
 version: '3.8'
 
 services:
+  # ==================== Infrastructure Services ====================
+
   # PostgreSQL 16 with pgvector
   postgres:
     image: pgvector/pgvector:pg16
@@ -22,7 +24,7 @@ services:
     networks:
       - aidbid-network
 
-  # Redis
+  # Redis 7
   redis:
     image: redis:7-alpine
     container_name: aidbid-redis
@@ -58,6 +60,30 @@ services:
       timeout: 5s
       retries: 5
 
+  # MinIO (S3-compatible object storage)
+  minio:
+    image: minio/minio:latest
+    container_name: aidbid-minio
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - aidbid-network
+    restart: unless-stopped
+
+  # ==================== Application Services ====================
+
   # Gateway Service
   gateway:
     build:
@@ -68,14 +94,22 @@ services:
       - "${GATEWAY_PORT:-8080}:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - SERVER_PORT=8080
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - USER_SERVICE_URL=http://user-service:8081
+      - PROJECT_SERVICE_URL=http://project-service:8082
+      - MATERIAL_SERVICE_URL=http://material-service:8083
+      - DOCUMENT_SERVICE_URL=http://document-service:8084
+      - AI_SERVICE_URL=http://ai:8087
+      - KNOWLEDGE_SERVICE_URL=http://knowledge:8086
     depends_on:
       redis:
         condition: service_healthy
     networks:
       - aidbid-network
+    restart: unless-stopped
 
   # User Service
   user-service:
@@ -87,6 +121,7 @@ services:
       - "${USER_PORT:-8081}:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - SERVER_PORT=8081
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=aidbid
@@ -102,6 +137,7 @@ services:
         condition: service_healthy
     networks:
       - aidbid-network
+    restart: unless-stopped
 
   # Project Service
   project-service:
@@ -113,16 +149,23 @@ services:
       - "${PROJECT_PORT:-8082}:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - SERVER_PORT=8082
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=aidbid
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - aidbid-network
+    restart: unless-stopped
 
   # Material Service
   material-service:
@@ -134,16 +177,28 @@ services:
       - "${MATERIAL_PORT:-8083}:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - SERVER_PORT=8083
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=aidbid
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
     networks:
       - aidbid-network
+    restart: unless-stopped
 
   # Document Service
   document-service:
@@ -155,18 +210,30 @@ services:
       - "${DOCUMENT_PORT:-8084}:8084"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
+      - SERVER_PORT=8084
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=aidbid
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
     networks:
       - aidbid-network
+    restart: unless-stopped
 
-  # Knowledge Service (RAG Knowledge Base)
+  # Knowledge Service (RAG Knowledge Base, Python)
   knowledge:
     build:
       context: .
@@ -192,10 +259,16 @@ services:
     depends_on:
       chroma:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
     networks:
       - aidbid-network
+    restart: unless-stopped
 
-  # AI Service (Bid Generation & Processing)
+  # AI Service (Bid Generation & Processing, Python)
   ai:
     build:
       context: .
@@ -219,9 +292,17 @@ services:
       - TEMPERATURE=${TEMPERATURE:-0.7}
     depends_on:
       knowledge:
-        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
     networks:
       - aidbid-network
+    restart: unless-stopped
+
+# ==================== Network & Volumes ====================
 
 networks:
   aidbid-network:
@@ -231,3 +312,4 @@ volumes:
   postgres_data:
   redis_data:
   chroma_data:
+  minio_data:

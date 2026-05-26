@@ -10,7 +10,7 @@ class Config:
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "minimax")
     MINIMAX_API_KEY: Optional[str] = os.getenv("MINIMAX_API_KEY")
     MINIMAX_BASE_URL: str = os.getenv("MINIMAX_BASE_URL", "https://api.minimax.chat/v1")
-    MINIMAX_MODEL: str = os.getenv("MINIMAX_MODEL", "abab6-chat")
+    MINIMAX_MODEL: str = os.getenv("MINIMAX_MODEL", "MiniMax-M2")
 
     DEEPSEEK_API_KEY: Optional[str] = os.getenv("DEEPSEEK_API_KEY")
     DEEPSEEK_BASE_URL: str = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")

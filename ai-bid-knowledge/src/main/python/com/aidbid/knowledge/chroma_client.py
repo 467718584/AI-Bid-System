@@ -122,9 +122,25 @@ class ChromaClient:
         try:
             collection = self.get_or_create_collection(collection_name)
 
-            # 验证查询向量
-            if len(query_embedding) != DEFAULT_EMBEDDING_DIMENSION:
-                target_dim = len(collection.get(limit=1, include=["embeddings"]).get("embeddings", [[]])[0]) if collection.count() > 0 else DEFAULT_EMBEDDING_DIMENSION
+            # 调试日志
+            logger.info(f"[DEBUG] Query collection={collection_name}, query_embedding_dim={len(query_embedding)}, collection_count={collection.count()}")
+
+            # 验证查询向量维度
+            target_dim = DEFAULT_EMBEDDING_DIMENSION
+            if collection.count() > 0:
+                existing = collection.get(limit=1, include=["embeddings"])
+                existing_embs = existing.get("embeddings", [])
+                # 处理ChromaDB返回的numpy数组
+                if existing_embs is not None and len(existing_embs) > 0:
+                    first_emb = existing_embs[0]
+                    if hasattr(first_emb, '__len__'):
+                        target_dim = len(first_emb)
+                    elif hasattr(first_emb, 'tolist'):
+                        target_dim = len(first_emb.tolist())
+                    logger.info(f"[DEBUG] Using existing collection dimension: {target_dim}")
+
+            if len(query_embedding) != target_dim:
+                logger.warning(f"[DEBUG] Padding query embedding: {len(query_embedding)} -> {target_dim}")
                 query_embedding = self._pad_embedding(query_embedding, target_dim)
 
             results = collection.query(
@@ -147,7 +163,7 @@ class ChromaClient:
         where_filter: Optional[Dict] = None
     ) -> Dict[str, Any]:
         """向量检索（别名）"""
-        return self.query(collection_name, query_embedding, n_results, where_filter)
+        return self.query(collection_name, query_embedding, n_results, where_filter, None)
 
     def _format_results(self, results: Dict) -> Dict[str, Any]:
         """格式化查询结果"""

@@ -6,6 +6,7 @@ import logging
 import json
 import os
 import asyncio
+import numpy as np
 
 from .config import config, embed_text, embed_texts
 from .chroma_client import get_chroma_client, ChromaClient
@@ -28,6 +29,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def _cosine_similarity(vec1: List[float], vec2: List[float]) -> float:
+    """计算余弦相似度"""
+    v1 = np.array(vec1)
+    v2 = np.array(vec2)
+    dot = np.dot(v1, v2)
+    norm1 = np.linalg.norm(v1)
+    norm2 = np.linalg.norm(v2)
+    if norm1 == 0 or norm2 == 0:
+        return 0.0
+    return float(dot / (norm1 * norm2))
+
 
 # 全局向量存储（生产环境应使用ChromaDB）
 _vector_store: Dict[str, List[Dict]] = {}
@@ -152,6 +165,7 @@ async def add_document(kb_id: str, req: DocumentCreate):
 
     # 使用真实embedding模型获取向量
     embeddings = await embed_texts(chunk_list)
+    logger.info(f"[DEBUG] add_document: kb_id={kb_id}, doc={req.docName}, chunk_count={len(chunk_list)}, embedding_dim={len(embeddings[0]) if embeddings else 'N/A'}")
 
     # 存储到ChromaDB
     if chroma_client is not None:
@@ -268,40 +282,88 @@ async def test_retrieval(kb_id: str, req: RetrieveRequest):
 @app.post("/api/knowledge/bases/{kb_id}/vector-retrieve")
 async def vector_retrieve(kb_id: str, req: RetrieveRequest):
     """基于向量的语义检索"""
-    if chroma_client is None:
-        raise HTTPException(status_code=503, detail="Vector store not available")
-
-    kb = _knowledge_bases.get(kb_id)
-    if not kb:
-        raise HTTPException(status_code=404, detail="Knowledge base not found")
+    kb = _vector_store.get(kb_id)
+    if kb is None:
+        kb = _knowledge_bases.get(kb_id)
+        if not kb:
+            raise HTTPException(status_code=404, detail="Knowledge base not found")
+        kb = []  # empty, use memory fallback
 
     # 使用真实的embedding模型获取查询向量
     query_embedding = await embed_text(req.query)
+    logger.info(f"[DEBUG] vector_retrieve: kb_id={kb_id}, query={req.query}, embedding_dim={len(query_embedding)}")
 
-    results = chroma_client.search(
-        collection_name=f"kb_{kb_id}",
-        query_embedding=query_embedding,
-        n_results=req.topK
-    )
+    # 优先使用ChromaDB检索
+    if chroma_client is not None:
+        try:
+            results = chroma_client.search(
+                collection_name=f"kb_{kb_id}",
+                query_embedding=query_embedding,
+                n_results=req.topK
+            )
+
+            if results.get("ids"):
+                logger.info(f"[DEBUG] ChromaDB returned {len(results['ids'])} results")
+                return {
+                    "code": 200,
+                    "data": {
+                        "results": [
+                            {
+                                "chunkId": rid,
+                                "content": doc,
+                                "similarity": 1.0 - dist if dist else 0.0,
+                                "metadata": meta
+                            }
+                            for rid, doc, meta, dist in zip(
+                                results.get("ids", []),
+                                results.get("documents", []),
+                                results.get("metadatas", []),
+                                results.get("distances", [])
+                            )
+                        ],
+                        "total": len(results.get("ids", []))
+                    }
+                }
+        except Exception as e:
+            logger.warning(f"[DEBUG] ChromaDB query failed: {e}, falling back to memory")
+
+    # 内存回退：使用内存中存储的向量进行相似度计算
+    chunks = _vector_store.get(kb_id, [])
+    logger.info(f"[DEBUG] Memory fallback: {len(chunks)} chunks stored")
+
+    if not chunks:
+        return {
+            "code": 200,
+            "data": {
+                "results": [],
+                "total": 0
+            }
+        }
+
+    # 计算每个chunk与查询向量的相似度
+    scored = []
+    for chunk in chunks:
+        vector = chunk.get("vector", [])
+        if vector and len(vector) == len(query_embedding):
+            similarity = _cosine_similarity(query_embedding, vector)
+            if similarity >= req.minSimilarity:
+                scored.append({
+                    "chunkId": chunk["id"],
+                    "content": chunk["content"],
+                    "similarity": similarity,
+                    "metadata": chunk.get("metadata", {})
+                })
+
+    # 按相似度排序
+    scored.sort(key=lambda x: x["similarity"], reverse=True)
+    scored = scored[:req.topK]
+    logger.info(f"[DEBUG] Memory fallback returned {len(scored)} results")
 
     return {
         "code": 200,
         "data": {
-            "results": [
-                {
-                    "chunkId": rid,
-                    "content": doc,
-                    "similarity": 1.0 - dist if dist else 0.0,
-                    "metadata": meta
-                }
-                for rid, doc, meta, dist in zip(
-                    results.get("ids", []),
-                    results.get("documents", []),
-                    results.get("metadatas", []),
-                    results.get("distances", [])
-                )
-            ],
-            "total": len(results.get("ids", []))
+            "results": scored,
+            "total": len(scored)
         }
     }
 
