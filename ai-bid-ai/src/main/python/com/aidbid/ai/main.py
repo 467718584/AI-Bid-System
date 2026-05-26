@@ -1,6 +1,7 @@
 """FastAPI主应用 - AI投标智能服务"""
 import logging
 import json
+import os
 from typing import Optional, List, Dict, Any, Union
 import io
 from contextlib import asynccontextmanager
@@ -9,6 +10,9 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+
+# CORS配置 - 生产环境应通过环境变量配置具体域名
+ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173").split(",")
 
 from .llm_gateway import LLMGateway, LLMFactory
 from .document_parser import DocumentParser, ParsedDocument
@@ -250,9 +254,9 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

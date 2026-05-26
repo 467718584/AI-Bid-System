@@ -1,4 +1,4 @@
-package com.aibid.material.entity;
+package com.aidbid.material.entity;
 
 import com.aibid.common.core.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;

@@ -70,9 +70,9 @@
 | 模块 | 类型 | 端口 | 说明 |
 |------|------|------|------|
 | `ai-bid-gateway` | Java | 8080 | API网关 + 模型管理 |
-| `ai-bid-project` | Java | 8081 | 项目管理 + 工作流 + 技能编排 |
-| `ai-bid-material` | Java | 8082 | 素材库 + 企业资料 |
-| `ai-bid-user` | Java | 8083 | 用户管理 |
+| `ai-bid-user` | Java | 8081 | 用户管理 |
+| `ai-bid-project` | Java | 8082 | 项目管理 + 工作流 + 技能编排 |
+| `ai-bid-material` | Java | 8083 | 素材库 + 企业资料 |
 | `ai-bid-document` | Java | 8084 | 文档处理 |
 | `ai-bid-ai` | Python | 8087 | AI能力（标书生成/RAG/改写）|
 | `ai-bid-knowledge` | Python | 8086 | 知识库 + 向量检索 |
@@ -202,7 +202,7 @@ npm run dev
 | POST | `/api/knowledge/bases/{id}/hybrid-search` | 混合检索 |
 | POST | `/api/knowledge/bases/{id}/rag-generate` | RAG生成 |
 
-### 工作流服务 (ai-bid-project:8081)
+### 工作流服务 (ai-bid-project:8082)
 | 方法 | 端点 | 说明 |
 |-----|------|-----|
 | POST | `/api/project/workflow/deploy` | 部署流程 |

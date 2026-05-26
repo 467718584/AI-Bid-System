@@ -1,4 +1,4 @@
-package com.aibid.material.mapper;
+package com.aidbid.material.mapper;
 
 import com.aibid.material.entity.TeamMember;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

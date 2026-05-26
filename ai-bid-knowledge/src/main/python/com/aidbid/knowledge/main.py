@@ -6,7 +6,11 @@ import logging
 import json
 import os
 import asyncio
+import os
 import numpy as np
+
+# CORS配置 - 生产环境应通过环境变量配置具体域名
+ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173").split(",")
 
 from .config import config, embed_text, embed_texts
 from .chroma_client import get_chroma_client, ChromaClient
@@ -24,9 +28,9 @@ app = FastAPI(title="AI-Bid Knowledge Service", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

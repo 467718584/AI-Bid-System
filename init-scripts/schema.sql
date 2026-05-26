@@ -492,7 +492,8 @@ CREATE INDEX idx_ml_category ON material_library(category);
 CREATE INDEX idx_ml_status ON material_library(status);
 CREATE INDEX idx_ml_deleted ON material_library(deleted);
 CREATE INDEX idx_ml_project ON material_library(project_id);
-CREATE INDEX idx_ml_tags ON material_library USING gin(tags jsonb_path_ops);
+-- tags列使用VARCHAR类型，B-tree索引适用于字符串包含查询
+CREATE INDEX idx_ml_tags ON material_library USING btree (tags);
 
 -- =============================================
 -- 19. 素材使用记录表 (material_usage_log) - Phase 3
@@ -902,3 +903,81 @@ CREATE INDEX idx_gmsr_enabled ON gateway_model_switch_rule(enabled);
 CREATE INDEX idx_gmsr_source_model ON gateway_model_switch_rule(source_model_id);
 CREATE INDEX idx_gmsr_target_model ON gateway_model_switch_rule(target_model_id);
 CREATE INDEX idx_gmsr_deleted ON gateway_model_switch_rule(deleted);
+
+-- =============================================
+-- 外键约束定义
+-- =============================================
+
+-- 用户角色关联表外键
+ALTER TABLE sys_user_role ADD CONSTRAINT fk_user_role_user FOREIGN KEY (user_id) REFERENCES sys_user(id);
+ALTER TABLE sys_user_role ADD CONSTRAINT fk_user_role_role FOREIGN KEY (role_id) REFERENCES sys_role(id);
+
+-- 角色权限关联表外键
+ALTER TABLE sys_role_permission ADD CONSTRAINT fk_role_perm_role FOREIGN KEY (role_id) REFERENCES sys_role(id);
+ALTER TABLE sys_role_permission ADD CONSTRAINT fk_role_perm_perm FOREIGN KEY (permission_id) REFERENCES sys_permission(id);
+
+-- 投标材料表外键
+ALTER TABLE bid_material ADD CONSTRAINT fk_material_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE bid_material ADD CONSTRAINT fk_material_upload_user FOREIGN KEY (upload_user_id) REFERENCES sys_user(id);
+
+-- 投标文档表外键
+ALTER TABLE bid_document ADD CONSTRAINT fk_document_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE bid_document ADD CONSTRAINT fk_document_material FOREIGN KEY (material_id) REFERENCES bid_material(id);
+
+-- 操作日志表外键
+ALTER TABLE sys_operation_log ADD CONSTRAINT fk_oplog_user FOREIGN KEY (user_id) REFERENCES sys_user(id);
+
+-- 知识块表外键
+ALTER TABLE kb_chunk ADD CONSTRAINT fk_chunk_kb FOREIGN KEY (kb_id) REFERENCES kb_knowledge_base(id);
+
+-- 企业证书资质表外键
+ALTER TABLE enterprise_certificate ADD CONSTRAINT fk_cert_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+
+-- 业绩案例表外键
+ALTER TABLE enterprise_project_case ADD CONSTRAINT fk_epc_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+
+-- 团队成员表外键
+ALTER TABLE enterprise_team_member ADD CONSTRAINT fk_etm_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+
+-- 素材库表外键
+ALTER TABLE material_library ADD CONSTRAINT fk_ml_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE material_library ADD CONSTRAINT fk_ml_upload_user FOREIGN KEY (upload_user_id) REFERENCES sys_user(id);
+
+-- 素材使用记录表外键
+ALTER TABLE material_usage_log ADD CONSTRAINT fk_mul_material FOREIGN KEY (material_id) REFERENCES material_library(id);
+ALTER TABLE material_usage_log ADD CONSTRAINT fk_mul_user FOREIGN KEY (user_id) REFERENCES sys_user(id);
+ALTER TABLE material_usage_log ADD CONSTRAINT fk_mul_project FOREIGN KEY (usage_project_id) REFERENCES bid_project(id);
+
+-- 私人图库表外键
+ALTER TABLE private_image_library ADD CONSTRAINT fk_pil_user FOREIGN KEY (upload_user_id) REFERENCES sys_user(id);
+ALTER TABLE private_image_library ADD CONSTRAINT fk_pil_album FOREIGN KEY (album_id) REFERENCES private_image_album(id);
+
+-- 私人图库相册表外键
+ALTER TABLE private_image_album ADD CONSTRAINT fk_pia_user FOREIGN KEY (upload_user_id) REFERENCES sys_user(id);
+
+-- 资信标资质表外键
+ALTER TABLE bid_qualification ADD CONSTRAINT fk_bq_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE bid_qualification ADD CONSTRAINT fk_bq_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+
+-- 资信标业绩案例表外键
+ALTER TABLE bid_project_experience ADD CONSTRAINT fk_bpe_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+ALTER TABLE bid_project_experience ADD CONSTRAINT fk_bpe_bid_project FOREIGN KEY (bid_project_id) REFERENCES bid_project(id);
+
+-- 资信标财务数据表外键
+ALTER TABLE bid_financial_data ADD CONSTRAINT fk_bfd_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+
+-- 工作流实例表外键
+ALTER TABLE camunda_bpm_workflow_instance ADD CONSTRAINT fk_wi_definition FOREIGN KEY (workflow_definition_id) REFERENCES camunda_bpm_workflow_definition(id);
+ALTER TABLE camunda_bpm_workflow_instance ADD CONSTRAINT fk_wi_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE camunda_bpm_workflow_instance ADD CONSTRAINT fk_wi_enterprise FOREIGN KEY (enterprise_id) REFERENCES enterprise_profile(id);
+ALTER TABLE camunda_bpm_workflow_instance ADD CONSTRAINT fk_wi_start_user FOREIGN KEY (start_user_id) REFERENCES sys_user(id);
+
+-- 工作流任务记录表外键
+ALTER TABLE camunda_bpm_workflow_task ADD CONSTRAINT fk_wt_instance FOREIGN KEY (workflow_instance_id) REFERENCES camunda_bpm_workflow_instance(id);
+
+-- 模型使用日志表外键
+ALTER TABLE gateway_model_usage_log ADD CONSTRAINT fk_gmul_model FOREIGN KEY (model_id) REFERENCES gateway_model_config(id);
+
+-- 模型切换规则表外键
+ALTER TABLE gateway_model_switch_rule ADD CONSTRAINT fk_gmsr_source_model FOREIGN KEY (source_model_id) REFERENCES gateway_model_config(id);
+ALTER TABLE gateway_model_switch_rule ADD CONSTRAINT fk_gmsr_target_model FOREIGN KEY (target_model_id) REFERENCES gateway_model_config(id);

@@ -1,4 +1,4 @@
-package com.aibid.material.service;
+package com.aidbid.material.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;

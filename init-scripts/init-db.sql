@@ -310,3 +310,26 @@ ON CONFLICT DO NOTHING;
 -- =============================================
 -- 完成
 -- =============================================
+
+-- =============================================
+-- 外键约束定义
+-- =============================================
+
+-- 用户角色关联表外键
+ALTER TABLE sys_user_role ADD CONSTRAINT fk_user_role_user FOREIGN KEY (user_id) REFERENCES sys_user(id);
+ALTER TABLE sys_user_role ADD CONSTRAINT fk_user_role_role FOREIGN KEY (role_id) REFERENCES sys_role(id);
+
+-- 角色权限关联表外键
+ALTER TABLE sys_role_permission ADD CONSTRAINT fk_role_perm_role FOREIGN KEY (role_id) REFERENCES sys_role(id);
+ALTER TABLE sys_role_permission ADD CONSTRAINT fk_role_perm_perm FOREIGN KEY (permission_id) REFERENCES sys_permission(id);
+
+-- 投标材料表外键
+ALTER TABLE bid_material ADD CONSTRAINT fk_material_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE bid_material ADD CONSTRAINT fk_material_upload_user FOREIGN KEY (upload_user_id) REFERENCES sys_user(id);
+
+-- 投标文档表外键
+ALTER TABLE bid_document ADD CONSTRAINT fk_document_project FOREIGN KEY (project_id) REFERENCES bid_project(id);
+ALTER TABLE bid_document ADD CONSTRAINT fk_document_material FOREIGN KEY (material_id) REFERENCES bid_material(id);
+
+-- 操作日志表外键
+ALTER TABLE sys_operation_log ADD CONSTRAINT fk_oplog_user FOREIGN KEY (user_id) REFERENCES sys_user(id);

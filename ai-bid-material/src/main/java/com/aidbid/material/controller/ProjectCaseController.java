@@ -1,4 +1,4 @@
-package com.aibid.material.controller;
+package com.aidbid.material.controller;
 
 import com.aibid.common.core.Result;
 import com.aibid.material.entity.ProjectCase;
