@@ -1,0 +1,217 @@
+/**
+ * 样式混入 (Mixins)
+ * 提供可复用的样式片段，支持响应式设计
+ */
+
+/* ==================== Flex布局 ==================== */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* ==================== 文本截断 ==================== */
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin text-ellipsis-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==================== 边框和阴影 ==================== */
+@mixin card-shadow {
+  box-shadow: var(--el-box-shadow-light);
+  border-radius: var(--card-radius);
+  background: var(--el-bg-color);
+}
+
+@mixin hover-shadow {
+  box-shadow: var(--el-box-shadow-base);
+  transition: box-shadow var(--animation-duration-normal) var(--animation-timing-function);
+}
+
+@mixin card-border {
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: var(--card-radius);
+}
+
+/* =mixin=============== 滚动条 ==================== */
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--el-border-color-base);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--el-border-color-dark);
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ==================== 响应式断点 ==================== */
+$breakpoints: (
+  'xs': 480px,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1400px,
+  'xxxl': 1600px
+);
+
+@mixin media-up($breakpoint) {
+  @media screen and (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin media-down($breakpoint) {
+  @media screen and (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+    @content;
+  }
+}
+
+@mixin media-between($lower, $upper) {
+  @media screen and (min-width: map-get($breakpoints, $lower)) and (max-width: map-get($breakpoints, $upper) - 1px) {
+    @content;
+  }
+}
+
+/* ==================== 移动端适配 ==================== */
+@mixin mobile {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: 768px) and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+/* ==================== 动画 ==================== */
+@mixin fade-in {
+  animation: fadeIn var(--animation-duration-normal) var(--animation-timing-function);
+}
+
+@mixin slide-up {
+  animation: slideUp var(--animation-duration-normal) var(--animation-timing-function);
+}
+
+@mixin slide-down {
+  animation: slideDown var(--animation-duration-normal) var(--animation-timing-function);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== 文本选中颜色 ==================== */
+@mixin selection-color {
+  ::selection {
+    background: var(--el-color-primary-light-8);
+    color: var(--el-text-color-primary);
+  }
+}
+
+/* ==================== 禁用选中文本 ==================== */
+@mixin no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* ==================== 清除浮动 ==================== */
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}

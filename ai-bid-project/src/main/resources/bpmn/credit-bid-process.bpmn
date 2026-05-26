@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                   xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                   id="Definitions_CreditBid"
+                   targetNamespace="http://bpmn.io/schema/bpmn">
+
+    <!-- =============================================
+         资信标流程 (Credit Bid Process)
+         流程：资信标编制 → 资质匹配 → 自动填充 → 人工确认 → 导出
+         ============================================= -->
+
+    <bpmn:process id="creditBidProcess" name="资信标流程" isExecutable="true">
+
+        <!-- 流程变量 -->
+        <bpmn:extensionElements>
+            <camunda:inputOutput>
+                <camunda:inputParameter name="projectId"/>
+                <camunda:inputParameter name="enterpriseId"/>
+                <camunda:inputParameter name="matchedQualifications"/>
+                <camunda:inputParameter name="filledDocument"/>
+                <camunda:inputParameter name="confirmComment"/>
+            </camunda:inputOutput>
+        </bpmn:extensionElements>
+
+        <!-- ==================== 开始事件 ==================== -->
+        <bpmn:startEvent id="StartEvent" name="开始">
+            <bpmn:outgoing>Flow_Compose</bpmn:outgoing>
+        </bpmn:startEvent>
+
+        <!-- ==================== 用户任务：资信标编制 ==================== -->
+        <bpmn:userTask id="Task_Compose" name="资信标编制">
+            <bpmn:incoming>Flow_Compose</bpmn:incoming>
+            <bpmn:outgoing>Flow_Match</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:formData>
+                    <camunda:formField id="requirements" label="资质要求" type="string"/>
+                </camunda:formData>
+            </bpmn:extensionElements>
+        </bpmn:userTask>
+
+        <!-- ==================== 服务任务：资质智能匹配 ==================== -->
+        <bpmn:serviceTask id="Task_Match" name="资质智能匹配">
+            <bpmn:incoming>Flow_Match</bpmn:incoming>
+            <bpmn:outgoing>Flow_Fill</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:inputOutput>
+                    <camunda:inputParameter name="projectId">${projectId}</camunda:inputParameter>
+                    <camunda:inputParameter name="enterpriseId">${enterpriseId}</camunda:inputParameter>
+                </camunda:inputOutput>
+                <camunda:executionListener event="start" class="com.aibid.project.listener.MatchQualificationsListener"/>
+            </bpmn:extensionElements>
+        </bpmn:serviceTask>
+
+        <!-- ==================== 服务任务：自动填充 ==================== -->
+        <bpmn:serviceTask id="Task_Fill" name="自动填充">
+            <bpmn:incoming>Flow_Fill</bpmn:incoming>
+            <bpmn:outgoing>Flow_Confirm</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:inputOutput>
+                    <camunda:inputParameter name="projectId">${projectId}</camunda:inputParameter>
+                    <camunda:inputParameter name="enterpriseId">${enterpriseId}</camunda:inputParameter>
+                </camunda:inputOutput>
+                <camunda:executionListener event="start" class="com.aibid.project.listener.AutoFillDocumentListener"/>
+            </bpmn:extensionElements>
+        </bpmn:serviceTask>
+
+        <!-- ==================== 用户任务：人工确认 ==================== -->
+        <bpmn:userTask id="Task_Confirm" name="人工确认">
+            <bpmn:incoming>Flow_Confirm</bpmn:incoming>
+            <bpmn:outgoing>Flow_ApproveOrReject</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:formData>
+                    <camunda:formField id="confirmResult" label="确认结果" type="enum">
+                        <camunda:value value="CONFIRMED" name="确认通过"/>
+                        <camunda:value value="REJECTED" name="驳回"/>
+                    </camunda:formField>
+                    <camunda:formField id="confirmComment" label="确认意见" type="string"/>
+                </camunda:formData>
+            </bpmn:extensionElements>
+        </bpmn:userTask>
+
+        <!-- ==================== 排他网关：确认结果判断 ==================== -->
+        <bpmn:exclusiveGateway id="Gateway_ApproveOrReject" name="确认结果判断">
+            <bpmn:incoming>Flow_ApproveOrReject</bpmn:incoming>
+            <bpmn:outgoing>Flow_Confirmed</bpmn:outgoing>
+            <bpmn:outgoing>Flow_Rejected</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+
+        <!-- ==================== 用户任务：修改资信标 (驳回后) ==================== -->
+        <bpmn:userTask id="Task_Modify" name="修改资信标">
+            <bpmn:incoming>Flow_Rejected</bpmn:incoming>
+            <bpmn:outgoing>Flow_ReviseFill</bpmn:outgoing>
+        </bpmn:userTask>
+
+        <!-- ==================== 服务任务：重新填充 ==================== -->
+        <bpmn:serviceTask id="Task_ReviseFill" name="重新填充">
+            <bpmn:incoming>Flow_ReviseFill</bpmn:incoming>
+            <bpmn:outgoing>Flow_Confirm</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:executionListener event="start" class="com.aibid.project.listener.ReviseCreditBidListener"/>
+            </bpmn:extensionElements>
+        </bpmn:serviceTask>
+
+        <!-- ==================== 服务任务：导出 ==================== -->
+        <bpmn:serviceTask id="Task_Export" name="导出">
+            <bpmn:incoming>Flow_Confirmed</bpmn:incoming>
+            <bpmn:outgoing>Flow_End</bpmn:outgoing>
+            <bpmn:extensionElements>
+                <camunda:inputOutput>
+                    <camunda:inputParameter name="projectId">${projectId}</camunda:inputParameter>
+                    <camunda:inputParameter name="format">docx</camunda:inputParameter>
+                </camunda:inputOutput>
+                <camunda:executionListener event="start" class="com.aibid.project.listener.ExportBidDocumentListener"/>
+            </bpmn:extensionElements>
+        </bpmn:serviceTask>
+
+        <!-- ==================== 结束事件 ==================== -->
+        <bpmn:endEvent id="EndEvent" name="结束">
+            <bpmn:incoming>Flow_End</bpmn:incoming>
+        </bpmn:endEvent>
+
+        <!-- ==================== 流程连线 ==================== -->
+        <bpmn:sequenceFlow id="Flow_Compose" sourceRef="StartEvent" targetRef="Task_Compose"/>
+        <bpmn:sequenceFlow id="Flow_Match" sourceRef="Task_Compose" targetRef="Task_Match"/>
+        <bpmn:sequenceFlow id="Flow_Fill" sourceRef="Task_Match" targetRef="Task_Fill"/>
+        <bpmn:sequenceFlow id="Flow_Confirm" sourceRef="Task_Fill" targetRef="Task_Confirm"/>
+        <bpmn:sequenceFlow id="Flow_ApproveOrReject" sourceRef="Task_Confirm" targetRef="Gateway_ApproveOrReject"/>
+
+        <!-- 确认通过 -->
+        <bpmn:sequenceFlow id="Flow_Confirmed" name="确认通过" sourceRef="Gateway_ApproveOrReject" targetRef="Task_Export">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"
+                                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                confirmResult == 'CONFIRMED'
+            </bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <!-- 确认驳回 -->
+        <bpmn:sequenceFlow id="Flow_Rejected" name="驳回" sourceRef="Gateway_ApproveOrReject" targetRef="Task_Modify">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"
+                                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                confirmResult == 'REJECTED'
+            </bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow id="Flow_ReviseFill" sourceRef="Task_Modify" targetRef="Task_ReviseFill"/>
+        <bpmn:sequenceFlow id="Flow_End" sourceRef="Task_Export" targetRef="EndEvent"/>
+
+    </bpmn:process>
+
+    <!-- ==================== 图形信息 ==================== -->
+    <bpmndi:BPMNDiagram id="BPMNDiagram_CreditBid">
+        <bpmndi:BPMNPlane id="BPMNPlane_CreditBid" bpmnElement="creditBidProcess">
+
+            <!-- 开始事件 -->
+            <bpmndi:BPMNShape id="StartEvent_di" bpmnElement="StartEvent" isHorizontal="true">
+                <dc:Bounds x="100" y="200" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="102" y="244" width="32" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 资信标编制 -->
+            <bpmndi:BPMNShape id="Task_Compose_di" bpmnElement="Task_Compose" isHorizontal="true">
+                <dc:Bounds x="200" y="160" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="206" y="204" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 资质匹配 -->
+            <bpmndi:BPMNShape id="Task_Match_di" bpmnElement="Task_Match" isHorizontal="true">
+                <dc:Bounds x="360" y="160" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="366" y="204" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 自动填充 -->
+            <bpmndi:BPMNShape id="Task_Fill_di" bpmnElement="Task_Fill" isHorizontal="true">
+                <dc:Bounds x="520" y="160" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="526" y="204" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 人工确认 -->
+            <bpmndi:BPMNShape id="Task_Confirm_di" bpmnElement="Task_Confirm" isHorizontal="true">
+                <dc:Bounds x="680" y="160" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="686" y="204" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 网关 -->
+            <bpmndi:BPMNShape id="Gateway_ApproveOrReject_di" bpmnElement="Gateway_ApproveOrReject" isHorizontal="true">
+                <dc:Bounds x="840" y="185" width="50" height="50"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="836" y="243" width="58" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 修改资信标 -->
+            <bpmndi:BPMNShape id="Task_Modify_di" bpmnElement="Task_Modify" isHorizontal="true">
+                <dc:Bounds x="680" y="300" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="686" y="344" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 重新填充 -->
+            <bpmndi:BPMNShape id="Task_ReviseFill_di" bpmnElement="Task_ReviseFill" isHorizontal="true">
+                <dc:Bounds x="520" y="300" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="526" y="344" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 导出 -->
+            <bpmndi:BPMNShape id="Task_Export_di" bpmnElement="Task_Export" isHorizontal="true">
+                <dc:Bounds x="950" y="160" width="100" height="80"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="956" y="204" width="88" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+            <!-- 结束事件 -->
+            <bpmndi:BPMNShape id="EndEvent_di" bpmnElement="EndEvent" isHorizontal="true">
+                <dc:Bounds x="1100" y="185" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="1102" y="229" width="32" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+
+</bpmn:definitions>

@@ -5,9 +5,12 @@ from typing import Optional, List, Dict, Any
 import logging
 import json
 import os
+import asyncio
 
-from .config import config
+from .config import config, embed_text, embed_texts
 from .chroma_client import get_chroma_client, ChromaClient
+from .embedding_service import get_embedding_service, EMBEDDING_DIMENSION
+from .rag_service import get_rag_service
 from .models import (
     KnowledgeBase, KnowledgeChunk, RetrieveRequest, RetrieveResponse,
     ChunkCreateRequest, DocumentCreateRequest
@@ -58,6 +61,20 @@ class RetrieveRequest(BaseModel):
     query: str
     topK: int = 5
     minSimilarity: float = 0.7
+
+class HybridSearchRequest(BaseModel):
+    query: str
+    topK: int = 5
+    minSimilarity: float = 0.5
+    alpha: float = 0.7  # 混合检索权重：alpha * 向量 + (1-alpha) * 关键词
+
+class RAGGenerateRequest(BaseModel):
+    query: str
+    topK: int = 5
+    minSimilarity: float = 0.5
+    systemPrompt: Optional[str] = None
+    useHybrid: bool = True
+    alpha: float = 0.7
 
 # ============== Knowledge Base CRUD ==============
 
@@ -133,7 +150,23 @@ async def add_document(kb_id: str, req: DocumentCreate):
     if current_chunk:
         chunk_list.append(current_chunk)
 
-    # 创建chunks
+    # 使用真实embedding模型获取向量
+    embeddings = await embed_texts(chunk_list)
+
+    # 存储到ChromaDB
+    if chroma_client is not None:
+        try:
+            chroma_client.add_vectors(
+                collection_name=f"kb_{kb_id}",
+                ids=[f"{kb_id}_chunk_{len(_vector_store[kb_id]) + i + 1}" for i in range(len(chunk_list))],
+                embeddings=embeddings,
+                documents=chunk_list,
+                metadatas=[{"doc_name": req.docName, "chunk_index": i} for i in range(len(chunk_list))]
+            )
+        except Exception as e:
+            logger.warning(f"Failed to store in ChromaDB: {e}, using in-memory fallback")
+
+    # 创建chunks（带真实向量）
     for i, chunk_content in enumerate(chunk_list):
         chunk = KnowledgeChunk(
             id=f"{kb_id}_chunk_{len(_vector_store[kb_id]) + i + 1}",
@@ -147,8 +180,8 @@ async def add_document(kb_id: str, req: DocumentCreate):
             "id": chunk.id,
             "content": chunk.content,
             "metadata": chunk.metadata,
-            # 模拟向量（实际应该用embedding模型）
-            "vector": [0.0] * 1536
+            # 存储真实向量
+            "vector": embeddings[i] if i < len(embeddings) else [0.0] * 1536
         })
 
     # 更新统计
@@ -242,9 +275,8 @@ async def vector_retrieve(kb_id: str, req: RetrieveRequest):
     if not kb:
         raise HTTPException(status_code=404, detail="Knowledge base not found")
 
-    # 使用OpenAI的embedding API获取查询向量
-    # 实际应该调用AI服务获取embedding
-    query_embedding = [0.0] * 1536  # 占位符，实际需要调用embed接口
+    # 使用真实的embedding模型获取查询向量
+    query_embedding = await embed_text(req.query)
 
     results = chroma_client.search(
         collection_name=f"kb_{kb_id}",
@@ -272,6 +304,105 @@ async def vector_retrieve(kb_id: str, req: RetrieveRequest):
             "total": len(results.get("ids", []))
         }
     }
+
+# ============== Hybrid Search & RAG ==============
+
+@app.post("/api/knowledge/bases/{kb_id}/hybrid-search")
+async def hybrid_search(kb_id: str, req: HybridSearchRequest):
+    """混合检索：向量 + 关键词"""
+    if chroma_client is None:
+        raise HTTPException(status_code=503, detail="Vector store not available")
+
+    kb = _knowledge_bases.get(kb_id)
+    if not kb:
+        raise HTTPException(status_code=404, detail="Knowledge base not found")
+
+    # 获取查询向量
+    query_embedding = await embed_text(req.query)
+
+    # 执行混合检索
+    results = chroma_client.hybrid_search(
+        collection_name=f"kb_{kb_id}",
+        query_embedding=query_embedding,
+        query_text=req.query,
+        n_results=req.topK,
+        alpha=req.alpha
+    )
+
+    # 过滤低相似度
+    filtered = [r for r in results if r.get("similarity", 0) >= req.minSimilarity]
+
+    return {
+        "code": 200,
+        "data": {
+            "results": filtered,
+            "total": len(filtered),
+            "query": req.query,
+            "method": "hybrid"
+        }
+    }
+
+
+@app.post("/api/knowledge/bases/{kb_id}/rag-retrieve")
+async def rag_retrieve(kb_id: str, req: RetrieveRequest):
+    """RAG检索接口（增强版）"""
+    from .rag_service import get_rag_service
+    from .embedding_service import get_embedding_service
+
+    kb = _knowledge_bases.get(kb_id)
+    if not kb:
+        raise HTTPException(status_code=404, detail="Knowledge base not found")
+
+    embedding_svc = get_embedding_service()
+    rag_svc = get_rag_service(chroma_client, embedding_svc)
+
+    results = await rag_svc.rag_retrieve(
+        query=req.query,
+        kb_id=kb_id,
+        top_k=req.topK,
+        min_similarity=req.minSimilarity
+    )
+
+    return {
+        "code": 200,
+        "data": {
+            "results": results,
+            "total": len(results),
+            "query": req.query
+        }
+    }
+
+
+@app.post("/api/knowledge/bases/{kb_id}/rag-generate")
+async def rag_generate(kb_id: str, req: RAGGenerateRequest):
+    """RAG生成：检索 + 生成"""
+    from .rag_service import get_rag_service
+    from .embedding_service import get_embedding_service
+
+    kb = _knowledge_bases.get(kb_id)
+    if not kb:
+        raise HTTPException(status_code=404, detail="Knowledge base not found")
+
+    if not chroma_client:
+        raise HTTPException(status_code=503, detail="Vector store not available")
+
+    embedding_svc = get_embedding_service()
+    rag_svc = get_rag_service(chroma_client, embedding_svc)
+
+    result = await rag_svc.rag_full(
+        query=req.query,
+        kb_id=kb_id,
+        top_k=req.topK,
+        min_similarity=req.minSimilarity,
+        system_prompt=req.systemPrompt,
+        use_hybrid=req.useHybrid
+    )
+
+    return {
+        "code": 200,
+        "data": result
+    }
+
 
 # ============== Batch Operations ==============
 

@@ -1,3 +1,24 @@
+camunda.bpm:
+  # 基础配置
+  id-generator: fixed
+  # 禁用默认表单生成（避免不必要的依赖）
+  generic-properties:
+    properties:
+      defaultNumberFormat: java.math.BigDecimal
+  # 自动部署 BPMN 文件
+  auto-deployment:
+    enabled: true
+    resources:
+      - classpath:bpmn/*.bpmn
+  # 数据库配置
+  database:
+    schema: camunda
+  # 历史级别
+  history-level: full
+
+# 允许Bean覆盖（Camunda需要的配置）
+spring.main.allow-bean-definition-overriding: true
+
 server:
   port: 8082
 

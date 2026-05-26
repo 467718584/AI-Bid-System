@@ -1,10 +1,17 @@
 """Word文档导出模块"""
 import io
+import re
+import json
+import logging
 from typing import Dict, Any, Optional, List
 from docx import Document
 from docx.shared import Pt, Inches, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.style import WD_STYLE_TYPE
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
+
+logger = logging.getLogger(__name__)
 
 
 class DocumentExporter:
@@ -175,3 +182,260 @@ class DocumentExporter:
         doc.save(buffer)
         buffer.seek(0)
         return buffer.read()
+
+    def _set_cell_shading(self, cell, fill_color: str):
+        """设置单元格背景色"""
+        shading_elm = OxmlElement("w:shd")
+        shading_elm.set(qn("w:fill"), fill_color)
+        cell._tc.get_or_add_tcPr().append(shading_elm)
+
+    # ============================================================
+    # 图片插入方法
+    # ============================================================
+
+    def add_image(
+        self,
+        doc: Document,
+        image_data: bytes,
+        caption: Optional[str] = None,
+        width: float = 6.0,
+        height: Optional[float] = None
+    ):
+        """插入图片到文档
+
+        Args:
+            doc: Document对象
+            image_data: 图片字节数据
+            caption: 图片说明
+            width: 宽度（英寸）
+            height: 高度（英寸），None则自动按比例
+        """
+        image_stream = io.BytesIO(image_data)
+        para = doc.add_paragraph()
+        run = para.add_run()
+
+        if height:
+            run.add_picture(image_stream, width=Inches(width), height=Inches(height))
+        else:
+            run.add_picture(image_stream, width=Inches(width))
+
+        if caption:
+            caption_para = doc.add_paragraph()
+            caption_run = caption_para.add_run(caption)
+            caption_run.italic = True
+            caption_run.font.size = Pt(9)
+            caption_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    def add_image_from_url(
+        self,
+        doc: Document,
+        image_url: str,
+        caption: Optional[str] = None,
+        width: float = 6.0
+    ):
+        """从URL插入图片"""
+        import httpx
+        try:
+            response = httpx.get(image_url, timeout=15)
+            response.raise_for_status()
+            self.add_image(doc, response.content, caption, width)
+        except Exception as e:
+            logger.warning(f"Failed to add image from URL {image_url}: {e}")
+            # 降级：添加占位文本
+            para = doc.add_paragraph()
+            run = para.add_run(f"[图片: {image_url}]")
+            run.italic = True
+
+    # ============================================================
+    # Markdown解析导出
+    # ============================================================
+
+    def add_markdown_content(
+        self,
+        doc: Document,
+        markdown_text: str,
+        include_images: bool = True,
+        include_tables: bool = True
+    ):
+        """将Markdown内容解析并添加到Word文档
+
+        支持以下元素：
+        - 标题 (# / ## / ###)
+        - 段落
+        - 列表 (- / 1. )
+        - 表格 (| ... |)
+        - 图表占位符 (**[图表: ...]**)
+        - 链接和图片引用
+        """
+        import re
+
+        lines = markdown_text.split("\n")
+        in_table = False
+        table_lines = []
+
+        for line in lines:
+            stripped = line.strip()
+
+            # 跳过空行
+            if not stripped:
+                if in_table and table_lines:
+                    # 解析并添加表格
+                    self._add_table_from_lines(doc, table_lines)
+                    table_lines = []
+                    in_table = False
+                continue
+
+            # 检测表格行
+            if stripped.startswith("|"):
+                in_table = True
+                table_lines.append(stripped)
+                continue
+            else:
+                # 结束表格
+                if in_table and table_lines:
+                    self._add_table_from_lines(doc, table_lines)
+                    table_lines = []
+                    in_table = False
+
+            # 标题
+            if stripped.startswith("### "):
+                self.add_title(doc, stripped[4:], level=3)
+            elif stripped.startswith("## "):
+                self.add_title(doc, stripped[3:], level=2)
+            elif stripped.startswith("# "):
+                self.add_title(doc, stripped[2:], level=1)
+
+            # 图表占位符
+            elif re.match(r"^\*\*\[图表:\s*.+\]\*\*$", stripped):
+                chart_title = stripped.strip("**[]").replace("图表: ", "")
+                para = doc.add_paragraph()
+                run = para.add_run(f"[图表: {chart_title}]")
+                run.italic = True
+                run.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
+                para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+            # 无序列表
+            elif stripped.startswith("- ") or stripped.startswith("* "):
+                para = doc.add_paragraph(style="List Bullet")
+                para.add_run(stripped[2:])
+
+            # 有序列表
+            elif re.match(r"^\d+\.\s+", stripped):
+                para = doc.add_paragraph(style="List Number")
+                para.add_run(re.sub(r"^\d+\.\s+", "", stripped))
+
+            # 普通段落
+            else:
+                # 清理Markdown格式后添加
+                clean_text = self._clean_markdown_text(stripped)
+                if clean_text:
+                    self.add_paragraph(doc, clean_text)
+
+        # 处理末尾表格
+        if in_table and table_lines:
+            self._add_table_from_lines(doc, table_lines)
+
+    def _add_table_from_lines(
+        self,
+        doc: Document,
+        table_lines: List[str]
+    ):
+        """从Markdown表格行创建Word表格"""
+        if not table_lines:
+            return
+
+        # 解析表格数据
+        rows_data = []
+        headers = []
+
+        for i, line in enumerate(table_lines):
+            # 去除首尾|
+            cells = [c.strip() for c in line.strip("|").split("|")]
+
+            # 分隔行跳过
+            if all(c in ("---", ":---", ":-:", "---:") for c in cells):
+                headers = rows_data[0] if rows_data else []
+                rows_data = rows_data[1:] if rows_data else []
+                continue
+
+            if i == 0:
+                headers = cells
+            else:
+                rows_data.append(cells)
+
+        if not headers and not rows_data:
+            return
+
+        self.add_styled_table(doc, rows_data, headers if headers else None)
+
+    def add_styled_table(
+        self,
+        doc: Document,
+        data: List[List[Any]],
+        headers: Optional[List[str]] = None,
+        title: Optional[str] = None
+    ):
+        """添加带样式的表格"""
+        if not data:
+            return
+
+        # 表格标题
+        if title:
+            para = doc.add_paragraph()
+            run = para.add_run(title)
+            run.bold = True
+            run.font.size = Pt(11)
+            para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        rows_count = len(data) + (1 if headers else 0)
+        cols_count = len(data[0]) if data else 0
+
+        table = doc.add_table(rows=rows_count, cols=cols_count)
+        table.style = "Table Grid"
+
+        # 表头
+        if headers:
+            header_row = table.rows[0]
+            for i, h in enumerate(headers):
+                cell = header_row.cells[i]
+                cell.text = str(h)
+                para = cell.paragraphs[0]
+                run = para.runs[0]
+                run.bold = True
+                run.font.size = Pt(10)
+                para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                self._set_cell_shading(cell, "4472C4")
+                for p in cell.paragraphs:
+                    for r in p.runs:
+                        r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+        # 数据行
+        start = 1 if headers else 0
+        for i, row_data in enumerate(data):
+            row = table.rows[i + start]
+            for j, text in enumerate(row_data):
+                cell = row.cells[j]
+                cell.text = str(text)
+                if cell.paragraphs[0].runs:
+                    cell.paragraphs[0].runs[0].font.size = Pt(10)
+                # 斑马条纹
+                fill = "FFFFFF" if i % 2 == 0 else "F2F2F2"
+                self._set_cell_shading(cell, fill)
+
+    def _clean_markdown_text(self, text: str) -> str:
+        """清理Markdown格式"""
+        import re
+        # 粗体 **text**
+        text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)
+        # 斜体 *text*
+        text = re.sub(r"\*(.+?)\*", r"\1", text)
+        # 行内代码 `code`
+        text = re.sub(r"`(.+?)`", r"\1", text)
+        # 链接 [text](url)
+        text = re.sub(r"\[(.+?)\]\(.+?\)", r"\1", text)
+        # 图片 ![alt](url)
+        text = re.sub(r"!\[.*?\]\(.*?\)", "", text)
+        # 保留表格图片标记（已在上方处理）
+        text = re.sub(r"!\[\s\S]*?\]\(table:[\s\S]*?\)", "", text)
+        text = re.sub(r"!\[\s\S]*?\]\(chart:[\s\S]*?\)", "", text)
+        return text.strip()

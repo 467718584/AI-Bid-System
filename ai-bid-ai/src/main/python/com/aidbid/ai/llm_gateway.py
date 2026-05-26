@@ -20,7 +20,7 @@ class LLMGateway:
 
     def _get_api_key(self) -> str:
         if self.provider == "minimax":
-            return config.MINIMAX_API_KEY or os.getenv("MINIMAX_API_KEY") or "sk-cp-ZpS3_cdjkZ282Ux41yYKpAT6uOmYqQ6L3f7rqJ81HFLsVcLC1xeJ5UaUgu5p3BzRqdDVYtTLDxtMuLKZfyiqd_eYuPrHaJzPMRA_BIevVROCws1zs0JsAH4"
+            return config.MINIMAX_API_KEY or os.getenv("MINIMAX_API_KEY", "")
         elif self.provider == "deepseek":
             return config.DEEPSEEK_API_KEY or os.getenv("DEEPSEEK_API_KEY", "")
         elif self.provider == "qwen":

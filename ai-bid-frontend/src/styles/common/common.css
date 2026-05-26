@@ -1,0 +1,133 @@
+/**
+ * 通用样式
+ * 提供常用样式类
+ */
+
+/* ==================== 布局 ==================== */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* ==================== 间距 ==================== */
+.mt-xs { margin-top: var(--el-spacing-xs); }
+.mt-sm { margin-top: var(--el-spacing-sm); }
+.mt-md { margin-top: var(--el-spacing-md); }
+.mt-lg { margin-top: var(--el-spacing-lg); }
+.mt-xl { margin-top: var(--el-spacing-xl); }
+
+.mb-xs { margin-bottom: var(--el-spacing-xs); }
+.mb-sm { margin-bottom: var(--el-spacing-sm); }
+.mb-md { margin-bottom: var(--el-spacing-md); }
+.mb-lg { margin-bottom: var(--el-spacing-lg); }
+.mb-xl { margin-bottom: var(--el-spacing-xl); }
+
+.ml-xs { margin-left: var(--el-spacing-xs); }
+.ml-sm { margin-left: var(--el-spacing-sm); }
+.ml-md { margin-left: var(--el-spacing-md); }
+.ml-lg { margin-left: var(--el-spacing-lg); }
+.ml-xl { margin-left: var(--el-spacing-xl); }
+
+.mr-xs { margin-right: var(--el-spacing-xs); }
+.mr-sm { margin-right: var(--el-spacing-sm); }
+.mr-md { margin-right: var(--el-spacing-md); }
+.mr-lg { margin-right: var(--el-spacing-lg); }
+.mr-xl { margin-right: var(--el-spacing-xl); }
+
+.p-xs { padding: var(--el-spacing-xs); }
+.p-sm { padding: var(--el-spacing-sm); }
+.p-md { padding: var(--el-spacing-md); }
+.p-lg { padding: var(--el-spacing-lg); }
+.p-xl { padding: var(--el-spacing-xl); }
+
+/* ==================== 文本 ==================== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-primary { color: var(--el-text-color-primary); }
+.text-regular { color: var(--el-text-color-regular); }
+.text-secondary { color: var(--el-text-color-secondary); }
+.text-placeholder { color: var(--el-text-color-placeholder); }
+
+.text-xs { font-size: var(--el-font-size-xs); }
+.text-sm { font-size: var(--el-font-size-sm); }
+.text-base { font-size: var(--el-font-size-base); }
+.text-lg { font-size: var(--el-font-size-lg); }
+.text-xl { font-size: var(--el-font-size-xl); }
+
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.font-normal { font-weight: 400; }
+
+/* ==================== 文本截断 ==================== */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==================== 卡片 ==================== */
+.card {
+  background: var(--el-bg-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-padding);
+}
+
+/* ==================== 工具类 ==================== */
+.cursor-pointer { cursor: pointer; }
+.cursor-move { cursor: move; }
+
+.hidden { display: none; }
+.visible { visibility: visible; }
+.invisible { visibility: hidden; }
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+
+.width-full { width: 100%; }
+.height-full { height: 100%; }
+
+/* ==================== 动画 ==================== */
+.fade-in {
+  animation: fadeIn var(--animation-duration-normal) ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

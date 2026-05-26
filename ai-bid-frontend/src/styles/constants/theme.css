@@ -1,0 +1,127 @@
+/**
+ * 主题变量 - CSS变量定义
+ * 用于统一定义颜色、字体、间距等设计令牌
+ * 与业务逻辑完全解耦
+ */
+
+:root {
+  /* ==================== 主色调 ==================== */
+  --el-color-primary: #409EFF;
+  --el-color-primary-light-3: #79bbff;
+  --el-color-primary-light-5: #a0cfff;
+  --el-color-primary-light-7: #c6e2ff;
+  --el-color-primary-light-8: #d9ecff;
+  --el-color-primary-light-9: #ecf5ff;
+  --el-color-primary-dark-2: #337ecc;
+  --el-color-success: #67c23a;
+  --el-color-success-light-3: #95d475;
+  --el-color-success-light-5: #b3e19d;
+  --el-color-success-light-7: #d3f0c0;
+  --el-color-success-light-8: #e1f3d8;
+  --el-color-success-light-9: #f0f9eb;
+  --el-color-success-dark-2: #529b2e;
+  --el-color-warning: #e6a23c;
+  --el-color-warning-light-3: #ebb563;
+  --el-color-warning-light-5: #f0c97e;
+  --el-color-warning-light-7: #f8dda5;
+  --el-color-warning-light-8: #f9e7be;
+  --el-color-warning-light-9: #fdf6ec;
+  --el-color-warning-dark-2: #b37b1d;
+  --el-color-danger: #f56c6c;
+  --el-color-danger-light-3: #f89b9b;
+  --el-color-danger-light-5: #fab3b3;
+  --el-color-danger-light-7: #fccdcd;
+  --el-color-danger-light-8: #fcdede;
+  --el-color-danger-light-9: #fef0f0;
+  --el-color-danger-dark-2: #c45656;
+  --el-color-info: #909399;
+  --el-color-info-light-3: #acafb6;
+  --el-color-info-light-5: #c8c9cc;
+  --el-color-info-light-7: #dedee0;
+  --el-color-info-light-8: #e8e8ea;
+  --el-color-info-light-9: #f5f5f6;
+  --el-color-info-dark-2: #73767a;
+
+  /* ==================== 文字色 ==================== */
+  --el-text-color-primary: #303133;
+  --el-text-color-regular: #606266;
+  --el-text-color-secondary: #909399;
+  --el-text-color-placeholder: #c0c4cc;
+  --el-text-color-disabled: #c0c4cc;
+
+  /* ==================== 边框色 ==================== */
+  --el-border-color-base: #dcdfe6;
+  --el-border-color-light: #e4e7ed;
+  --el-border-color-lighter: #ebeef5;
+  --el-border-color-extra-light: #f2f6fc;
+  --el-border-color-dark: #d4d7de;
+  --el-border-color-darker: #cdd0d6;
+
+  /* ==================== 填充色 ==================== */
+  --el-fill-color: #f5f7fa;
+  --el-fill-color-light: #fafafa;
+  --el-fill-color-lighter: #fafafa;
+  --el-fill-color-blank: #ffffff;
+  --el-fill-color-dark: #ebedf0;
+  --el-fill-color-darker: #e3e7eb;
+
+  /* ==================== 背景色 ==================== */
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f2f3f5;
+  --el-bg-color-light: #f5f7fa;
+  --el-bg-color-overlay: #ffffff;
+
+  /* ==================== 阴影 ==================== */
+  --el-box-shadow-base: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --el-box-shadow-light: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
+  --el-box-shadow-lighter: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+  --el-box-shadow-dark: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+
+  /* ==================== 间距 ==================== */
+  --el-spacing-xs: 4px;
+  --el-spacing-sm: 8px;
+  --el-spacing-md: 16px;
+  --el-spacing-lg: 24px;
+  --el-spacing-xl: 32px;
+  --el-spacing-xxl: 40px;
+
+  /* ==================== 圆角 ==================== */
+  --el-border-radius-xs: 2px;
+  --el-border-radius-sm: 4px;
+  --el-border-radius-base: 4px;
+  --el-border-radius-md: 6px;
+  --el-border-radius-lg: 8px;
+  --el-border-radius-xl: 12px;
+  --el-border-radius-round: 50%;
+  --el-border-radius-circle: 100%;
+
+  /* ==================== 字体 ==================== */
+  --el-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  --el-font-size-xs: 10px;
+  --el-font-size-sm: 12px;
+  --el-font-size-base: 14px;
+  --el-font-size-md: 16px;
+  --el-font-size-lg: 18px;
+  --el-font-size-xl: 20px;
+  --el-font-size-xxl: 24px;
+  --el-font-weight-primary: 500;
+  --el-font-weight-secondary: 400;
+  --el-font-line-height-primary: 1.5;
+  --el-font-line-height-secondary: 1.75;
+
+  /* ==================== 过渡 ==================== */
+  --el-transition-duration: 0.3s;
+  --el-transition-function: ease;
+  --el-transition-fast-duration: 0.15s;
+
+  /* ==================== Z-index ==================== */
+  --el-index-normal: 1;
+  --el-index-top: 1000;
+  --el-index-popper: 2000;
+  --el-index-dropdown: 3000;
+  --el-index-sticky: 4000;
+  --el-index-fixed: 5000;
+  --el-index-modal: 6000;
+  --el-index-popover: 7000;
+  --el-index-dialog: 8000;
+}

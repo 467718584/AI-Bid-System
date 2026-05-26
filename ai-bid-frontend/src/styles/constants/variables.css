@@ -1,0 +1,98 @@
+/**
+ * 全局样式变量
+ * 扩展Element Plus变量，添加业务相关的样式常量
+ */
+
+/* ==================== 项目相关颜色 ==================== */
+:root {
+  /* 投标状态颜色 */
+  --bid-status-draft: #909399;
+  --bid-status-in-progress: #409EFF;
+  --bid-status-review: #E6A23C;
+  --bid-status-approved: #67C23A;
+  --bid-status-submitted: #1e90ff;
+
+  /* 文档类型颜色 */
+  --doc-type-pdf: #f56c6c;
+  --doc-type-word: #409EFF;
+  --doc-type-excel: #67c23a;
+  --doc-type-ppt: #e6a23c;
+
+  /* 优先级颜色 */
+  --priority-low: #909399;
+  --priority-medium: #E6A23C;
+  --priority-high: #f56c6c;
+  --priority-urgent: #c45656;
+
+  /* ==================== 布局间距 ==================== */
+  --layout-padding-xs: 8px;
+  --layout-padding-sm: 12px;
+  --layout-padding-md: 16px;
+  --layout-padding-lg: 24px;
+  --layout-padding-xl: 32px;
+
+  --layout-gap-xs: 8px;
+  --layout-gap-sm: 12px;
+  --layout-gap-md: 16px;
+  --layout-gap-lg: 24px;
+  --layout-gap-xl: 32px;
+
+  /* ==================== 组件尺寸 ==================== */
+  --navbar-height: 60px;
+  --sidebar-width: 220px;
+  --sidebar-collapsed-width: 64px;
+  --header-height: 56px;
+  --footer-height: 48px;
+
+  /* ==================== 卡片样式 ==================== */
+  --card-padding: 16px;
+  --card-radius: 8px;
+  --card-shadow: var(--el-box-shadow-light);
+
+  /* ==================== 按钮样式 ==================== */
+  --btn-height-sm: 28px;
+  --btn-height-md: 36px;
+  --btn-height-lg: 44px;
+  --btn-padding-sm: 12px;
+  --btn-padding-md: 16px;
+  --btn-padding-lg: 20px;
+  --btn-radius: var(--el-border-radius-base);
+
+  /* ==================== 输入框样式 ==================== */
+  --input-height-sm: 28px;
+  --input-height-md: 36px;
+  --input-height-lg: 44px;
+
+  /* ==================== 表格样式 ==================== */
+  --table-header-bg: #fafafa;
+  --table-header-color: #606266;
+  --table-border-color: #ebeef5;
+  --table-row-hover-bg: #f5f7fa;
+
+  /* ==================== 动画 ==================== */
+  --animation-duration-fast: 0.15s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 0.5s;
+  --animation-timing-function: ease;
+}
+
+/* ==================== 暗色主题覆盖 ==================== */
+.dark {
+  --bid-status-draft: #6b6b6b;
+  --bid-status-in-progress: #4a9eff;
+  --bid-status-review: #f0b348;
+  --bid-status-approved: #7dd362;
+  --bid-status-submitted: #4a9eff;
+
+  --layout-padding-xs: 8px;
+  --layout-padding-sm: 12px;
+  --layout-padding-md: 16px;
+  --layout-padding-lg: 24px;
+  --layout-padding-xl: 32px;
+
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+  --table-header-bg: #2b2b2b;
+  --table-header-color: #c0c4cc;
+  --table-border-color: #404040;
+  --table-row-hover-bg: #2b2b2b;
+}
