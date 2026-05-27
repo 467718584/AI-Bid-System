@@ -28,7 +28,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:aibid}?useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:aidbid}?useSSL=false&serverTimezone=Asia/Shanghai
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
 
@@ -46,3 +46,8 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+
+# AI服务配置
+ai:
+  service:
+    url: http://ai:8087
