@@ -2,8 +2,8 @@ package com.aidbid.material.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.material.entity.Certificate;
-import com.aibid.material.mapper.CertificateMapper;
+import com.aidbid.material.entity.Certificate;
+import com.aidbid.material.mapper.CertificateMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

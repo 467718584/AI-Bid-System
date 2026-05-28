@@ -2,30 +2,30 @@ package com.aidbid.project.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.project.dto.WorkflowDeployRequest;
-import com.aibid.project.dto.WorkflowStartRequest;
-import com.aibid.project.dto.WorkflowTaskDTO;
-import com.aibid.project.entity.WorkflowDefinition;
-import com.aibid.project.entity.WorkflowInstance;
-import com.aibid.project.entity.WorkflowTask;
-import com.aibid.project.mapper.WorkflowDefinitionMapper;
-import com.aibid.project.mapper.WorkflowInstanceMapper;
-import com.aibid.project.mapper.WorkflowTaskMapper;
+import com.aidbid.project.dto.WorkflowDeployRequest;
+import com.aidbid.project.dto.WorkflowStartRequest;
+import com.aidbid.project.dto.WorkflowTaskDTO;
+import com.aidbid.project.entity.WorkflowDefinition;
+import com.aidbid.project.entity.WorkflowInstance;
+import com.aidbid.project.entity.WorkflowTask;
+import com.aidbid.project.mapper.WorkflowDefinitionMapper;
+import com.aidbid.project.mapper.WorkflowInstanceMapper;
+import com.aidbid.project.mapper.WorkflowTaskMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.FormService;
-import org.camunda.bpm.engine.HistoryService;
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RepositoryService;
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.history.HistoricProcessInstance;
-import org.camunda.bpm.engine.history.HistoricTaskInstance;
-import org.camunda.bpm.engine.repository.ProcessDefinition;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
+import com.aibid.common.camunda.stub.FormService;
+import com.aibid.common.camunda.stub.HistoryService;
+import com.aibid.common.camunda.stub.HistoricActivityInstance;
+import com.aibid.common.camunda.stub.HistoricTaskInstance;
+import com.aibid.common.camunda.stub.ProcessEngine;
+import com.aibid.common.camunda.stub.ProcessInstance;
+import com.aibid.common.camunda.stub.RepositoryService;
+import com.aibid.common.camunda.stub.RuntimeService;
+import com.aibid.common.camunda.stub.Task;
+import com.aibid.common.camunda.stub.TaskService;
+import com.aibid.common.camunda.stub.Deployment;
+import com.aibid.common.camunda.stub.ProcessDefinition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -68,7 +68,7 @@ public class WorkflowService {
             byte[] bpmnBytes = request.getBpmnXml().getBytes("UTF-8");
 
             // 使用Camunda部署流程
-            org.camunda.bpm.engine.repository.Deployment deployment = repositoryService
+            Deployment deployment = repositoryService
                     .createDeployment()
                     .name(request.getName())
                     .addString(request.getName() + ".bpmn", request.getBpmnXml())

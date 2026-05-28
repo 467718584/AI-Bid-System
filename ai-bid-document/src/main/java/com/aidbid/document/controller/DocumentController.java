@@ -1,8 +1,8 @@
 package com.aidbid.document.controller;
 
-import com.aibid.common.core.Result;
-import com.aibid.document.entity.BidDocument;
-import com.aibid.document.service.DocumentService;
+import com.aidbid.common.core.Result;
+import com.aidbid.document.entity.BidDocument;
+import com.aidbid.document.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

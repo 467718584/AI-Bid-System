@@ -1,10 +1,12 @@
 package com.aibid.common.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 /**
  * 安全工具类
  */
+@Component
 public class SecurityUtils {
 
     private static final ThreadLocal<LoginUser> USER_HOLDER = new ThreadLocal<>();

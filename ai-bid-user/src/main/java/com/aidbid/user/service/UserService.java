@@ -1,10 +1,9 @@
 package com.aidbid.user.service;
 
-import com.aibid.common.core.BusinessException;
-import com.aibid.common.core.ResultCode;
-import com.aibid.user.entity.SysUser;
-import com.aibid.user.mapper.UserMapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.aidbid.common.core.BusinessException;
+import com.aidbid.common.core.ResultCode;
+import com.aidbid.user.entity.SysUser;
+import com.aidbid.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class UserService {
     }
 
     public List<SysUser> list() {
-        return userMapper.selectList(new LambdaQueryWrapper<>());
+        return userMapper.selectAll();
     }
 
     public void save(SysUser user) {
@@ -36,7 +35,7 @@ public class UserService {
         if (user.getId() == null) {
             throw new BusinessException(ResultCode.PARAM_MISSING);
         }
-        userMapper.updateById(user);
+        userMapper.update(user);
     }
 
     public void delete(Long id) {

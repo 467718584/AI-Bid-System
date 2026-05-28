@@ -1,9 +1,9 @@
 package com.aidbid.material.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.material.entity.MaterialLibrary;
-import com.aibid.material.entity.MaterialUsageLog;
-import com.aibid.material.service.MaterialLibraryService;
+import com.aidbid.material.entity.MaterialLibrary;
+import com.aidbid.material.entity.MaterialUsageLog;
+import com.aidbid.material.service.MaterialLibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

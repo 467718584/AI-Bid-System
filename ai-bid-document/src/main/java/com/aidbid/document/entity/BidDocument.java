@@ -1,6 +1,6 @@
 package com.aidbid.document.entity;
 
-import com.aibid.common.core.BaseEntity;
+import com.aidbid.common.core.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

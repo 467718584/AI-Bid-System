@@ -2,12 +2,12 @@ package com.aidbid.material.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.material.entity.BidMaterial;
-import com.aibid.material.mapper.MaterialMapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.aidbid.material.entity.BidMaterial;
+import com.aidbid.material.mapper.MaterialMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,24 +19,25 @@ public class MaterialService {
     public BidMaterial getById(Long id) {
         BidMaterial material = materialMapper.selectById(id);
         if (material == null) {
-            throw new BusinessException(ResultCode.MATERIAL_NOT_FOUND);
+            throw new BusinessException(ResultCode.NOT_FOUND);
         }
         return material;
     }
 
     public List<BidMaterial> list() {
-        return materialMapper.selectList(new LambdaQueryWrapper<>());
+        return materialMapper.selectList();
     }
 
     public List<BidMaterial> listByProjectId(Long projectId) {
-        return materialMapper.selectList(new LambdaQueryWrapper<BidMaterial>().eq(BidMaterial::getProjectId, projectId));
+        return materialMapper.selectByProjectId(projectId);
     }
 
     public List<BidMaterial> listByStatus(String status) {
-        return materialMapper.selectList(new LambdaQueryWrapper<BidMaterial>().eq(BidMaterial::getStatus, status));
+        return materialMapper.selectByStatus(status);
     }
 
     public void save(BidMaterial material) {
+        material.setCreateTime(LocalDateTime.now());
         materialMapper.insert(material);
     }
 
@@ -44,6 +45,7 @@ public class MaterialService {
         if (material.getId() == null) {
             throw new BusinessException(ResultCode.PARAM_MISSING);
         }
+        material.setUpdateTime(LocalDateTime.now());
         materialMapper.updateById(material);
     }
 
@@ -52,10 +54,10 @@ public class MaterialService {
     }
 
     public long count() {
-        return materialMapper.selectCount(null);
+        return materialMapper.selectCount();
     }
 
     public long countByProjectId(Long projectId) {
-        return materialMapper.selectCount(new LambdaQueryWrapper<BidMaterial>().eq(BidMaterial::getProjectId, projectId));
+        return materialMapper.selectCountByProjectId(projectId);
     }
 }

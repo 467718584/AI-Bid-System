@@ -2,10 +2,10 @@ package com.aidbid.material.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.material.entity.PrivateImageAlbum;
-import com.aibid.material.entity.PrivateImageLibrary;
-import com.aibid.material.mapper.PrivateImageAlbumMapper;
-import com.aibid.material.mapper.PrivateImageLibraryMapper;
+import com.aidbid.material.entity.PrivateImageAlbum;
+import com.aidbid.material.entity.PrivateImageLibrary;
+import com.aidbid.material.mapper.PrivateImageAlbumMapper;
+import com.aidbid.material.mapper.PrivateImageLibraryMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

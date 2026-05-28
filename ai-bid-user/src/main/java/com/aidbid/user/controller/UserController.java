@@ -1,10 +1,10 @@
 package com.aidbid.user.controller;
 
-import com.aibid.common.core.PageRequest;
-import com.aibid.common.core.PageResponse;
-import com.aibid.common.core.Result;
-import com.aibid.user.entity.SysUser;
-import com.aibid.user.service.UserService;
+import com.aidbid.common.core.PageRequest;
+import com.aidbid.common.core.PageResponse;
+import com.aidbid.common.core.Result;
+import com.aidbid.user.entity.SysUser;
+import com.aidbid.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

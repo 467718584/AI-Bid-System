@@ -2,17 +2,17 @@ package com.aidbid.project.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.project.dto.QualificationAutoFillResult;
-import com.aibid.project.dto.QualificationMatchRequest;
-import com.aibid.project.dto.QualificationMatchResult;
-import com.aibid.project.entity.EnterpriseInfo;
-import com.aibid.project.entity.FinancialData;
-import com.aibid.project.entity.ProjectExperience;
-import com.aibid.project.entity.Qualification;
-import com.aibid.project.mapper.EnterpriseInfoMapper;
-import com.aibid.project.mapper.FinancialDataMapper;
-import com.aibid.project.mapper.ProjectExperienceMapper;
-import com.aibid.project.mapper.QualificationMapper;
+import com.aidbid.project.dto.QualificationAutoFillResult;
+import com.aidbid.project.dto.QualificationMatchRequest;
+import com.aidbid.project.dto.QualificationMatchResult;
+import com.aidbid.project.entity.EnterpriseInfo;
+import com.aidbid.project.entity.FinancialData;
+import com.aidbid.project.entity.ProjectExperience;
+import com.aidbid.project.entity.Qualification;
+import com.aidbid.project.mapper.EnterpriseInfoMapper;
+import com.aidbid.project.mapper.FinancialDataMapper;
+import com.aidbid.project.mapper.ProjectExperienceMapper;
+import com.aidbid.project.mapper.QualificationMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +154,7 @@ public class QualificationService {
 
         QualificationAutoFillResult.EnterpriseInfoDTO enterpriseInfoDTO = null;
         if (enterprise != null) {
-            Integer qualCount = qualificationMapper.selectCount(
+            Long qualCount = qualificationMapper.selectCount(
                 new LambdaQueryWrapper<Qualification>()
                     .eq(Qualification::getEnterpriseId, enterprise.getId())
                     .eq(Qualification::getStatus, "ACTIVE")
@@ -167,7 +167,7 @@ public class QualificationService {
                 enterprise.getLegalPerson(),
                 enterprise.getContactPhone(),
                 enterprise.getAddress(),
-                qualCount
+                qualCount == null ? null : qualCount.intValue()
             );
         }
         result.setEnterpriseInfo(enterpriseInfoDTO);

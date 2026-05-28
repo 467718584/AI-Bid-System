@@ -1,8 +1,8 @@
 package com.aidbid.material.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.material.entity.Certificate;
-import com.aibid.material.service.CertificateService;
+import com.aidbid.material.entity.Certificate;
+import com.aidbid.material.service.CertificateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

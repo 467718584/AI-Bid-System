@@ -3,8 +3,8 @@ package com.aidbid.project.listener;
 import com.aidbid.project.gateway.AiGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.ExecutionListener;
+import com.aibid.common.camunda.stub.DelegateExecution;
+import com.aibid.common.camunda.stub.ExecutionListener;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

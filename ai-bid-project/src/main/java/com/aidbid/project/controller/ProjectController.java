@@ -1,8 +1,8 @@
 package com.aidbid.project.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.project.entity.BidProject;
-import com.aibid.project.service.ProjectService;
+import com.aidbid.project.entity.BidProject;
+import com.aidbid.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

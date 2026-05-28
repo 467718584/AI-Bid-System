@@ -1,14 +1,14 @@
 package com.aidbid.project.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.project.dto.WorkflowDeployRequest;
-import com.aibid.project.dto.WorkflowStartRequest;
-import com.aibid.project.dto.WorkflowTaskDTO;
-import com.aibid.project.entity.WorkflowDefinition;
-import com.aibid.project.entity.WorkflowInstance;
-import com.aibid.project.service.WorkflowService;
+import com.aidbid.project.dto.WorkflowDeployRequest;
+import com.aidbid.project.dto.WorkflowStartRequest;
+import com.aidbid.project.dto.WorkflowTaskDTO;
+import com.aidbid.project.entity.WorkflowDefinition;
+import com.aidbid.project.entity.WorkflowInstance;
+import com.aidbid.project.service.WorkflowService;
 import lombok.RequiredArgsConstructor;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
+import com.aibid.common.camunda.stub.ProcessInstance;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

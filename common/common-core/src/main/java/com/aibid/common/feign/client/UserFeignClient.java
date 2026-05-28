@@ -1,7 +1,7 @@
 package com.aibid.common.feign.client;
 
 import com.aibid.common.core.Result;
-import com.aidbid.user.entity.SysUser;
+import com.aibid.common.feign.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +14,16 @@ import java.util.List;
 public interface UserFeignClient {
 
     @GetMapping("/{id}")
-    Result<SysUser> getById(@PathVariable("id") Long id);
+    Result<UserDTO> getById(@PathVariable("id") Long id);
 
     @GetMapping("/list")
-    Result<List<SysUser>> list();
+    Result<List<UserDTO>> list();
 
     @PostMapping
-    Result<Void> save(@RequestBody SysUser user);
+    Result<Void> save(@RequestBody UserDTO user);
 
     @PutMapping
-    Result<Void> update(@RequestBody SysUser user);
+    Result<Void> update(@RequestBody UserDTO user);
 
     @DeleteMapping("/{id}")
     Result<Void> delete(@PathVariable("id") Long id);

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootApplication(scanBasePackages = {"com.aibid.project", "com.aibid.common"})
-@MapperScan("com.aibid.project.mapper")
+@MapperScan("com.aidbid.project.mapper")
 public class ProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);

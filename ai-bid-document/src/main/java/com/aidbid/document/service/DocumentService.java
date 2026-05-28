@@ -1,13 +1,13 @@
 package com.aidbid.document.service;
 
-import com.aibid.common.core.BusinessException;
-import com.aibid.common.core.ResultCode;
-import com.aibid.document.entity.BidDocument;
-import com.aibid.document.mapper.DocumentMapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.aidbid.common.core.BusinessException;
+import com.aidbid.common.core.ResultCode;
+import com.aidbid.document.entity.BidDocument;
+import com.aidbid.document.mapper.DocumentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,22 +25,23 @@ public class DocumentService {
     }
 
     public List<BidDocument> list() {
-        return documentMapper.selectList(new LambdaQueryWrapper<>());
+        return documentMapper.selectList();
     }
 
     public List<BidDocument> listByProjectId(Long projectId) {
-        return documentMapper.selectList(new LambdaQueryWrapper<BidDocument>().eq(BidDocument::getProjectId, projectId));
+        return documentMapper.selectByProjectId(projectId);
     }
 
     public List<BidDocument> listByStatus(String status) {
-        return documentMapper.selectList(new LambdaQueryWrapper<BidDocument>().eq(BidDocument::getStatus, status));
+        return documentMapper.selectByStatus(status);
     }
 
     public List<BidDocument> listByParseStatus(String parseStatus) {
-        return documentMapper.selectList(new LambdaQueryWrapper<BidDocument>().eq(BidDocument::getParseStatus, parseStatus));
+        return documentMapper.selectByParseStatus(parseStatus);
     }
 
     public void save(BidDocument document) {
+        document.setCreateTime(LocalDateTime.now());
         documentMapper.insert(document);
     }
 
@@ -48,6 +49,7 @@ public class DocumentService {
         if (document.getId() == null) {
             throw new BusinessException(ResultCode.PARAM_MISSING);
         }
+        document.setUpdateTime(LocalDateTime.now());
         documentMapper.updateById(document);
     }
 
@@ -56,10 +58,10 @@ public class DocumentService {
     }
 
     public long count() {
-        return documentMapper.selectCount(null);
+        return documentMapper.selectCount();
     }
 
     public long countByProjectId(Long projectId) {
-        return documentMapper.selectCount(new LambdaQueryWrapper<BidDocument>().eq(BidDocument::getProjectId, projectId));
+        return documentMapper.selectCountByProjectId(projectId);
     }
 }

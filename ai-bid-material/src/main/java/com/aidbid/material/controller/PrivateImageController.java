@@ -1,9 +1,9 @@
 package com.aidbid.material.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.material.entity.PrivateImageAlbum;
-import com.aibid.material.entity.PrivateImageLibrary;
-import com.aibid.material.service.PrivateImageService;
+import com.aidbid.material.entity.PrivateImageAlbum;
+import com.aidbid.material.entity.PrivateImageLibrary;
+import com.aidbid.material.service.PrivateImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

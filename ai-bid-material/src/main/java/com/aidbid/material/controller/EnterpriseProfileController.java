@@ -1,8 +1,8 @@
 package com.aidbid.material.controller;
 
 import com.aibid.common.core.Result;
-import com.aibid.material.entity.EnterpriseProfile;
-import com.aibid.material.service.EnterpriseProfileService;
+import com.aidbid.material.entity.EnterpriseProfile;
+import com.aidbid.material.service.EnterpriseProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

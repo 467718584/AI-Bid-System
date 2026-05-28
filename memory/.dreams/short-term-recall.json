@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-24T23:13:55.478Z",
+  "updatedAt": "2026-05-28T03:20:10.699Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -157,20 +157,21 @@
       "endLine": 39,
       "source": "memory",
       "snippet": "# 2026-05-05 ## 对话记录 (从session恢复) **恢复时间**: 2026-05-06T16:06:05.250633 ### 用户消息 (2条) 1. [15:09] [cron:1776651337077-tnp042lxa EO Memory Sync - BID管理] 📋 Memory Sync - Daily Summary (BID管理) 请执行每日记忆同步： 今天是周一 (2026-04-20)。 1. 读取今天的记忆文件: memory/2026-04-20.md 2. 如果文件存在，提取以下内容： - ## 决策 - 重要决定和原因 ... 2. [16:54] [cron:1776653137208-vzvizr73v EO Dream - BID管理] 🌙 Dream Module - Daily Evolution (BID管理) 请执行Dream Module的自我进化流程： 1. 分析今天 BID管理 的所有会话记录 2. 提取跨会话的pattern 3. 更新本workspace的MEMORY.md（如果有重要发现） 4. 生成进化报告 ... ### 助手回复摘要 (12条) 1. [思考: The file only has 60 lines. Let me read the full file. ...]... 2. [思考: Today is May 6, 2026. So today we're tracking May 6 (today, no activity yet) and",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5.219066952549008,
-      "maxScore": 0.7733220963299399,
+      "totalScore": 6.011500559799419,
+      "maxScore": 0.7924336072504105,
       "firstRecalledAt": "2026-05-10T21:16:17.233Z",
-      "lastRecalledAt": "2026-05-22T16:24:25.225Z",
+      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
       "queryHashes": [
         "ce018f9340f1",
         "0430d955a324",
         "c5cc7a83dfbf",
         "0a95967ed376",
         "2e80763a2586",
-        "496edf78b502"
+        "496edf78b502",
+        "6661bda2ea6b"
       ],
       "recallDays": [
         "2026-05-11",
@@ -179,7 +180,8 @@
         "2026-05-19",
         "2026-05-21",
         "2026-05-22",
-        "2026-05-23"
+        "2026-05-23",
+        "2026-05-28"
       ],
       "conceptTags": [
         "2026-05-06t16",
@@ -199,13 +201,13 @@
       "endLine": 70,
       "source": "memory",
       "snippet": "1. [思考: The file only has 60 lines. Let me read the full file. ...]... 2. [思考: Today is May 6, 2026. So today we're tracking May 6 (today, no activity yet) and we've been counting...]... 3. [思考: Now I have enough context. Let me update the MEMORY.md and generate the evolution report. Summary: ...]... 4. [思考: Now update today's memory file. ...]... 5. [思考: Done. Now generate the evolution report. ...] --- ## 🌀 Dream Module v18 — 进化报告 **BID管理 | 2026-05-06 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | 🔴 归档冻结 | 21天无活动 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天提醒机制进度 **21/30天满足（70%）** — 即将触发，提醒阈值接近。 ... --- ## 📋 bid-admin Session Sy",
-      "recallCount": 14,
+      "recallCount": 15,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 10.301312540940748,
+      "totalScore": 11.075457767189068,
       "maxScore": 0.8014234371960884,
       "firstRecalledAt": "2026-05-10T21:16:17.233Z",
-      "lastRecalledAt": "2026-05-22T16:24:25.225Z",
+      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
       "queryHashes": [
         "ce018f9340f1",
         "0430d955a324",
@@ -218,7 +220,8 @@
         "8e82d8575dc1",
         "4bd92e843bc3",
         "2e80763a2586",
-        "496edf78b502"
+        "496edf78b502",
+        "6661bda2ea6b"
       ],
       "recallDays": [
         "2026-05-11",
@@ -230,7 +233,8 @@
         "2026-05-20",
         "2026-05-21",
         "2026-05-22",
-        "2026-05-23"
+        "2026-05-23",
+        "2026-05-28"
       ],
       "conceptTags": [
         "memory.md",
@@ -899,6 +903,254 @@
         "对话",
         "记录",
         "dream"
+      ]
+    },
+    "memory:memory/2026-04-15.md:65:83": {
+      "key": "memory:memory/2026-04-15.md:65:83",
+      "path": "memory/2026-04-15.md",
+      "startLine": 65,
+      "endLine": 83,
+      "source": "memory",
+      "snippet": "- [08:35] Pre-compaction memory flush. Store durable memories only in memory/2026-04-15.md (create memory/ if needed). Treat workspace bootstrap/reference files... - [08:38] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b52c093db4884b3782fecb5cfef3\", \"reply_to_id\": \"om_x100b52c5fbbfa4b0b3dd7c8... ### 助手回复 (99条) - [08:38] [思考: 记忆已保存。这是一个预编译内存刷新回合，我已将今日的重要工作记录到memory/2026-04-15...] NO_REPLY... - [08:38] [思考: The user seems to be referring to my earlier messa...]你好，看起来这是一条空消息或者回复了你自己的消息？ 请问有什么需要帮忙的吗？你之前提到的： - 📋 **库塔干渠标书**服务方案章节内容梳理（已完成） - 🔍 **北溪船闸**智能... - [05:24] 服务方案及后续章节内容梳理.docx...",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.841254842843736,
+      "maxScore": 0.841254842843736,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "pre-compaction",
+        "memory/2026-04-15.md",
+        "bootstrap/reference",
+        "message-id",
+        "reply-to-id",
+        "om-x100b52c5fbbfa4b0b3dd7c8",
+        "我已将今日的重要工作记录到memory/2026-04-15",
+        "no-reply"
+      ]
+    },
+    "memory:memory/2026-05-26.md:144:211": {
+      "key": "memory:memory/2026-05-26.md:144:211",
+      "path": "memory/2026-05-26.md",
+      "startLine": 144,
+      "endLine": 211,
+      "source": "memory",
+      "snippet": "- ✅ PDF/Word解析器 - ✅ Word导出功能 - ✅ ChromaDB向量库客户端 - ✅ RAG知识库API ### 统计数据 | 指标 | 数量 | |------|------| | Git提交 | 8次 | | 服务模块 | 8个 | | 代码文件 | 约100+ | | 文档页数 | 约350页 | | API端点 | 20+ | ### Git状态 - 本地提交：8次 ✅ - GitHub Push：失败（网络限制）⏳ ### 遗留问题 1. GitHub Push需在用户网络环境中手动执行 2. Phase 2 剩余任务： - 向量嵌入API对接 - 全文生成流水线 - 图文并茂功能 3. 前端Vue3项目待启动 --- ## 项目里程碑 | 里程碑 | 目标日期 | 状态 | |--------|----------|------| | Phase 1 完成 | 2026-05-25 | ✅ 已达成 | | Phase 2 完成 | 2026-06-20 | 🔄 进行中 | | Phase 3 完成 | 2026-08-01 | ⏳ | | Phase 4 完成 | 2026-09-01 | ⏳ | | 系统上线 | 2026-10-01 | ⏳ | --- ## 明日计划 1. **Phase 2 收尾** - 向量嵌入API对接（调用Minimax embed接口） - 全文生成流水线 - 测试AI接口 2. **GitHub Push**（如网络可用） 3. **前端准备**",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7653371099415444,
+      "maxScore": 0.7653371099415444,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "网络",
+        "pdf/word解析器",
+        "pdf",
+        "word",
+        "解析",
+        "导出",
+        "功能",
+        "chromadb"
+      ]
+    },
+    "memory:memory/2026-05-16.md:32:70": {
+      "key": "memory:memory/2026-05-16.md:32:70",
+      "path": "memory/2026-05-16.md",
+      "startLine": 32,
+      "endLine": 70,
+      "source": "memory",
+      "snippet": "## 待用户确认 北溪船闸智能巡检项目已连续31天无活动，30天归档阈值已超出5天，请确认： 1. **正式归档** — 项目归档，不再追踪 2. **重新激活** — 恢复标书撰写推进 3. **暂缓处理** — 继续保持冻结状态 ## 系统问题追踪 - Cron重复触发问题：持续中 - Gateway超时问题：持续中（历史一致） --- ## 📋 Dream Module v26 进化报告 ### 基本信息 - 日期：2026-05-16 02:10 (UTC+8) - 连续无活动：31天（自4月17日起） - 项目状态：北溪船闸项目冻结归档中 ### 今日进化 | 维度 | 状态 | 备注 | |------|------|------| | 系统健康 | ✅ 正常 | Dream Module持续运行 | | 项目进度 | ⚠️ 冻结 | 北溪船闸项目待激活 | | 30天阈值 | ✅ 已超出 | 31/30天（103%），超时5天 | | Cron稳定性 | ⚠️ 需关注 | 重复触发问题持续 | ### 趋势分析 - 连续无活动状态已进入第31天 - 用户参与度极低（仅cron系统触发） - 归档阈值已超出5天，需要正式处理 - 北溪船闸项目：4大核心场景资料已搜集，待标书撰写 ### 行动建议 1. **紧急**：向用户推送北溪船闸项目归档决策确认 2. **系统**：修复Cron重复触发问题 3. **长期**：考虑降低cron频率或调整触发策略 ### 进化结论",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7622513638020004,
+      "maxScore": 0.7622513638020004,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "gateway",
+        "31/30天",
+        "用户",
+        "确认",
+        "船闸",
+        "智能",
+        "项目",
+        "连续"
+      ]
+    },
+    "memory:memory/2026-05-26.md:43:118": {
+      "key": "memory:memory/2026-05-26.md:43:118",
+      "path": "memory/2026-05-26.md",
+      "startLine": 43,
+      "endLine": 118,
+      "source": "memory",
+      "snippet": "### 4. Phase 1 代码框架完成 - common-common-core - common-common-security - ai-bid-gateway - ai-bid-user - ai-bid-document - ai-bid-material - ai-bid-project - Docker配置 - 数据库初始化脚本 ### 5. Phase 2 AI服务框架完成 **ai-bid-knowledge (Python FastAPI):** - LLM网关 - RAG服务 - ChromaDB集成 - 向量检索API **ai-bid-ai (Python FastAPI):** - LLM网关(Minimax/DeepSeek/Qwen) - 技术标目录生成 - 技术标正文生成 - 招标文件解析 - 标书改写 - 合规检测 - PDF/Word解析 - Word导出 --- ## Git状态 - 本地提交：8次 - GitHub Push：失败（网络限制） - 解决方案：用户需手动执行 `git push -u origin main` --- ## 关键技术决策 1. **数据库**：PostgreSQL + pgvector（单一数据库） 2. **向量库**：ChromaDB（开发）/ Milvus（生产） 3. **LLM**：API调用（Minimax/DeepSeek）+ 私有化（Qwen预留） 4. **工作流**：Flowable 6.x 5. **API规范**：OpenAI兼容格式 --- ## 进度状态",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7606714473800273,
+      "maxScore": 0.7606714473800273,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "gateway",
+        "openai",
+        "网络",
+        "网关",
+        "common-common-core",
+        "common-common-security",
+        "ai-bid-gateway",
+        "ai-bid-user"
+      ]
+    },
+    "memory:memory/2026-05-07.md:2070:2097": {
+      "key": "memory:memory/2026-05-07.md:2070:2097",
+      "path": "memory/2026-05-07.md",
+      "startLine": 2070,
+      "endLine": 2097,
+      "source": "memory",
+      "snippet": "- AI智能投标系统: Phase 1 100%, Phase 2 75%进行中 - 北溪船闸项目: 连续39天无活动，建议归档 - 系统正常待机 - 备注: ⚠️ Cron任务已严重延迟（20天+），本cron任务为已过期任务，建议用户手动终止 cron:1778122170042-4gycwm85k --- **最后更新**: 2026-05-27 03:24 北京时间 / AI投标系统进行中 / 北溪船闸归档冻结 ## 检查点记录 (05:24) - 检查时间: 2026-05-27 05:24 (北京时间) - 计划时间: 2026-05-07 18:00 (延迟约20天) - Cron ID: 1778122170042-4gycwm85k - 状态: 无新用户会话活动 - AI智能投标系统: Phase 1 100%, Phase 2 75%进行中 - 北溪船闸项目: 连续39天无活动，建议归档 - 系统正常待机 - 备注: ⚠️ Cron任务已严重延迟（20天+），本cron任务为已过期任务，建议用户手动终止 cron:1778122170042-4gycwm85k --- **最后更新**: 2026-05-27 05:24 北京时间 / AI投标系统进行中 / 北溪船闸归档冻结 ## 检查点记录 (06:25) - 检查时间: 2026-05-27 06:25 (北京时间) - 计划时间: 2026-05-07 18:00 (延迟约20天12小时) - Cron ID: 1778122170042-4gycwm85k - 状态: 无新用户会话活动 - A",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7557773855927321,
+      "maxScore": 0.7557773855927321,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "1778122170042-4gycwm85k",
+        "智能",
+        "投标",
+        "系统",
+        "phase",
+        "进行",
+        "船闸",
+        "项目"
+      ]
+    },
+    "memory:memory/2026-05-07.md:1929:1959": {
+      "key": "memory:memory/2026-05-07.md:1929:1959",
+      "path": "memory/2026-05-07.md",
+      "startLine": 1929,
+      "endLine": 1959,
+      "source": "memory",
+      "snippet": "## 📋 检查点 (2026-05-26 04:05 北京时间) [本次] - Cron ID: 1778122170042-4gycwm85k - 计划时间: 2026-05-07 18:00 (延迟约19天) - 状态: 无新用户会话活动 - AI智能投标系统: Phase 1 100%, Phase 2 75%进行中 - 北溪船闸项目: 连续39天无活动，建议归档 - 系统正常待机 - 备注: Cron任务已严重延迟（19天+），强烈建议终止该过期cron任务 --- **最后更新**: 2026-05-26 08:08 北京时间 / 39天无活动 / 北溪船闸归档 / AI投标系统进行中 ## 检查点记录 (08:08) - 检查时间: 2026-05-26 08:08 (北京时间) - 计划时间: 2026-05-07 18:00 (延迟约19天14小时) - Cron ID: 1778122170042-4gycwm85k - 状态: 无新用户会话活动 - AI智能投标系统: Phase 1 100%, Phase 2 75%进行中 - 北溪船闸项目: 连续39天无活动，建议归档 - 系统正常待机 - 备注: Cron任务已严重延迟（19天+），强烈建议终止该过期cron任务 --- ## 检查点记录 (16:18) - 检查时间: 2026-05-26 16:18 (北京时间) - 计划时间: 2026-05-07 18:00 (延迟约19天22小时) - Cron ID: 1778122170042-4gycwm85k - 状态: 无新用户会话活动（距上",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7543018305213178,
+      "maxScore": 0.7543018305213178,
+      "firstRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "queryHashes": [
+        "08cd9c30beb4"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "1778122170042-4gycwm85k",
+        "检查",
+        "北京",
+        "时间",
+        "本次",
+        "cron",
+        "4gycwm85k",
+        "计划"
+      ]
+    },
+    "memory:memory/2026-05-26.md:1:59": {
+      "key": "memory:memory/2026-05-26.md:1:59",
+      "path": "memory/2026-05-26.md",
+      "startLine": 1,
+      "endLine": 59,
+      "source": "memory",
+      "snippet": "# 2026-05-26 工作日志 ## 日期：2026-05-26（周二） ## 连续无活动：已重置（用户开始交互） --- ## 今日重大进展 ### 1. 用户发起新项目 **用户需求：** - 项目名称：AI智能投标文件智能编制管理系统 - 目标：1:1复刻南瑞的《AI智能投标文件智能编制管理系统建设方案》 - 团队：1人 + AI辅助 - 阶段式开发：瀑布式，核心功能优先 ### 2. 项目配置确认 | 项目 | 值 | |------|---| | GitHub仓库 | 467718584/AI-Bid-System | | API Key | Minimax: sk-cp-ZpS3_cdjkZ282Ux41yYKpAT6uOmYqQ6L3f7rqJ81HFLsVcLC1xeJ5UaUgu5p3BzRqdDVYtTLDxtMuLKZfyiqd_eYuPrHaJzPMRA_BIevVROCws1zs0JsAH4 | | 数据库 | ai_bid（PostgreSQL + pgvector） | | 团队名 | bid-team | | 作者 | bid-admin | ### 3. 完成文档（10份） | 文档 | 大小 | |------|------| | 项目管理计划 | 8KB | | WBS任务分解 | 15KB | | PRD产品需求 | 17KB | | 概要设计 | 24KB | | 数据库设计 | 28KB | | API接口设计 | 13KB | | 技术规范 | 8KB | | 测试计划 | 8KB | | 部署运维手册 | 1",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6199431460153493,
+      "maxScore": 0.6199431460153493,
+      "firstRecalledAt": "2026-05-28T03:20:10.699Z",
+      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
+      "queryHashes": [
+        "6661bda2ea6b"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "467718584/ai-bid-system",
+        "ai-bid",
+        "bid-team",
+        "bid-admin",
+        "工作",
+        "日志",
+        "日期",
+        "周二"
+      ]
+    },
+    "memory:memory/2026-05-25.md:1:56": {
+      "key": "memory:memory/2026-05-25.md:1:56",
+      "path": "memory/2026-05-25.md",
+      "startLine": 1,
+      "endLine": 56,
+      "source": "memory",
+      "snippet": "# 2026-05-25 工作日志 ## 📋 今日完成工作 ### 1. 文档开发（完成） - ✅ 项目管理计划 - ✅ WBS任务分解（175天） - ✅ PRD产品需求文档 - ✅ 概要设计文档 - ✅ 数据库设计文档 - ✅ API接口设计文档 - ✅ 技术规范指南 - ✅ 测试计划文档 - ✅ 部署运维手册 ### 2. Phase 1 代码框架（完成） - ✅ Maven多模块项目结构 - ✅ common-common-core 公共模块 - ✅ common-common-security 安全模块 - ✅ ai-bid-gateway 网关服务 - ✅ ai-bid-user 用户服务 - ✅ ai-bid-document 文档服务 - ✅ ai-bid-material 素材服务 - ✅ ai-bid-project 项目服务 - ✅ Docker Compose 配置 - ✅ 数据库初始化脚本 (init-db.sql) ### 3. Phase 2 AI服务（完成框架） - ✅ ai-bid-knowledge 知识库服务 - LLM网关 - RAG服务 - 向量检索接口 - ✅ ai-bid-ai AI智能服务 - 文档解析服务 - 标书生成服务框架 - Prompt模板 ### 4. Git提交 - ✅ 文档提交 (commit 1) - ✅ Phase 1代码框架提交 (commit 2) - ✅ Phase 2 AI服务提交 (commit 3) - ⚠️ GitHub Push 失败（网络限制） ## 📊",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6096149241759656,
+      "maxScore": 0.6096149241759656,
+      "firstRecalledAt": "2026-05-28T03:20:10.699Z",
+      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
+      "queryHashes": [
+        "6661bda2ea6b"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "gateway",
+        "网络",
+        "网关",
+        "common-common-core",
+        "common-common-security",
+        "ai-bid-gateway",
+        "ai-bid-user",
+        "ai-bid-document"
       ]
     }
   }

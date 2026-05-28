@@ -1,6 +1,6 @@
 package com.aidbid.project.mapper;
 
-import com.aibid.project.entity.WorkflowInstance;
+import com.aidbid.project.entity.WorkflowInstance;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

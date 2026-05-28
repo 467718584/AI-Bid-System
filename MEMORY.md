@@ -295,3 +295,103 @@
 2. Phase 2 剩余：向量嵌入API、图文并茂、全文流水线
 3. 前端Vue3待启动
 
+
+---
+
+## 2026-05-28 Dream Module v35 进化报告
+
+### 基本信息
+- 日期：2026-05-28 00:55 (UTC+8)
+- 连续无活动：0天（用户5月26日已恢复活动）
+- 项目状态：AI智能投标系统 Phase 1完成，Phase 2 进行中(75%)
+
+### 今日进化
+
+| 维度 | 状态 | 备注 |
+|------|------|------|
+| 系统健康 | ✅ 正常 | Dream Module持续运行 |
+| 项目进度 | 🟢 进行中 | AI智能投标系统开发 |
+| 用户参与 | ✅ 活跃 | 5月27日完成大量工作 |
+| 北溪船闸 | ⚠️ 归档 | 已归档冻结41天 |
+
+### 5月27日工作汇总
+
+**完成项**：
+- 四路修复任务全部完成（数据库外键、CORS、GIN索引、端口路径、md转docx、模板样式）
+- 编译问题修复日志已生成
+- 最新commit: `9e62635` feat: 实现Camunda监听器 + Feign客户端 + 数据库名统一
+
+**待处理**：
+- P0: 前端依赖未安装 (npm install)
+- P1: sys_dept表缺失
+
+### Pattern分析
+
+**持续性问题**：
+1. Gateway超时已成常态 — sessions_list/sessions_history均超时
+2. Cron重复触发问题未修复
+3. GitHub Push需要手动执行
+
+**新发现**：
+- ai-bid-user服务启动失败（MyBatis-Plus兼容性问题）
+- ai-bid-project/ai-bid-material/ai-bid-document未启动
+- Python服务(ai-bid-ai/ai-bid-knowledge)正常
+
+### 行动建议
+
+1. **立即**：执行前端依赖安装 `npm install`
+2. **短期**：创建sys_dept表，启动Java服务
+3. **中期**：解决MyBatis-Plus兼容性
+4. **长期**：修复Cron重复触发问题
+
+### 进化结论
+
+🟢 **绿灯状态** — 用户恢复活动，新项目活跃开发中
+
+---
+*进化版本：v35 | 下次检查：2026-05-29*
+
+---
+
+## 2026-05-28 深夜开发记录
+
+### 日期：2026-05-27 22:00 → 2026-05-28 02:00
+
+### 系统部署完成状态
+
+| 服务 | 端口 | 状态 |
+|------|------|------|
+| Gateway | 8090 | ✅ 运行中 |
+| ai-bid-ai | 8087 | ✅ 健康 |
+| ai-bid-knowledge | 8086 | ✅ 健康 |
+| PostgreSQL | 5432 | ✅ 已安装运行 |
+| Redis | 6379 | ✅ 已安装运行 |
+| ai-bid-user | 8081 | ✅ 已启动（需要认证）|
+| ai-bid-project | 8082 | ❌ 启动失败 |
+| ai-bid-material | 8083 | ❌ 未启动 |
+| ai-bid-document | 8084 | ❌ 未启动 |
+
+### 已解决问题
+
+1. **PostgreSQL安装** - apt install postgresql, 密码postgres
+2. **Redis安装** - apt install redis-server
+3. **Gateway路由** - 6条路由配置完成
+4. **ai-bid-user启动** - MyBatis-Plus → MyBatis替换成功
+
+### 未解决问题
+
+1. **MyBatis-Plus兼容性问题** - 与Spring Boot 3.2.5不兼容
+2. **SecurityUtils缺失** - ai-bid-project启动失败
+3. **其他Java服务未启动** - material/document
+
+### 经验教训
+
+- MyBatis-Plus 3.5.x 与 Spring Boot 3.x 存在已知兼容性问题
+- 解决方案：替换为 mybatis-spring-boot-starter 3.0.4 + MyBatis 注解
+- Spring Security 默认启用，需要认证才能访问端点
+
+### 下次继续
+
+1. 修复 ai-bid-project SecurityUtils bean 缺失问题
+2. 修复 ai-bid-material/document 服务
+3. 测试 Gateway 完整路由功能

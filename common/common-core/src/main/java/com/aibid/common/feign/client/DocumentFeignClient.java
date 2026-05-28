@@ -1,7 +1,7 @@
 package com.aibid.common.feign.client;
 
 import com.aibid.common.core.Result;
-import com.aidbid.document.entity.BidDocument;
+import com.aibid.common.feign.dto.DocumentDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +14,19 @@ import java.util.List;
 public interface DocumentFeignClient {
 
     @GetMapping("/{id}")
-    Result<BidDocument> getById(@PathVariable("id") Long id);
+    Result<DocumentDTO> getById(@PathVariable("id") Long id);
 
     @GetMapping("/list")
-    Result<List<BidDocument>> list();
+    Result<List<DocumentDTO>> list();
 
     @GetMapping("/list/project/{projectId}")
-    Result<List<BidDocument>> listByProjectId(@PathVariable("projectId") Long projectId);
+    Result<List<DocumentDTO>> listByProjectId(@PathVariable("projectId") Long projectId);
 
     @PostMapping
-    Result<Void> save(@RequestBody BidDocument document);
+    Result<Void> save(@RequestBody DocumentDTO document);
 
     @PutMapping
-    Result<Void> update(@RequestBody BidDocument document);
+    Result<Void> update(@RequestBody DocumentDTO document);
 
     @DeleteMapping("/{id}")
     Result<Void> delete(@PathVariable("id") Long id);

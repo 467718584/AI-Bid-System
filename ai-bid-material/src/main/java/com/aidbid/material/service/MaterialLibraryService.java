@@ -2,10 +2,10 @@ package com.aidbid.material.service;
 
 import com.aibid.common.core.BusinessException;
 import com.aibid.common.core.ResultCode;
-import com.aibid.material.entity.MaterialLibrary;
-import com.aibid.material.entity.MaterialUsageLog;
-import com.aibid.material.mapper.MaterialLibraryMapper;
-import com.aibid.material.mapper.MaterialUsageLogMapper;
+import com.aidbid.material.entity.MaterialLibrary;
+import com.aidbid.material.entity.MaterialUsageLog;
+import com.aidbid.material.mapper.MaterialLibraryMapper;
+import com.aidbid.material.mapper.MaterialUsageLogMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;

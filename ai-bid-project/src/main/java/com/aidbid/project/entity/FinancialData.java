@@ -1,5 +1,6 @@
 package com.aidbid.project.entity;
 
+import com.aibid.common.core.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

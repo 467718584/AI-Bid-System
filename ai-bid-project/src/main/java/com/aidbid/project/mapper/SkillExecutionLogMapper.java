@@ -1,6 +1,6 @@
 package com.aidbid.project.mapper;
 
-import com.aibid.project.entity.SkillExecutionLog;
+import com.aidbid.project.entity.SkillExecutionLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
