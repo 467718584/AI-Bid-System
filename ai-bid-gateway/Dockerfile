@@ -1,17 +1,13 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
+# AI Bid Gateway Dockerfile
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 COPY pom.xml .
-COPY settings.xml ./
-COPY common ./common
-COPY ai-bid-gateway ./ai-bid-gateway
-COPY ai-bid-user ./ai-bid-user
-COPY ai-bid-project ./ai-bid-project
-COPY ai-bid-material ./ai-bid-material
-COPY ai-bid-document ./ai-bid-document
-RUN mvn clean package -DskipTests -pl ai-bid-gateway -am
+COPY src ./src
+RUN mvn dependency:go-offline -B
+RUN mvn package -DskipTests -B
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin-17-jre-alpine
 WORKDIR /app
-COPY --from=builder /app/ai-bid-gateway/target/*.jar app.jar
-EXPOSE 8080
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8090
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,315 +1,157 @@
 version: '3.8'
 
 services:
-  # ==================== Infrastructure Services ====================
-
-  # PostgreSQL 16 with pgvector
-  postgres:
-    image: pgvector/pgvector:pg16
-    container_name: aidbid-postgres
-    environment:
-      POSTGRES_DB: aidbid
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - aidbid-network
-
-  # Redis 7
-  redis:
-    image: redis:7-alpine
-    container_name: aidbid-redis
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - aidbid-network
-
-  # Chroma Vector Database
-  chroma:
-    image: chromadb/chroma:0.4.22
-    container_name: aidbid-chroma
-    ports:
-      - "${CHROMA_PORT:-8000}:8000"
-    volumes:
-      - chroma_data:/chroma/chroma_data
-    environment:
-      - IS_PERSISTENT=TRUE
-    networks:
-      - aidbid-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # MinIO (S3-compatible object storage)
-  minio:
-    image: minio/minio:latest
-    container_name: aidbid-minio
-    ports:
-      - "${MINIO_PORT:-9000}:9000"
-      - "${MINIO_CONSOLE_PORT:-9001}:9001"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
-    volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-    networks:
-      - aidbid-network
-    restart: unless-stopped
-
-  # ==================== Application Services ====================
-
-  # Gateway Service
+  # Gateway - 路由服务
   gateway:
-    build:
-      context: .
-      dockerfile: ai-bid-gateway/Dockerfile
-    container_name: aidbid-gateway
+    build: ./ai-bid-gateway
     ports:
-      - "${GATEWAY_PORT:-8080}:8080"
+      - "8090:8090"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
-      - SERVER_PORT=8080
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      - USER_SERVICE_URL=http://user-service:8081
-      - PROJECT_SERVICE_URL=http://project-service:8082
-      - MATERIAL_SERVICE_URL=http://material-service:8083
-      - DOCUMENT_SERVICE_URL=http://document-service:8084
-      - AI_SERVICE_URL=http://ai:8087
-      - KNOWLEDGE_SERVICE_URL=http://knowledge:8086
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      redis:
-        condition: service_healthy
+      - user-service
+      - project-service
+      - bid-service
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
   # User Service
   user-service:
-    build:
-      context: .
-      dockerfile: ai-bid-user/Dockerfile
-    container_name: aidbid-user
+    build: ./ai-bid-user
     ports:
-      - "${USER_PORT:-8081}:8081"
+      - "8081:8081"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
-      - SERVER_PORT=8081
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=aidbid
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
   # Project Service
   project-service:
-    build:
-      context: .
-      dockerfile: ai-bid-project/Dockerfile
-    container_name: aidbid-project
+    build: ./ai-bid-project
     ports:
-      - "${PROJECT_PORT:-8082}:8082"
+      - "8082:8082"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
-      - SERVER_PORT=8082
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=aidbid
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
   # Material Service
   material-service:
-    build:
-      context: .
-      dockerfile: ai-bid-material/Dockerfile
-    container_name: aidbid-material
+    build: ./ai-bid-material
     ports:
-      - "${MATERIAL_PORT:-8083}:8083"
+      - "8083:8083"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
-      - SERVER_PORT=8083
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=aidbid
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      - MINIO_ENDPOINT=minio:9000
-      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
-      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
+      - postgres
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
   # Document Service
   document-service:
-    build:
-      context: .
-      dockerfile: ai-bid-document/Dockerfile
-    container_name: aidbid-document
+    build: ./ai-bid-document
     ports:
-      - "${DOCUMENT_PORT:-8084}:8084"
+      - "8084:8084"
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES:-docker}
-      - SERVER_PORT=8084
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=aidbid
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      - MINIO_ENDPOINT=minio:9000
-      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
-      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
+      - postgres
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
-  # Knowledge Service (RAG Knowledge Base, Python)
-  knowledge:
-    build:
-      context: .
-      dockerfile: ai-bid-knowledge/Dockerfile
-    container_name: aidbid-knowledge
+  # Bid Service
+  bid-service:
+    build: ./ai-bid-bid
     ports:
-      - "${KNOWLEDGE_PORT:-8086}:8086"
+      - "8085:8085"
     environment:
-      - LLM_PROVIDER=${LLM_PROVIDER:-minimax}
-      - MINIMAX_API_KEY=${MINIMAX_API_KEY:-}
-      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL:-https://api.minimax.chat/v1}
-      - MINIMAX_MODEL=${MINIMAX_MODEL:-abab6-chat}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
-      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
-      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
-      - QWEN_API_KEY=${QWEN_API_KEY:-}
-      - QWEN_BASE_URL=${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/api/v1}
-      - QWEN_MODEL=${QWEN_MODEL:-qwen-turbo}
-      - CHROMA_HOST=chroma
-      - CHROMA_PORT=8000
-      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-shibing624/text2vec-base-chinese}
-      - EMBEDDING_DEVICE=${EMBEDDING_DEVICE:-cpu}
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=postgres
     depends_on:
-      chroma:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
+      - postgres
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
-  # AI Service (Bid Generation & Processing, Python)
-  ai:
+  # Knowledge Service (Python)
+  knowledge-service:
     build:
-      context: .
-      dockerfile: ai-bid-ai/Dockerfile
-    container_name: aidbid-ai
+      context: ./ai-bid-knowledge
+      dockerfile: Dockerfile
     ports:
-      - "${AI_PORT:-8087}:8087"
-    environment:
-      - LLM_PROVIDER=${LLM_PROVIDER:-minimax}
-      - MINIMAX_API_KEY=${MINIMAX_API_KEY:-}
-      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL:-https://api.minimax.chat/v1}
-      - MINIMAX_MODEL=${MINIMAX_MODEL:-abab6-chat}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
-      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
-      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
-      - QWEN_API_KEY=${QWEN_API_KEY:-}
-      - QWEN_BASE_URL=${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/api/v1}
-      - QWEN_MODEL=${QWEN_MODEL:-qwen-turbo}
-      - KNOWLEDGE_SERVICE_URL=http://knowledge:8086
-      - MAX_TOKENS=${MAX_TOKENS:-8192}
-      - TEMPERATURE=${TEMPERATURE:-0.7}
-    depends_on:
-      knowledge:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8087/health"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
+      - "8086:8086"
     networks:
-      - aidbid-network
-    restart: unless-stopped
+      - bid-network
 
-# ==================== Network & Volumes ====================
+  # AI Service (Python)
+  ai-service:
+    build:
+      context: ./ai-bid-ai
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8087"
+    environment:
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+    networks:
+      - bid-network
+
+  # Enterprise Service
+  enterprise-service:
+    build: ./ai-bid-enterprise
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_HOST=postgres
+    depends_on:
+      - postgres
+    networks:
+      - bid-network
+
+  # Frontend (Node)
+  frontend:
+    build:
+      context: ./ai-bid-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+    networks:
+      - bid-network
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ai_bid
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bid-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - bid-network
 
 networks:
-  aidbid-network:
+  bid-network:
     driver: bridge
 
 volumes:
   postgres_data:
-  redis_data:
-  chroma_data:
-  minio_data:
