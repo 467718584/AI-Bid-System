@@ -147,40 +147,40 @@ const handleReorder = () => {
     chapterBlocks.push({ chapter: match[1], block: match[0] })
   }
   
-  // 如果没有新版格式，尝试匹配旧版格式：<h2>或<p>#/## 标题</p>
+  // 如果没有新版格式，尝试匹配旧版格式：<h1>或<h2>或<h3>标题</h...>
   if (chapterBlocks.length === 0) {
-    // 匹配 <h2>标题</h2> 格式
-    let h2Regex = /<h2[^>]*>([^<]+)<\/h2>/g
-    let h2Match
-    const h2Positions = []
-    while ((h2Match = h2Regex.exec(content.value)) !== null) {
-      h2Positions.push({ title: h2Match[1].trim(), pos: h2Match.index, len: h2Match[0].length })
+    // 匹配所有级别的标题标签 <h1>, <h2>, <h3>
+    const hRegex = /<(h[1-3])[^>]*>([^<]+)<\/h\1>/g
+    const hPositions = []
+    let hMatch
+    while ((hMatch = hRegex.exec(content.value)) !== null) {
+      hPositions.push({ 
+        level: parseInt(hMatch[1][1]), 
+        title: hMatch[2].trim(), 
+        pos: hMatch.index, 
+        len: hMatch[0].length 
+      })
     }
     
-    // 如果没有 <h2>，尝试匹配 <p># 标题</p> 或 <p>## 标题</p> 格式
-    if (h2Positions.length === 0) {
-      const mdRegex = /<p>(#{1,3})\s+([^<]+)<\/p>/g
-      let mdMatch
-      while ((mdMatch = mdRegex.exec(content.value)) !== null) {
-        const level = mdMatch[1].length
-        const title = mdMatch[2].trim()
-        // 只识别一级标题(#)作为章节分隔
-        if (level === 1) {
-          h2Positions.push({ title, pos: mdMatch.index, len: mdMatch[0].length })
+    if (hPositions.length > 0) {
+      // 按位置切分内容块 - 每个标题到下一个同级或更高级标题之前
+      for (let i = 0; i < hPositions.length; i++) {
+        const startPos = hPositions[i].pos
+        const currentLevel = hPositions[i].level
+        
+        // 找下一个同级或更高级的标题位置
+        let endPos = content.value.length
+        for (let j = i + 1; j < hPositions.length; j++) {
+          if (hPositions[j].level <= currentLevel) {
+            endPos = hPositions[j].pos
+            break
+          }
         }
-      }
-    }
-    
-    if (h2Positions.length > 0) {
-      // 按位置切分内容块，确保包含完整内容
-      for (let i = 0; i < h2Positions.length; i++) {
-        const startPos = h2Positions[i].pos
-        // 下一个标题开始前，或内容末尾
-        const endPos = i < h2Positions.length - 1 ? h2Positions[i + 1].pos : content.value.length
-        // 确保每个块都包含标题
+        
+        // 确保每个块都包含完整内容（从标题开始到下一个标题之前）
         const blockContent = content.value.substring(startPos, endPos).trim()
         if (blockContent) {
-          chapterBlocks.push({ chapter: h2Positions[i].title, block: blockContent })
+          chapterBlocks.push({ chapter: hPositions[i].title, block: blockContent })
         }
       }
     }
@@ -195,21 +195,36 @@ const handleReorder = () => {
   const orderedChapters = []
   const flatOutline = []
   
-  // 展平目录结构
-  const flattenOutline = (items, parentPath = '') => {
+  // 展平目录结构 - 支持嵌套层级
+  const flattenOutline = (items) => {
     items.forEach(item => {
-      const path = parentPath ? parentPath + '/' + item.title : item.title
       flatOutline.push(item.title)
       if (item.children && item.children.length) {
-        flattenOutline(item.children, item.title)
+        flattenOutline(item.children)
       }
     })
   }
   flattenOutline(outline.value)
   
+  // 辅助函数：检查标题是否匹配（支持模糊匹配）
+  const titleMatches = (blockTitle, outlineTitle) => {
+    // 精确匹配
+    if (blockTitle === outlineTitle) return true
+    // 去掉"第X章"前缀后匹配
+    const normalize = (t) => t.replace(/^第[一二三四五六七八九十]+章\s*/, '').replace(/^第\d+章\s*/, '')
+    return normalize(blockTitle) === normalize(outlineTitle) || 
+           blockTitle.includes(outlineTitle) || 
+           outlineTitle.includes(blockTitle)
+  }
+  
   // 按目录顺序重新排列
   flatOutline.forEach(chapterTitle => {
-    const block = chapterBlocks.find(b => b.chapter === chapterTitle)
+    // 优先精确匹配
+    let block = chapterBlocks.find(b => b.chapter === chapterTitle)
+    if (!block) {
+      // 然后模糊匹配
+      block = chapterBlocks.find(b => titleMatches(b.chapter, chapterTitle))
+    }
     if (block) {
       orderedChapters.push(block.block)
     }
@@ -223,7 +238,7 @@ const handleReorder = () => {
     }
   })
   
-  content.value = orderedChapters.join('')
+  content.value = orderedChapters.join('\n')
   ElMessage.success('内容已按目录顺序重新排序')
 }
 
@@ -284,8 +299,11 @@ const markdownToHtml = (md) => {
     } catch (e) { console.error('Table parse error:', e) }
     return `<p><em>[${title}表格]</em></p>`
   })
-  // 处理图表标记 -> 占位符
-  html = html.replace(/!\[([^)]*)\]\((chart:[^)]+)\)/g, '<p><strong>[$1图表]</strong></p>')
+  // 处理图表标记 -> chart:前缀 或 包含"图表"文字的URL -> 转为占位符显示
+  html = html.replace(/!\[([^]]*)\]\((chart:[^)]+)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
+  html = html.replace(/!\[([^]]*)\]\(([^)]*图表[^)]*)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
+  // 处理普通图片 -> 如果URL不是有效网络地址，转换为占位符
+  html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
   // 处理段落
   const lines = html.split('\n')
   html = lines.map(line => {
