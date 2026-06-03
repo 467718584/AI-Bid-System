@@ -150,15 +150,16 @@ const handleReorder = () => {
   // 如果没有新版格式，尝试匹配旧版格式：<h1>或<h2>或<h3>标题</h...>
   if (chapterBlocks.length === 0) {
     // 匹配所有级别的标题标签 <h1>, <h2>, <h3>
-    const hRegex = /<(h[1-3])[^>]*>([^<]+)<\/h\1>/g
+    const hRegex = /<h([1-3])(?:[^>]*)>([\s\S]*?)<\/h\1>/g
     const hPositions = []
     let hMatch
     while ((hMatch = hRegex.exec(content.value)) !== null) {
       hPositions.push({ 
-        level: parseInt(hMatch[1][1]), 
+        level: parseInt(hMatch[1]), 
         title: hMatch[2].trim(), 
         pos: hMatch.index, 
-        len: hMatch[0].length 
+        len: hMatch[0].length,
+        content: hMatch[2]
       })
     }
     
@@ -304,7 +305,34 @@ const markdownToHtml = (md) => {
   html = html.replace(/!\[([^]]*)\]\(([^)]*图表[^)]*)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
   // 处理普通图片 -> 如果URL不是有效网络地址，转换为占位符
   html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
-  // 处理段落
+  // 处理MD表格语法: | col1 | col2 | -> HTML表格
+  html = html.replace(/<p>\|(.+)\|<\/p>\n<p>\|[-\s|]+\|<\/p>([\s\S]*?)(?=<p>\|\S|\n<p>```|\n<h[123]>|\n<p>\*\*|$)/g, (match, headerRow, bodyRows) => {
+    try {
+      // 解析表头
+      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
+      // 解析表体
+      const rows = []
+      const rowMatches = bodyRows.matchAll(/<p>\|(.+)\|<\/p>/g)
+      for (const rowMatch of rowMatches) {
+        const cells = rowMatch[1].split('|').filter(c => c.trim()).map(c => c.trim())
+        if (cells.length > 0) rows.push(cells)
+      }
+      if (headers.length === 0) return match
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">')
+      tableHtml += '<thead><tr>'
+      headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
+      tableHtml += '</tr></thead>'
+      tableHtml += '<tbody>'
+      rows.forEach(row => {
+        tableHtml += '<tr>'
+        row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
+        tableHtml += '</tr>'
+      })
+      tableHtml += '</tbody></table>'
+      return tableHtml
+    } catch (e) { console.error('MD Table parse error:', e) }
+    return match
+  })
   const lines = html.split('\n')
   html = lines.map(line => {
     line = line.trim()
