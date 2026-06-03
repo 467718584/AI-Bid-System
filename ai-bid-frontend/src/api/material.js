@@ -1,7 +1,7 @@
 import api from './index'
 
 // 获取素材分类列表
-export const getMaterialCategory = () => api.get('/material/category')
+export const getMaterialCategory = () => api.get('/material/categories')
 
 // 获取素材列表
 export const getMaterialList = (params) => api.get('/material/list', { params })
@@ -16,3 +16,6 @@ export const deleteMaterial = (id) => api.delete(`/material/${id}`)
 
 // 获取素材详情
 export const getMaterialDetail = (id) => api.get(`/material/${id}`)
+
+// 获取素材统计
+export const getMaterialStats = () => api.get('/material/stats')

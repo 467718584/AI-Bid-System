@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-28T03:20:10.699Z",
+  "updatedAt": "2026-06-01T01:32:22.223Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -157,13 +157,13 @@
       "endLine": 39,
       "source": "memory",
       "snippet": "# 2026-05-05 ## 对话记录 (从session恢复) **恢复时间**: 2026-05-06T16:06:05.250633 ### 用户消息 (2条) 1. [15:09] [cron:1776651337077-tnp042lxa EO Memory Sync - BID管理] 📋 Memory Sync - Daily Summary (BID管理) 请执行每日记忆同步： 今天是周一 (2026-04-20)。 1. 读取今天的记忆文件: memory/2026-04-20.md 2. 如果文件存在，提取以下内容： - ## 决策 - 重要决定和原因 ... 2. [16:54] [cron:1776653137208-vzvizr73v EO Dream - BID管理] 🌙 Dream Module - Daily Evolution (BID管理) 请执行Dream Module的自我进化流程： 1. 分析今天 BID管理 的所有会话记录 2. 提取跨会话的pattern 3. 更新本workspace的MEMORY.md（如果有重要发现） 4. 生成进化报告 ... ### 助手回复摘要 (12条) 1. [思考: The file only has 60 lines. Let me read the full file. ...]... 2. [思考: Today is May 6, 2026. So today we're tracking May 6 (today, no activity yet) and",
-      "recallCount": 8,
+      "recallCount": 9,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 6.011500559799419,
+      "totalScore": 6.80393416704983,
       "maxScore": 0.7924336072504105,
       "firstRecalledAt": "2026-05-10T21:16:17.233Z",
-      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
+      "lastRecalledAt": "2026-05-28T13:29:28.419Z",
       "queryHashes": [
         "ce018f9340f1",
         "0430d955a324",
@@ -171,7 +171,8 @@
         "0a95967ed376",
         "2e80763a2586",
         "496edf78b502",
-        "6661bda2ea6b"
+        "6661bda2ea6b",
+        "a6e3280919fd"
       ],
       "recallDays": [
         "2026-05-11",
@@ -201,13 +202,13 @@
       "endLine": 70,
       "source": "memory",
       "snippet": "1. [思考: The file only has 60 lines. Let me read the full file. ...]... 2. [思考: Today is May 6, 2026. So today we're tracking May 6 (today, no activity yet) and we've been counting...]... 3. [思考: Now I have enough context. Let me update the MEMORY.md and generate the evolution report. Summary: ...]... 4. [思考: Now update today's memory file. ...]... 5. [思考: Done. Now generate the evolution report. ...] --- ## 🌀 Dream Module v18 — 进化报告 **BID管理 | 2026-05-06 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | 🔴 归档冻结 | 21天无活动 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天提醒机制进度 **21/30天满足（70%）** — 即将触发，提醒阈值接近。 ... --- ## 📋 bid-admin Session Sy",
-      "recallCount": 15,
+      "recallCount": 16,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 11.075457767189068,
+      "totalScore": 11.84960299343739,
       "maxScore": 0.8014234371960884,
       "firstRecalledAt": "2026-05-10T21:16:17.233Z",
-      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
+      "lastRecalledAt": "2026-05-28T13:29:28.419Z",
       "queryHashes": [
         "ce018f9340f1",
         "0430d955a324",
@@ -221,7 +222,8 @@
         "4bd92e843bc3",
         "2e80763a2586",
         "496edf78b502",
-        "6661bda2ea6b"
+        "6661bda2ea6b",
+        "a6e3280919fd"
       ],
       "recallDays": [
         "2026-05-11",
@@ -359,13 +361,13 @@
       "endLine": 76,
       "source": "memory",
       "snippet": "2. 提取跨会话的pat... ### 助手回复 (9条) - [16:56] [思考: Now I have enough context. Let me update the MEMOR...]... - [16:57] [思考: Now update today's memory file. ...]... - [16:57] [思考: Done. Now generate the evolution report. ...] --- ## 🌀 Dream Module v18 — 进化报告 **BID管理 | 2026-05-06 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 ...",
-      "recallCount": 11,
+      "recallCount": 15,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 8.652798888226995,
+      "totalScore": 11.813757208878556,
       "maxScore": 0.8146501328071001,
       "firstRecalledAt": "2026-05-12T16:53:50.395Z",
-      "lastRecalledAt": "2026-05-24T23:13:55.478Z",
+      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
       "queryHashes": [
         "0430d955a324",
         "c3e88e79496d",
@@ -376,7 +378,10 @@
         "4bd92e843bc3",
         "2e80763a2586",
         "d77cf508a012",
-        "60065b2ddb11"
+        "60065b2ddb11",
+        "b6537cc56682",
+        "cadd5c73354a",
+        "09b789f91664"
       ],
       "recallDays": [
         "2026-05-13",
@@ -386,7 +391,9 @@
         "2026-05-20",
         "2026-05-21",
         "2026-05-22",
-        "2026-05-25"
+        "2026-05-25",
+        "2026-05-28",
+        "2026-05-29"
       ],
       "conceptTags": [
         "提取",
@@ -687,21 +694,27 @@
       "endLine": 53,
       "source": "memory",
       "snippet": "# 2026-05-17 ## 对话记录 --- ## 📋 bid-admin Session Sync (2026-05-17 09:00) **Sessions**: 1个 **Messages**: 3条 ### 用户消息 (1条) - [00:38] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) --- ## 🌀 Dream Module v26 — 进化报告 **BID管理 | 2026-05-18 00:49 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | 🔴 归档冻结 | 31天无活动 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天提醒机制进度 **31/30天满足（100%）** — 已触发归档决策点。 ### 🔍 跨会话Pattern提取 | Pattern | 状态 | 备注 | |---------|------|------| | 用户交互频率 | ⚠️ 极低 | 连续31天无主动会话 | | Cron重复触发 | ⚠️ 待修复 | 单次计划多次执行记录 | | 项目激活意愿 | 🔴 低 | 北溪船闸无激活迹象 | ### 🧠 进化建议 1. **项目归档决策**：北溪船闸项目已",
-      "recallCount": 3,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.25690995766669,
+      "totalScore": 5.2693823973578935,
       "maxScore": 0.7715890281965568,
       "firstRecalledAt": "2026-05-20T05:43:27.523Z",
-      "lastRecalledAt": "2026-05-24T23:13:55.478Z",
+      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
       "queryHashes": [
         "8e82d8575dc1",
         "d77cf508a012",
-        "60065b2ddb11"
+        "60065b2ddb11",
+        "b6537cc56682",
+        "cadd5c73354a",
+        "20f86c200001",
+        "09b789f91664"
       ],
       "recallDays": [
         "2026-05-20",
-        "2026-05-25"
+        "2026-05-25",
+        "2026-05-28",
+        "2026-05-29"
       ],
       "conceptTags": [
         "bid-admin",
@@ -754,19 +767,25 @@
       "endLine": 123,
       "source": "memory",
       "snippet": "**BID管理 | 2026-05-22 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | **37天** | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **37/30天满足（123%）** — 归档阈值已超出23%，项目正式进入长期归档观察期。 ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结第**37天**（自4月17日起算） - 系统正常待机 ### Pattern识别 1. **归档长期化**：37天无活动，远超30天阈值 2. **用户沉默**：连续37天无真实用户交互（仅cron系统触发） 3. **系统稳定**：Dream Module持续自检运行 4. **Memory Checkpoint故障**：BID Checkpoint cron持续328次错误（Feishu投递目标缺失） 5. **Dream任务正常**：BID Dream job运行正常（94363ms），无连续错误 ### 行动建议 - 短期：无需干预，系统正常运行 - 中期：修复Memory Checkpoint的Feishu投递配置（缺少target） - 长期：北溪船闸项目需用户决策（归档 or 重新激活） ### 结论 🟡 **黄灯状态** — 系统运行正常，项目长期归档，用户沉默中 ### 下次检查 2026-05-23 00:50 --- *最后更新：",
-      "recallCount": 2,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.4959900233378385,
-      "maxScore": 0.7505679033485203,
+      "totalScore": 4.528814640091452,
+      "maxScore": 0.7619053018337909,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-24T23:13:55.478Z",
+      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
       "queryHashes": [
         "d77cf508a012",
-        "60065b2ddb11"
+        "60065b2ddb11",
+        "b6537cc56682",
+        "cadd5c73354a",
+        "20f86c200001",
+        "09b789f91664"
       ],
       "recallDays": [
-        "2026-05-25"
+        "2026-05-25",
+        "2026-05-28",
+        "2026-05-29"
       ],
       "conceptTags": [
         "37/30天满足",
@@ -786,19 +805,24 @@
       "endLine": 56,
       "source": "memory",
       "snippet": "# 2026-05-22 ## 对话记录 --- ## 🌙 Dream Module v28 — 进化报告 **BID管理 | 2026-05-22 00:50 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | **37天** | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **37/30天满足（123%）** — 归档阈值已超出23%，项目正式进入长期归档观察期。 --- ## 🌀 Dream Module v28 — 进化报告 **BID管理 | 2026-05-22 00:50 (CST)** ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结第**37天**（自4月17日起算） - 系统正常待机 - 无用户会话活动（仅cron系统触发） ### Pattern识别 - **归档长期化**：37天无活动，远超30天阈值 - **用户沉默**：连续37天无真实用户交互 - **系统稳定**：Dream Module持续自检运行，cron正常触发 - **待激活状态**：北溪船闸4大核心场景资料已搜集，标书撰写待激活 ### 结论 🟡 **黄灯状态** — 系统运行正常，项目长期归档，用户沉默中 ### 下次检查 2026-05-23 00:50 --- *最后更新：2026-05-22 00:50 CST* --- ## 📋 bid-a",
-      "recallCount": 2,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.4853209294701326,
-      "maxScore": 0.7452760968739149,
+      "totalScore": 3.7484313845297894,
+      "maxScore": 0.7568742352140547,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-24T23:13:55.478Z",
+      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
       "queryHashes": [
         "d77cf508a012",
-        "60065b2ddb11"
+        "60065b2ddb11",
+        "b6537cc56682",
+        "cadd5c73354a",
+        "09b789f91664"
       ],
       "recallDays": [
-        "2026-05-25"
+        "2026-05-25",
+        "2026-05-28",
+        "2026-05-29"
       ],
       "conceptTags": [
         "37/30天满足",
@@ -818,19 +842,21 @@
       "endLine": 56,
       "source": "memory",
       "snippet": "# 2026-05-21 ## 对话记录 --- ## 🌙 Dream Module v27 — 进化报告 **BID管理 | 2026-05-21 00:50 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | 36天 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **36/30天满足（120%）** — 归档阈值已超出20%，项目已正式进入长期归档观察期。 --- ## 🌀 Dream Module v27 — 进化报告 **BID管理 | 2026-05-21 00:50 (CST)** ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结满**36天**（自4月17日起算） - 系统正常待机 ### Pattern识别 - 北溪船闸项目已归档满36天，4大核心场景资料已搜集，待激活标书撰写 - 长时间无用户活动，建议向用户推送状态确认 ### 结论 🟡 **黄灯状态** — 系统运行正常，项目待用户决策 ## 检查点记录 (18:00) - 检查时间: 2026-05-21 18:04 - 状态: 系统正常待机，无新会话活动 - Dream Module 运行中，北溪船闸项目归档冻结第36天 --- ## 检查点记录 (19:28) - 检查时间: 2026-05-21 19:28 - 状态: 系统正常待机，无新会话活动 - Dream",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.4777928591178475,
-      "maxScore": 0.7415416911327806,
+      "totalScore": 2.2311139637279647,
+      "maxScore": 0.7533211046101174,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-24T23:13:55.478Z",
+      "lastRecalledAt": "2026-05-28T16:39:39.735Z",
       "queryHashes": [
         "d77cf508a012",
-        "60065b2ddb11"
+        "60065b2ddb11",
+        "cadd5c73354a"
       ],
       "recallDays": [
-        "2026-05-25"
+        "2026-05-25",
+        "2026-05-29"
       ],
       "conceptTags": [
         "36/30天满足",
@@ -1005,18 +1031,23 @@
       "endLine": 118,
       "source": "memory",
       "snippet": "### 4. Phase 1 代码框架完成 - common-common-core - common-common-security - ai-bid-gateway - ai-bid-user - ai-bid-document - ai-bid-material - ai-bid-project - Docker配置 - 数据库初始化脚本 ### 5. Phase 2 AI服务框架完成 **ai-bid-knowledge (Python FastAPI):** - LLM网关 - RAG服务 - ChromaDB集成 - 向量检索API **ai-bid-ai (Python FastAPI):** - LLM网关(Minimax/DeepSeek/Qwen) - 技术标目录生成 - 技术标正文生成 - 招标文件解析 - 标书改写 - 合规检测 - PDF/Word解析 - Word导出 --- ## Git状态 - 本地提交：8次 - GitHub Push：失败（网络限制） - 解决方案：用户需手动执行 `git push -u origin main` --- ## 关键技术决策 1. **数据库**：PostgreSQL + pgvector（单一数据库） 2. **向量库**：ChromaDB（开发）/ Milvus（生产） 3. **LLM**：API调用（Minimax/DeepSeek）+ 私有化（Qwen预留） 4. **工作流**：Flowable 6.x 5. **API规范**：OpenAI兼容格式 --- ## 进度状态",
-      "recallCount": 1,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.7606714473800273,
-      "maxScore": 0.7606714473800273,
+      "totalScore": 3.12369152308851,
+      "maxScore": 0.7983310491115921,
       "firstRecalledAt": "2026-05-28T02:43:56.399Z",
-      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-06-01T01:32:22.223Z",
       "queryHashes": [
-        "08cd9c30beb4"
+        "08cd9c30beb4",
+        "b6537cc56682",
+        "20f86c200001",
+        "414b28c3a726"
       ],
       "recallDays": [
-        "2026-05-28"
+        "2026-05-28",
+        "2026-05-29",
+        "2026-06-01"
       ],
       "conceptTags": [
         "gateway",
@@ -1098,18 +1129,20 @@
       "endLine": 59,
       "source": "memory",
       "snippet": "# 2026-05-26 工作日志 ## 日期：2026-05-26（周二） ## 连续无活动：已重置（用户开始交互） --- ## 今日重大进展 ### 1. 用户发起新项目 **用户需求：** - 项目名称：AI智能投标文件智能编制管理系统 - 目标：1:1复刻南瑞的《AI智能投标文件智能编制管理系统建设方案》 - 团队：1人 + AI辅助 - 阶段式开发：瀑布式，核心功能优先 ### 2. 项目配置确认 | 项目 | 值 | |------|---| | GitHub仓库 | 467718584/AI-Bid-System | | API Key | Minimax: sk-cp-ZpS3_cdjkZ282Ux41yYKpAT6uOmYqQ6L3f7rqJ81HFLsVcLC1xeJ5UaUgu5p3BzRqdDVYtTLDxtMuLKZfyiqd_eYuPrHaJzPMRA_BIevVROCws1zs0JsAH4 | | 数据库 | ai_bid（PostgreSQL + pgvector） | | 团队名 | bid-team | | 作者 | bid-admin | ### 3. 完成文档（10份） | 文档 | 大小 | |------|------| | 项目管理计划 | 8KB | | WBS任务分解 | 15KB | | PRD产品需求 | 17KB | | 概要设计 | 24KB | | 数据库设计 | 28KB | | API接口设计 | 13KB | | 技术规范 | 8KB | | 测试计划 | 8KB | | 部署运维手册 | 1",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.6199431460153493,
-      "maxScore": 0.6199431460153493,
+      "totalScore": 1.3621150953492116,
+      "maxScore": 0.7421719493338623,
       "firstRecalledAt": "2026-05-28T03:20:10.699Z",
-      "lastRecalledAt": "2026-05-28T03:20:10.699Z",
+      "lastRecalledAt": "2026-05-28T16:39:39.735Z",
       "queryHashes": [
-        "6661bda2ea6b"
+        "6661bda2ea6b",
+        "cadd5c73354a"
       ],
       "recallDays": [
-        "2026-05-28"
+        "2026-05-28",
+        "2026-05-29"
       ],
       "conceptTags": [
         "467718584/ai-bid-system",
@@ -1151,6 +1184,417 @@
         "ai-bid-gateway",
         "ai-bid-user",
         "ai-bid-document"
+      ]
+    },
+    "memory:memory/2026-05-27.md:1:36": {
+      "key": "memory:memory/2026-05-27.md:1:36",
+      "path": "memory/2026-05-27.md",
+      "startLine": 1,
+      "endLine": 36,
+      "source": "memory",
+      "snippet": "# 2026-05-27/28 Daily Memory ## 日期：2026-05-27 → 2026-05-28 (跨日凌晨) ## 系统部署状态 ### ✅ 已正常运行的服务 - **Gateway (8090)** - 路由正常，6条路由配置完成 - **ai-bid-ai (8087)** - Python FastAPI，健康检查正常 - **ai-bid-knowledge (8086)** - Python FastAPI，健康检查正常 - **前端 Vue3 (3000)** - Vite开发服务器运行中 - **PostgreSQL (5432)** - 已安装并运行 - **Redis (6379)** - 已安装并运行 ### ⚠️ 部分运行/有问题的服务 - **ai-bid-user (8081)** - ✅ 已启动，运行中（需要Spring Security认证） - **ai-bid-project (8082)** - ❌ 启动失败 (SecurityUtils bean缺失) - **ai-bid-material (8083)** - ❌ 未启动 - **ai-bid-document (8084)** - ❌ 未启动 ## 今日完成的工作 ### 1. 数据库和缓存服务安装 - ✅ 安装 PostgreSQL 14 并启动 - ✅ 安装 Redis 并启动 - ✅ 创建数据库 aidbid 和用户 aidbid - ✅ PostgreSQL 密码认证配置 ### 2. Gateway 路由配置 - ✅ 配置 6 条路由：/a",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.5401196456206758,
+      "maxScore": 0.7902837998431307,
+      "firstRecalledAt": "2026-05-28T13:29:28.419Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "a6e3280919fd",
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-05-28",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "2026-05-27/28",
+        "ai-bid-ai",
+        "ai-bid-knowledge",
+        "部分运行/有问题的服务",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material"
+      ]
+    },
+    "memory:memory/2026-05-27.md:31:67": {
+      "key": "memory:memory/2026-05-27.md:31:67",
+      "path": "memory/2026-05-27.md",
+      "startLine": 31,
+      "endLine": 67,
+      "source": "memory",
+      "snippet": "- ✅ 添加 StripPrefix=1 过滤器 ### 3. ai-bid-user 服务修复 - ✅ **问题**：MyBatis-Plus 与 Spring Boot 3.2.5 (Spring 6.1) 兼容性问题 - 错误：`Invalid value type for attribute 'factoryBeanObjectType': java.lang.String` - ✅ **解决方案**：将 mybatis-plus-boot-starter 替换为 mybatis-spring-boot-starter (3.0.4) - ✅ 重写 UserMapper.java，使用 MyBatis 注解替代 BaseMapper - ✅ 更新 UserService.java，移除 LambdaQueryWrapper ### 4. ai-bid-project 服务修复 - ✅ 将 mybatis-plus-boot-starter 替换为 mybatis-spring-boot-starter (3.0.4) - ✅ 重写 ProjectMapper.java - ✅ 更新 ProjectService.java - ⚠️ 启动失败：SecurityUtils bean 缺失（common-security 模块依赖问题） ## 待解决问题 ### 高优先级 1. **ai-bid-project SecurityUtils 问题** - 错误：JwtAuthenticationFilter 需要 SecurityUtils bean -",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.535987290220231,
+      "maxScore": 0.7883425770520984,
+      "firstRecalledAt": "2026-05-28T13:29:28.419Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "a6e3280919fd",
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-05-28",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "ai-bid-user",
+        "mybatis-plus",
+        "3.2.5",
+        "6.1",
+        "java.lang.string",
+        "mybatis-plus-boot-starter",
+        "mybatis-spring-boot-starter",
+        "3.0.4"
+      ]
+    },
+    "memory:memory/2026-05-26.md:103:160": {
+      "key": "memory:memory/2026-05-26.md:103:160",
+      "path": "memory/2026-05-26.md",
+      "startLine": 103,
+      "endLine": 160,
+      "source": "memory",
+      "snippet": "## 待解决问题 1. GitHub Push需用户手动执行 2. Phase 2 向量嵌入API对接 3. Phase 2 全文生成流水线 4. 前端Vue3项目初始化 --- ## 用户联系方式 - 飞书群组：oc_4c52403a566ecf9c0315eacb4bc0b6db - 用户ID：ou_cd4135e17a9df9cd43a4186ecafb7a6c --- *最后更新：2026-05-26 00:35* --- ## 今日工作总结（2026-05-26 00:41） ### 完成的主要工作 #### 1. 文档开发（完成） - ✅ 10份完整开发文档（约350页） - 项目管理计划、WBS任务分解、PRD、概要设计、数据库设计、API接口设计、技术规范、测试计划、部署运维手册 #### 2. Phase 1 代码框架（完成） - ✅ Maven多模块项目结构（6个Java服务） - ✅ common-common-core、common-common-security - ✅ ai-bid-gateway、ai-bid-user、ai-bid-document、ai-bid-material、ai-bid-project - ✅ Docker Compose配置 - ✅ PostgreSQL数据库初始化脚本 #### 3. Phase 2 AI服务（75%完成） - ✅ LLM网关（Minimax API） - ✅ 技术标目录生成API - ✅ 技术标正文生成API - ✅ 招标文件解析API - ✅ 标书改写API - ✅ 合规检测A",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7477049675468069,
+      "maxScore": 0.7477049675468069,
+      "firstRecalledAt": "2026-05-28T13:29:28.419Z",
+      "lastRecalledAt": "2026-05-28T13:29:28.419Z",
+      "queryHashes": [
+        "a6e3280919fd"
+      ],
+      "recallDays": [
+        "2026-05-28"
+      ],
+      "conceptTags": [
+        "gateway",
+        "网关",
+        "common-common-core",
+        "common-common-security",
+        "ai-bid-gateway",
+        "ai-bid-user",
+        "ai-bid-document",
+        "ai-bid-material"
+      ]
+    },
+    "memory:memory/2026-05-25.md:85:102": {
+      "key": "memory:memory/2026-05-25.md:85:102",
+      "path": "memory/2026-05-25.md",
+      "startLine": 85,
+      "endLine": 102,
+      "source": "memory",
+      "snippet": "- [15:39] System (untrusted): [2026-05-25 23:20:36 GMT+8] Exec completed (tide-emb, code 1) :: To https://github.com/467718584/AI-Bid-System.git ! [rejected] ma... - [15:45] System (untrusted): [2026-05-25 23:40:50 GMT+8] Exec failed (lucky-ca, code 0) :: 5月 25 19:55 README.md -rw-rw-r-- 1 zzy zzy 357 5月 25 23:35 settings.... ### 助手回复 (188条) - [15:52] [思考: I should also create a work log entry for today's ...]... - [15:52] [思考: 让我检查一下这些命令是否成功完成。 ...]... - [15:53] [思考: Let me provide a comprehensive summary to the user...] ## ✅ Claude Code 多专家开发完成 Claude Code 已完成 Phase 2 AI服务模块的框架开发。以下是详细报告： --- ### 📋 今日开发成果...",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8303335513090832,
+      "maxScore": 0.8303335513090832,
+      "firstRecalledAt": "2026-05-29T00:23:17.425Z",
+      "lastRecalledAt": "2026-05-29T00:23:17.425Z",
+      "queryHashes": [
+        "9faf1cf3deba"
+      ],
+      "recallDays": [
+        "2026-05-29"
+      ],
+      "conceptTags": [
+        "tide-emb",
+        "lucky-ca",
+        "readme.md",
+        "rw-rw-r",
+        "system",
+        "untrusted",
+        "gmt",
+        "exec"
+      ]
+    },
+    "memory:memory/2026-05-29.md:29:70": {
+      "key": "memory:memory/2026-05-29.md:29:70",
+      "path": "memory/2026-05-29.md",
+      "startLine": 29,
+      "endLine": 70,
+      "source": "memory",
+      "snippet": "- `onMounted`为空，没有调用API - `handleCreate`创建成功后不跳转 - **WorkflowView.vue 修复**: - `confirmCreateWorkflow` 获取新工作流ID的逻辑错误 ### 当前系统状态 | 服务 | 端口 | 状态 | |------|------|------| | Gateway | 8090 | ✅ 运行中 | | ai-bid-user | 8081 | ✅ 运行中 | | ai-bid-project | 8082 | ✅ 运行中 | | ai-bid-material | 8083 | ✅ 运行中 | | ai-bid-document | 8084 | ✅ 运行中 | | ai-bid-workflow | 8085 | ✅ 运行中 | | ai-bid-knowledge | 8086 | ✅ 运行中 | | ai-bid-ai | 8087 | ✅ 运行中 | | ai-bid-enterprise | 8088 | ✅ 运行中 | | 前端Vue | 3000 | ✅ 运行中 | ### 已验证的API功能 | 模块 | API | 状态 | |------|-----|------| | 用户 | /api/user/list | ✅ 200 | | 项目 | /api/project/list, /api/project (POST) | ✅ 200 | | 素材 | /api/material/list, /upload, /image/upload | ✅ 200",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.6125613974811175,
+      "maxScore": 0.8351171964624975,
+      "firstRecalledAt": "2026-05-31T01:12:00.981Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "120ee078a9b2",
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "workflowview.vue",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material",
+        "ai-bid-document",
+        "ai-bid-workflow",
+        "ai-bid-knowledge"
+      ]
+    },
+    "memory:memory/2026-05-28.md:234:262": {
+      "key": "memory:memory/2026-05-28.md:234:262",
+      "path": "memory/2026-05-28.md",
+      "startLine": 234,
+      "endLine": 262,
+      "source": "memory",
+      "snippet": "2. **缺失路由**：前端需要的 `categories`、`search`、`stats` 等路由不存在 3. **前端没有知识库ID(kb_id)概念**：后端设计基于多知识库架构，前端是单知识库设计 ### 修复方案 为知识库服务(ai-bid-knowledge)添加与前端匹配的路由： | 前端API | 后端路由 | 方法 | 状态 | |---------|---------|------|------| | `/knowledge/categories` | `/api/knowledge/categories` | GET | ✅ | | `/knowledge/documents` | `/api/knowledge/documents` | GET | ✅ | | `/knowledge/search` | `/api/knowledge/search` | GET | ✅ | | `/knowledge/stats` | `/api/knowledge/stats` | GET | ✅ | | `/knowledge/upload` | `/api/knowledge/upload` | POST | ✅ | | `/knowledge/vector/search` | `/api/knowledge/vector/search` | POST | ✅ | | `/knowledge/hybrid/search` | `/api/knowledge/hybrid/search` | POST | ✅ | | `/knowledge/chunks/re",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8324080595705595,
+      "maxScore": 0.8324080595705595,
+      "firstRecalledAt": "2026-05-31T01:12:00.981Z",
+      "lastRecalledAt": "2026-05-31T01:12:00.981Z",
+      "queryHashes": [
+        "120ee078a9b2"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "kb-id",
+        "ai-bid-knowledge",
+        "knowledge/categories",
+        "api/knowledge/categories",
+        "knowledge/documents",
+        "api/knowledge/documents",
+        "knowledge/search",
+        "api/knowledge/search"
+      ]
+    },
+    "memory:memory/2026-05-28.md:209:239": {
+      "key": "memory:memory/2026-05-28.md:209:239",
+      "path": "memory/2026-05-28.md",
+      "startLine": 209,
+      "endLine": 239,
+      "source": "memory",
+      "snippet": "**3. SecurityConfig简化** - 禁用JWT认证，直接permitAll ### 最终服务状态 | 服务 | 端口 | 状态 | 路由 | |------|------|------|------| | Gateway | 8090 | ✅ | 统一入口 | | 用户服务 | 8081 | ✅ | /api/user/** | | 项目服务 | 8082 | ✅ | /api/project/** | | 素材服务 | 8083 | ✅ | /api/material/** | | 文档服务 | 8084 | ✅ | /api/document/** | | AI服务 | 8087 | ✅ | /api/ai/** | | 知识库 | 8086 | ✅ | /api/knowledge/** | ### 经验教训 1. Gateway路由StripPrefix需要根据后端Controller实际路径调整 2. Spring Boot 3.x + MyBatis-Plus 3.5.x存在兼容性问题，需要替换为mybatis-spring-boot-starter 3. ai-bid-common模块的SecurityUtils、Camunda等组件需要提供Bean实现 ## 🌙 知识库API完整修复 (2026-05-28 22:07-22:22) ### 问题描述 前端知识库页面404错误、加载服务错误，原因是知识库服务的API路由与前端不匹配。 ### 根因分析 1. **路由结构不匹配**：前端期望 `/knowledge/...`，后端使用",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.5401839423904053,
+      "maxScore": 0.8294084107009257,
+      "firstRecalledAt": "2026-05-31T01:12:00.981Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "120ee078a9b2",
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-05-31",
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "api/user",
+        "api/project",
+        "api/material",
+        "api/document",
+        "api/ai",
+        "api/knowledge",
+        "3.x"
+      ]
+    },
+    "memory:memory/2026-05-28.md:167:218": {
+      "key": "memory:memory/2026-05-28.md:167:218",
+      "path": "memory/2026-05-28.md",
+      "startLine": 167,
+      "endLine": 218,
+      "source": "memory",
+      "snippet": "**1. Gateway路由修复** (`application.yml`) ```yaml # AI服务 - 不需要StripPrefix(自带/api/ai前缀) - id: ai-service uri: http://localhost:8087 predicates: - Path=/api/ai/** # 知识库服务 - 不需要StripPrefix - id: knowledge-service uri: http://localhost:8086 predicates: - Path=/api/knowledge/** # Java服务 - 需要StripPrefix去掉/api前缀 - id: user-service uri: http://localhost:8081 predicates: - Path=/api/user/** filters: - StripPrefix=1 ``` **2. Camunda Stub配置** (`CamundaStubConfig.java`) ```java @Configuration public class CamundaStubConfig { @Bean @Primary public ProcessEngine processEngine() { return new ProcessEngine() {}; } @Bean @Primary public RepositoryService reposito",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.824884614093544,
+      "maxScore": 0.824884614093544,
+      "firstRecalledAt": "2026-05-31T01:12:00.981Z",
+      "lastRecalledAt": "2026-05-31T01:12:00.981Z",
+      "queryHashes": [
+        "120ee078a9b2"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "gateway",
+        "application.yml",
+        "自带/api/ai前缀",
+        "ai-service",
+        "api/ai",
+        "knowledge-service",
+        "api/knowledge",
+        "需要stripprefix去掉/api前缀"
+      ]
+    },
+    "memory:memory/2026-05-28.md:257:290": {
+      "key": "memory:memory/2026-05-28.md:257:290",
+      "path": "memory/2026-05-28.md",
+      "startLine": 257,
+      "endLine": 290,
+      "source": "memory",
+      "snippet": "✅ 项目列表: {\"code\":200,\"message\":\"success\"...} ✅ 素材列表: {\"code\":200,\"message\":\"操作成功\"...} ✅ 文档列表: {\"code\":200,\"message\":\"success\"...} ✅ AI生成: {\"code\":200,\"data\":{\"title\":\"技术标\"...}} ✅ 知识库categories: {\"code\":200,\"data\":[...]} ✅ 知识库search: {\"code\":200,\"data\":[],\"total\":0} ✅ 知识库stats: {\"code\":200,\"data\":{\"totalDocuments\":0...}} ``` ### 当前系统服务状态（22:22） | 服务 | 端口 | 状态 | 说明 | |------|------|------|------| | Gateway | 8090 | ✅ | 所有路由正常 | | 用户服务 | 8081 | ✅ | /api/user/list 正常 | | 项目服务 | 8082 | ✅ | /api/project/list 正常 | | 素材服务 | 8083 | ✅ | /api/material/list 正常 | | 文档服务 | 8084 | ✅ | /api/document/list 正常 | | AI服务 | 8087 | ✅ | /api/ai/generate/outline 正常 | | 知识库 | 8086 | ✅ | categories/search/stats 正常 |",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8238605516378634,
+      "maxScore": 0.8238605516378634,
+      "firstRecalledAt": "2026-05-31T01:12:00.981Z",
+      "lastRecalledAt": "2026-05-31T01:12:00.981Z",
+      "queryHashes": [
+        "120ee078a9b2"
+      ],
+      "recallDays": [
+        "2026-05-31"
+      ],
+      "conceptTags": [
+        "gateway",
+        "api/user/list",
+        "api/project/list",
+        "api/material/list",
+        "api/document/list",
+        "api/ai/generate/outline",
+        "categories/search/stats",
+        "项目"
+      ]
+    },
+    "memory:memory/2026-05-28.md:69:110": {
+      "key": "memory:memory/2026-05-28.md:69:110",
+      "path": "memory/2026-05-28.md",
+      "startLine": 69,
+      "endLine": 110,
+      "source": "memory",
+      "snippet": "\"完整修复该两个服务，完成迁移操作，phase2的任务早就完成了\" --- ## ✅ 部署修复完成 (2026-05-28 14:30) ### 服务状态 - 全部运行 | 服务 | 端口 | 状态 | 验证 | |------|------|------|------| | Gateway | 8090 | ✅ | 已启动 | | ai-bid-user | 8081 | ✅ | 401认证(正常) | | ai-bid-project | 8082 | ✅ | 已启动 | | ai-bid-material | 8083 | ✅ | API正常 | | ai-bid-document | 8084 | ✅ | API正常 | | ai-bid-knowledge | 8086 | ✅ | 健康检查200 | | ai-bid-ai | 8087 | ✅ | Swagger运行中 | ### 数据库状态 - ✅ aidbid 数据库已创建 - ✅ 核心表已创建: sys_user, bid_project, bid_material, bid_document - ✅ 物料表已创建: material_library, enterprise_profile, certificate, project_case, team_member等 - ⚠️ pgvector扩展未安装(需要PostgreSQL 16+) ### 修复内容 1. ✅ MaterialMapper + MaterialService - MyBatis迁移完成 2. ✅ DocumentMapp",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7863648673700032,
+      "maxScore": 0.7863648673700032,
+      "firstRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material",
+        "ai-bid-document",
+        "ai-bid-knowledge",
+        "ai-bid-ai",
+        "sys-user"
+      ]
+    },
+    "memory:memory/2026-05-28.md:41:80": {
+      "key": "memory:memory/2026-05-28.md:41:80",
+      "path": "memory/2026-05-28.md",
+      "startLine": 41,
+      "endLine": 80,
+      "source": "memory",
+      "snippet": "| Gateway | 8090 | ❌ 未运行 | 需要启动 | | ai-bid-ai | 8087 | ❌ 未运行 | Python服务 | | ai-bid-knowledge | 8086 | ❌ 未运行 | Python服务 | | ai-bid-user | 8081 | ❌ 未运行 | 需要检查 | | ai-bid-project | 8082 | ✅ 运行中 | 已修复 | | ai-bid-material | 8083 | ✅ 运行中 | MyBatis迁移50% | | ai-bid-document | 8084 | ❌ 未运行 | MyBatis-Plus迁移未完成 | ### 数据库状态 - ⚠️ aidbid数据库存在但表未创建 - schema.sql 和 init-db.sql 使用MySQL语法（inline COMMENT），PostgreSQL不兼容 - 需要修复SQL脚本或手动创建表 ### 修复进展 - ✅ SecurityUtils @Component 修复 - ✅ ai-bid-project 完全修复并运行 - ✅ MaterialMapper + MaterialService 完成MyBatis迁移 - 🔄 MaterialLibraryService 等其他Service仍使用MyBatis-Plus - ❌ DocumentService 迁移未完成 ### 待解决问题 1. 数据库初始化脚本不兼容PostgreSQL 2. MaterialService部分Mapper仍使用MyBatis-Plus 3.",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7669177296810811,
+      "maxScore": 0.7669177296810811,
+      "firstRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "ai-bid-ai",
+        "ai-bid-knowledge",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material",
+        "ai-bid-document",
+        "mybatis-plus迁移未完成"
+      ]
+    },
+    "memory:memory/2026-05-28.md:133:180": {
+      "key": "memory:memory/2026-05-28.md:133:180",
+      "path": "memory/2026-05-28.md",
+      "startLine": 133,
+      "endLine": 180,
+      "source": "memory",
+      "snippet": "| 图表丰富度 | ⭐⭐⭐⭐⭐ | 自动生成多种图表 | | 格式规范性 | ⭐⭐⭐⭐ | Markdown格式清晰，可直接导出Word | --- ### 当前系统服务状态（19:19） | 服务 | 端口 | 状态 | |------|------|------| | 前端 | 3000 | ✅ 运行中 | | Gateway | 8090 | ✅ 运行中 | | ai-bid-ai | 8087 | ✅ 运行中 | | ai-bid-knowledge | 8086 | ✅ 运行中 | | ai-bid-user | 8081 | ✅ 认证正常 | | ai-bid-project | 8082 | ✅ | | ai-bid-material | 8083 | ✅ | | ai-bid-document | 8084 | ✅ | --- ### 用户关注点 - 用户要求演示完整流程，验证系统生成标书的完整性与质量 - 演示已完成，用户可访问 http://localhost:3000 实际操作 ## 🌙 深夜服务修复 (2026-05-28 19:55) ### 问题描述 项目服务(ai-bid-project)启动失败，Gateway路由返回404 ### 根因分析 1. **Gateway路由问题**：Java服务(8081-8084)配置了`StripPrefix=1`，但Controller路径不带`/api`前缀 2. **Camunda依赖问题**：ai-bid-project依赖ProcessEngine等Camunda接口，但未提供实现Be",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7614399710943233,
+      "maxScore": 0.7614399710943233,
+      "firstRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "ai-bid-ai",
+        "ai-bid-knowledge",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material",
+        "ai-bid-document",
+        "8081-8084"
+      ]
+    },
+    "memory:memory/2026-05-30.md:1:45": {
+      "key": "memory:memory/2026-05-30.md:1:45",
+      "path": "memory/2026-05-30.md",
+      "startLine": 1,
+      "endLine": 45,
+      "source": "memory",
+      "snippet": "# 2026-05-30 工作记忆 ## 📅 日期：2026-05-30 ## 🌙 深夜工作时段 (2026-05-29 22:00 → 2026-05-30 03:46) ### 完成的工作 #### 1. Docker微服务部署架构 - **最新Commit**: `4efbe42 feat: 完成Docker微服务部署架构` - **Docker Compose配置**: 支持一键启动所有微服务 - 目录结构： - `ai-bid-user/` (8081) - `ai-bid-project/` (8082) - `ai-bid-material/` (8083) - `ai-bid-document/` (8084) - `ai-bid-workflow/` (8085) - `ai-bid-knowledge/` (8086) - `ai-bid-ai/` (8087) - `ai-bid-enterprise/` (8088) - `ai-bid-gateway/` (8090) - `ai-bid-frontend/` (3000) #### 2. 系统服务状态（深夜结束时） | 服务 | 端口 | 状态 | |------|------|------| | Gateway | 8090 | ✅ 运行中 | | ai-bid-user | 8081 | ✅ 运行中 | | ai-bid-project | 8082 | ✅ 运行中 | | ai-bid-material | 8083 | ✅ 运行中 | |",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7467718415160496,
+      "maxScore": 0.7467718415160496,
+      "firstRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "queryHashes": [
+        "fe71245e818d"
+      ],
+      "recallDays": [
+        "2026-06-01"
+      ],
+      "conceptTags": [
+        "gateway",
+        "ai-bid-user",
+        "ai-bid-project",
+        "ai-bid-material",
+        "ai-bid-document",
+        "ai-bid-workflow",
+        "ai-bid-knowledge",
+        "ai-bid-ai"
       ]
     }
   }

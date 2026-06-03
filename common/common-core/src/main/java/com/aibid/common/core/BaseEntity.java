@@ -43,7 +43,7 @@ public abstract class BaseEntity implements Serializable {
     private Long updateBy;
 
     /** 乐观锁版本号 */
-    @Version
+    // @Version  // 暂时禁用，避免MyBatis-Plus乐观锁问题
     private Integer version;
 
     /** 逻辑删除标记 (0=未删除, 1=已删除) */

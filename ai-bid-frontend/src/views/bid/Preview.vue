@@ -6,13 +6,22 @@
         返回
       </el-button>
       <h2>{{ bidTitle }}</h2>
-      <el-button type="primary" @click="handleExport">
-        <el-icon><Download /></el-icon>
-        导出Word
-      </el-button>
+      <div class="header-actions">
+        <el-select v-model="selectedTemplate" placeholder="选择模板" style="width: 140px; margin-right: 8px;">
+          <el-option label="标准政府投标" value="standard" />
+          <el-option label="技术标专用" value="technical" />
+          <el-option label="商务标专用" value="commercial" />
+          <el-option label="专业工程类" value="professional" />
+          <el-option label="简洁版" value="simple" />
+        </el-select>
+        <el-button type="primary" @click="handleExport">
+          <el-icon><Download /></el-icon>
+          导出Word
+        </el-button>
+      </div>
     </div>
     <div class="preview-content">
-      <BidPreview :content="content" :outline="outline" />
+      <BidPreview :content="content" :outline="outline" :template="selectedTemplate" />
     </div>
   </div>
 </template>
@@ -23,6 +32,7 @@ import { useRouter, useRoute } from 'vue-router'
 import BidPreview from '@/components/bid/BidPreview.vue'
 import { ArrowLeft, Download } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import { getBidDetail, exportHtmlToWord } from '@/api/bid'
 
 const router = useRouter()
 const route = useRoute()
@@ -30,19 +40,37 @@ const route = useRoute()
 const bidTitle = ref('标书预览')
 const content = ref('')
 const outline = ref([])
+const selectedTemplate = ref('standard')
 
 const handleBack = () => {
   router.push(`/bid/${route.params.id}`)
 }
 
-const handleExport = () => {
-  ElMessage.info('导出功能开发中')
+const handleExport = async () => {
+  if (!content.value) {
+    ElMessage.warning('没有内容可导出')
+    return
+  }
+  try {
+    await exportHtmlToWord(content.value, bidTitle.value || '标书', selectedTemplate.value)
+    ElMessage.success('导出成功')
+  } catch (error) {
+    console.error('Export failed:', error)
+    ElMessage.error('导出失败')
+  }
 }
 
 onMounted(async () => {
   const id = route.params.id
   if (id) {
-    // TODO: 加载标书数据
+    try {
+      const res = await getBidDetail(id)
+      bidTitle.value = res.data?.title || '标书预览'
+      content.value = res.data?.content || ''
+      outline.value = res.data?.outline || []
+    } catch (error) {
+      ElMessage.error('加载标书详情失败')
+    }
   }
 })
 </script>
@@ -65,6 +93,12 @@ onMounted(async () => {
 .preview-header h2 {
   margin: 0;
   font-size: var(--el-font-size-lg);
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
 }
 
 .preview-content {

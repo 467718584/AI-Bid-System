@@ -28,6 +28,10 @@ public class UserService {
     }
 
     public void save(SysUser user) {
+        // 生成ID (如果未设置)
+        if (user.getId() == null) {
+            user.setId(System.currentTimeMillis());
+        }
         userMapper.insert(user);
     }
 

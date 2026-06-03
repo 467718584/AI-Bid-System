@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 
-@SpringBootApplication(exclude = {
+@SpringBootApplication(scanBasePackages = {"com.aidbid.user", "com.aidbid.common"}, exclude = {
     RedisAutoConfiguration.class
 })
 @MapperScan("com.aidbid.user.mapper")

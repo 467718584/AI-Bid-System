@@ -21,27 +21,40 @@ export const deleteBid = (id) => api.delete(`/bid/${id}`)
 export const submitBid = (id) => api.post(`/bid/${id}/submit`)
 
 // 导出标书
-export const exportBid = (id, format = 'docx') => api.get(`/bid/${id}/export`, {
-  params: { format },
-  responseType: 'blob'
-})
+export const exportBid = (id, format = 'docx', filename = '标书.docx') => {
+  return api.get(`/bid/${id}/export`, {
+    params: { format },
+    responseType: 'blob'
+  }).then(res => {
+    // res is the raw axios response, data is the blob
+    const blob = res.data || res
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+  })
+}
 
 // ========== 技术标生成 ==========
 
 // 生成目录
-export const generateBidOutline = (data) => api.post('/ai/bid/outline', data)
+export const generateBidOutline = (data) => api.post('/api/ai/generate/outline', data)
 
 // 生成正文内容
-export const generateBidContent = (data) => api.post('/ai/bid/content', data)
+export const generateBidContent = (data) => api.post('/api/ai/generate/content', data)
 
 // 智能润色
-export const polishBidContent = (data) => api.post('/ai/bid/polish', data)
+export const polishBidContent = (data) => api.post('/api/ai/polish', data)
 
 // 语法检查
-export const checkBidGrammar = (data) => api.post('/ai/bid/grammar', data)
+export const checkBidGrammar = (data) => api.post('/api/ai/grammar', data)
 
 // 全文生成流水线
-export const runBidPipeline = (data) => api.post('/ai/bid/pipeline', data)
+export const runBidPipeline = (data) => api.post('/api/ai/pipeline', data)
 
 // 获取流水线状态
 export const getPipelineStatus = (bidId) => api.get(`/ai/bid/pipeline/${bidId}/status`)
@@ -70,3 +83,30 @@ export const removeBidCollaborator = (bidId, userId) => api.delete(`/bid/${bidId
 
 // 获取协作记录
 export const getBidActivities = (bidId, params) => api.get(`/bid/${bidId}/activities`, { params })
+
+// ========== 标书导出 ==========
+
+// 导出标书为Word文档
+export const exportBidToWord = (data) => api.post(`/ai/bid/export`, data, {
+  responseType: 'blob'
+})
+
+// 导出标书(返回Base64)
+export const exportBidToWordBase64 = (data) => api.post(`/ai/bid/export`, data)
+
+// HTML内容导出为Word
+export const exportHtmlToWord = (html, title, template = 'standard') => {
+  return api.post('/ai/export/html-to-word', { html, title, template }, {
+    responseType: 'blob'
+  }).then(res => {
+    const blob = res.data || res
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = (title || '标书') + '.docx'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+  })
+}

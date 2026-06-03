@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-@SpringBootApplication(scanBasePackages = {"com.aibid.project", "com.aibid.common"})
+@SpringBootApplication(scanBasePackages = {"com.aidbid.project", "com.aidbid.common"})
 @MapperScan("com.aidbid.project.mapper")
 public class ProjectApplication {
     public static void main(String[] args) {

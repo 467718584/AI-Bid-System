@@ -38,7 +38,7 @@
 
       <div v-else class="outline-tree">
         <el-tree
-          :data="outline"
+          :data="outlineData"
           node-key="id"
           :expand-on-click-node="false"
           :default-expand-all="true"
@@ -47,8 +47,29 @@
         >
           <template #default="{ node, data }">
             <div class="tree-node">
-              <span class="node-title">{{ data.title }}</span>
+              <el-input
+                v-if="editingNodeId === data.id"
+                v-model="editingTitle"
+                size="small"
+                class="node-title-input"
+                @blur="confirmEditTitle(data.title)"
+                @keyup.enter="confirmEditTitle(data.title)"
+              />
+              <template v-else>
+                <span class="node-title">{{ data.title }}</span>
+                <span v-if="data.pageCount" class="node-pages">({{ data.pageCount }}页)</span>
+              </template>
               <div class="node-actions">
+                <el-button
+                  type="default"
+                  link
+                  size="small"
+                  @click.stop="startEditTitle(data)"
+                  title="编辑名称"
+                >
+                  <el-icon><EditPen /></el-icon>
+                </el-button>
+                <el-button
                 <el-button
                   type="primary"
                   link
@@ -82,9 +103,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { MagicStick, Plus } from '@element-plus/icons-vue'
+import { MagicStick, Plus, EditPen } from '@element-plus/icons-vue'
 
 const props = defineProps({
   outline: {
@@ -97,7 +118,63 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['generate', 'update'])
+const emit = defineEmits(['generate', 'update', 'generate-content'])
+
+// 编辑状态
+const editingNodeId = ref(null)
+const editingTitle = ref('')
+const titleInputRef = ref(null)
+
+// 将outline数组转换为el-tree格式
+const outlineData = computed(() => {
+  const convert = (nodes) => {
+    return nodes.map((node, index) => ({
+      id: `node-${index}-${Date.now()}`,
+      title: node.title,
+      pageCount: node.pageCount,
+      children: node.children ? convert(node.children) : []
+    }))
+  }
+  return convert(props.outline)
+})
+
+// 开始编辑章节名称
+const startEditTitle = (data) => {
+  editingNodeId.value = data.id
+  editingTitle.value = data.title
+}
+
+// 确认修改章节名称
+const confirmEditTitle = (originalTitle) => {
+  if (!editingTitle.value.trim()) {
+    ElMessage.warning('章节名称不能为空')
+    return
+  }
+  
+  // 更新outline中的标题（通过原始标题匹配）
+  const newOutline = props.outline.map(item => {
+    if (item.title === originalTitle) {
+      return { ...item, title: editingTitle.value }
+    }
+    // 也检查children
+    if (item.children) {
+      return {
+        ...item,
+        children: item.children.map(child => {
+          if (child.title === originalTitle) {
+            return { ...child, title: editingTitle.value }
+          }
+          return child
+        })
+      }
+    }
+    return item
+  })
+  
+  emit('update', newOutline)
+  editingNodeId.value = null
+  ElMessage.success('章节名称已更新')
+}
 
 const form = reactive({
   projectName: '',
@@ -117,19 +194,33 @@ const handleGenerate = () => {
   })
 }
 
-const handleAddChapter = () => {
-  const newNode = {
-    id: `node-${Date.now()}`,
-    title: '新章节',
-    children: []
+// 生成章节内容 - 支持父章节批量生成所有子章节
+const handleGenerateContent = async (data) => {
+  // 如果有子章节，则逐个生成子章节内容
+  if (data.children && data.children.length > 0) {
+    ElMessage.info(`正在批量生成 "${data.title}" 的${data.children.length}个子章节，请等待...`)
+    
+    for (const child of data.children) {
+      emit('generate-content', { 
+        chapter: child.title, 
+        pageCount: child.pageCount || 3,
+        outline: props.outline 
+      })
+      // 等待足够时间让内容生成完成（每页至少2秒）
+      const waitTime = Math.max(8000, (child.pageCount || 3) * 2000)
+      await new Promise(resolve => setTimeout(resolve, waitTime))
+    }
+    
+    ElMessage.success(`"${data.title}" 全部子章节生成完成`)
+  } else {
+    // 没有子章节，直接生成当前章节
+    ElMessage.info(`正在生成 "${data.title}" 的内容...`)
+    emit('generate-content', { 
+      chapter: data.title, 
+      pageCount: data.pageCount || 3,
+      outline: props.outline 
+    })
   }
-  const newOutline = [...props.outline, newNode]
-  emit('update', newOutline)
-}
-
-const handleGenerateContent = (data) => {
-  ElMessage.info(`正在生成 "${data.title}" 的内容...`)
-  // TODO: 调用AI生成内容API
 }
 
 const handleDeleteNode = async (data) => {
@@ -196,6 +287,10 @@ const handleDrop = (draggingNode, dropNode, dropType) => {
   justify-content: space-between;
   width: 100%;
   padding-right: 8px;
+}
+
+.node-title-input {
+  width: 150px;
 }
 
 .node-title {

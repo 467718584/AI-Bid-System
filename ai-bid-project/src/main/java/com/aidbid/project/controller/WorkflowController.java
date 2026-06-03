@@ -7,6 +7,7 @@ import com.aidbid.project.dto.WorkflowTaskDTO;
 import com.aidbid.project.entity.WorkflowDefinition;
 import com.aidbid.project.entity.WorkflowInstance;
 import com.aidbid.project.service.WorkflowService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import com.aibid.common.camunda.stub.ProcessInstance;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,43 @@ import java.util.Map;
 public class WorkflowController {
 
     private final WorkflowService workflowService;
+
+    /**
+     * 创建工作流（简化版，用于前端新建工作流）
+     * POST /api/project/workflow
+     */
+    @PostMapping
+    public Result<WorkflowDefinition> createWorkflow(@RequestBody CreateWorkflowRequest request) {
+        WorkflowDeployRequest deployRequest = new WorkflowDeployRequest();
+        deployRequest.setName(request.getName());
+        deployRequest.setDescription(request.getDescription());
+        deployRequest.setProcessType(request.getCategory() != null ?
+            request.getCategory().toUpperCase() : "BID");
+        deployRequest.setBpmnXml(request.getBpmnXml());
+
+        WorkflowDefinition definition = workflowService.deployWorkflow(deployRequest);
+        return Result.ok(definition);
+    }
+
+    /**
+     * 获取工作流列表
+     * GET /api/project/workflow
+     */
+    @GetMapping
+    public Result<List<WorkflowDefinition>> listWorkflows() {
+        List<WorkflowDefinition> definitions = workflowService.listDefinitions();
+        return Result.ok(definitions);
+    }
+
+    /**
+     * 获取工作流详情
+     * GET /api/project/workflow/{id}
+     */
+    @GetMapping("/{id}")
+    public Result<WorkflowDefinition> getWorkflowById(@PathVariable Long id) {
+        WorkflowDefinition definition = workflowService.getDefinitionById(id);
+        return Result.ok(definition);
+    }
 
     /**
      * 部署工作流
@@ -133,5 +171,16 @@ public class WorkflowController {
             @RequestParam(required = false, defaultValue = "用户取消") String cancelReason) {
         workflowService.cancelProcessInstance(instanceId, cancelReason);
         return Result.ok();
+    }
+
+    /**
+     * 创建工作流请求
+     */
+    @Data
+    public static class CreateWorkflowRequest {
+        private String name;
+        private String description;
+        private String category;
+        private String bpmnXml;
     }
 }

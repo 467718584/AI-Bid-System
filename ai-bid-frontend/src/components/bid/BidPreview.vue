@@ -1,5 +1,5 @@
 <template>
-  <div class="bid-preview">
+  <div class="bid-preview" :class="templateClass">
     <div class="preview-toolbar">
       <el-radio-group v-model="viewMode" size="small">
         <el-radio-button label="outline">目录视图</el-radio-button>
@@ -78,6 +78,10 @@ const props = defineProps({
     type: String,
     default: '技术投标文件'
   },
+  template: {
+    type: String,
+    default: 'standard'
+  },
   projectName: {
     type: String,
     default: ''
@@ -95,13 +99,14 @@ const currentDate = computed(() => {
   return dayjs().format('YYYY年MM月DD日')
 })
 
+const templateClass = computed(() => {
+  return `template-${props.template || 'standard'}`
+})
+
 const formattedContent = computed(() => {
   if (!props.content) return ''
-  // 简单转换换行为段落
+  // Content is already HTML from Tiptap, return as-is
   return props.content
-    .split('\n\n')
-    .map((p) => `<p>${p}</p>`)
-    .join('')
 })
 </script>
 
@@ -222,6 +227,30 @@ const formattedContent = computed(() => {
   text-align: justify;
 }
 
+.content-body :deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.content-body :deep(th),
+.content-body :deep(td) {
+  border: 1px solid var(--el-border-color);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.content-body :deep(th) {
+  background: var(--el-fill-color-light);
+  font-weight: 600;
+}
+
+.content-body :deep(img) {
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+}
+
 .content-body :deep(h1) {
   font-size: 24px;
   font-weight: 600;
@@ -245,5 +274,78 @@ const formattedContent = computed(() => {
 
 .empty-content {
   padding: 60px 0;
+}
+
+/* 模板主题样式 */
+.template-standard .cover-title,
+.template-standard :deep(h1) {
+  color: #003366;
+}
+
+.template-technical .cover-title,
+.template-technical :deep(h1) {
+  color: #006400;
+}
+
+.template-commercial .cover-title,
+.template-commercial :deep(h1) {
+  color: #8B4513;
+}
+
+.template-professional .cover-title,
+.template-professional :deep(h1) {
+  color: #191970;
+}
+
+.template-simple .cover-title,
+.template-simple :deep(h1) {
+  color: #333333;
+}
+
+/* 模板头部样式 */
+.template-standard .preview-header,
+.template-standard .preview-cover {
+  border-top: 4px solid #003366;
+}
+
+.template-technical .preview-header,
+.template-technical .preview-cover {
+  border-top: 4px solid #006400;
+}
+
+.template-commercial .preview-header,
+.template-commercial .preview-cover {
+  border-top: 4px solid #B8860B;
+}
+
+.template-professional .preview-header,
+.template-professional .preview-cover {
+  border-top: 4px solid #191970;
+}
+
+.template-simple .preview-header,
+.template-simple .preview-cover {
+  border-top: 4px solid #cccccc;
+}
+
+/* 模板目录样式 */
+.template-standard .outline-view .section-title,
+.template-standard .outline-item {
+  color: #003366;
+}
+
+.template-technical .outline-view .section-title,
+.template-technical .outline-item {
+  color: #006400;
+}
+
+.template-commercial .outline-view .section-title,
+.template-commercial .outline-item {
+  color: #8B4513;
+}
+
+.template-professional .outline-view .section-title,
+.template-professional .outline-item {
+  color: #191970;
 }
 </style>

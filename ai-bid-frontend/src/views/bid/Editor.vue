@@ -17,6 +17,10 @@
           <el-icon><View /></el-icon>
           预览
         </el-button>
+        <el-button @click="handleReorder" :disabled="!outline.length">
+          <el-icon><Sort /></el-icon>
+          重新排序
+        </el-button>
         <el-button type="primary" :loading="saving" @click="handleSave">
           <el-icon><DocumentChecked /></el-icon>
           保存
@@ -35,6 +39,7 @@
           :loading="generating"
           @generate="handleGenerateOutline"
           @update="handleUpdateOutline"
+          @generate-content="handleGenerateContent"
         />
       </div>
       <div class="content-panel">
@@ -61,7 +66,8 @@ import { ElMessage } from 'element-plus'
 import BidOutlineGenerator from '@/components/bid/BidOutlineGenerator.vue'
 import BidContentEditor from '@/components/bid/BidContentEditor.vue'
 import DocumentUploader from '@/components/bid/DocumentUploader.vue'
-import { ArrowLeft, View, DocumentChecked, Upload } from '@element-plus/icons-vue'
+import { getBidDetail, updateBid } from '@/api/bid'
+import { ArrowLeft, View, DocumentChecked, Upload, Sort } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -93,9 +99,18 @@ const handleSave = async () => {
   }
   saving.value = true
   try {
-    // TODO: 调用保存API
+    const id = route.params.id
+    if (id) {
+      // 更新已有标书
+      await updateBid(id, {
+        title: bidTitle.value,
+        outline: outline.value,
+        content: content.value
+      })
+    }
     ElMessage.success('保存成功')
   } catch (error) {
+    console.error('保存失败:', error)
     ElMessage.error('保存失败')
   } finally {
     saving.value = false
@@ -113,6 +128,103 @@ const handleSubmit = async () => {
   } finally {
     submitting.value = false
   }
+}
+
+// 重新排序内容，基于目录顺序
+const handleReorder = () => {
+  if (!content.value || !outline.value.length) {
+    ElMessage.warning('没有内容可排序')
+    return
+  }
+  
+  // 提取所有章节块并按目录顺序重新排列
+  const chapterBlocks = []
+  
+  // 尝试匹配新版格式：<div class="chapter-block" data-chapter="...">
+  let regex = /<div class="chapter-block" data-chapter="([^"]+)">([\s\S]*?)<\/div>/g
+  let match
+  while ((match = regex.exec(content.value)) !== null) {
+    chapterBlocks.push({ chapter: match[1], block: match[0] })
+  }
+  
+  // 如果没有新版格式，尝试匹配旧版格式：<h2>或<p>#/## 标题</p>
+  if (chapterBlocks.length === 0) {
+    // 匹配 <h2>标题</h2> 格式
+    let h2Regex = /<h2[^>]*>([^<]+)<\/h2>/g
+    let h2Match
+    const h2Positions = []
+    while ((h2Match = h2Regex.exec(content.value)) !== null) {
+      h2Positions.push({ title: h2Match[1].trim(), pos: h2Match.index, len: h2Match[0].length })
+    }
+    
+    // 如果没有 <h2>，尝试匹配 <p># 标题</p> 或 <p>## 标题</p> 格式
+    if (h2Positions.length === 0) {
+      const mdRegex = /<p>(#{1,3})\s+([^<]+)<\/p>/g
+      let mdMatch
+      while ((mdMatch = mdRegex.exec(content.value)) !== null) {
+        const level = mdMatch[1].length
+        const title = mdMatch[2].trim()
+        // 只识别一级标题(#)作为章节分隔
+        if (level === 1) {
+          h2Positions.push({ title, pos: mdMatch.index, len: mdMatch[0].length })
+        }
+      }
+    }
+    
+    if (h2Positions.length > 0) {
+      // 按位置切分内容块，确保包含完整内容
+      for (let i = 0; i < h2Positions.length; i++) {
+        const startPos = h2Positions[i].pos
+        // 下一个标题开始前，或内容末尾
+        const endPos = i < h2Positions.length - 1 ? h2Positions[i + 1].pos : content.value.length
+        // 确保每个块都包含标题
+        const blockContent = content.value.substring(startPos, endPos).trim()
+        if (blockContent) {
+          chapterBlocks.push({ chapter: h2Positions[i].title, block: blockContent })
+        }
+      }
+    }
+  }
+  
+  if (chapterBlocks.length === 0) {
+    ElMessage.warning('未找到可识别的章节内容')
+    return
+  }
+  
+  // 按目录顺序排序
+  const orderedChapters = []
+  const flatOutline = []
+  
+  // 展平目录结构
+  const flattenOutline = (items, parentPath = '') => {
+    items.forEach(item => {
+      const path = parentPath ? parentPath + '/' + item.title : item.title
+      flatOutline.push(item.title)
+      if (item.children && item.children.length) {
+        flattenOutline(item.children, item.title)
+      }
+    })
+  }
+  flattenOutline(outline.value)
+  
+  // 按目录顺序重新排列
+  flatOutline.forEach(chapterTitle => {
+    const block = chapterBlocks.find(b => b.chapter === chapterTitle)
+    if (block) {
+      orderedChapters.push(block.block)
+    }
+  })
+  
+  // 保留未识别的章节块（按原顺序放在最后）
+  const usedChapters = new Set(orderedChapters.map(b => b.chapter))
+  chapterBlocks.forEach(b => {
+    if (!usedChapters.has(b.chapter)) {
+      orderedChapters.push(b.block)
+    }
+  })
+  
+  content.value = orderedChapters.join('')
+  ElMessage.success('内容已按目录顺序重新排序')
 }
 
 const handleGenerateOutline = async (params) => {
@@ -136,6 +248,120 @@ const handleUpdateContent = (newContent) => {
   content.value = newContent
 }
 
+// Markdown转HTML函数
+const markdownToHtml = (md) => {
+  if (!md) return ''
+  let html = md
+  // 处理加粗 **text** -> <strong>text</strong>
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  // 处理标题
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>')
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>')
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>')
+  // 处理表格标记 -> 转换为HTML表格
+  html = html.replace(/!\[([^)]*)\]\(table:(\[[\s\S]*?\])\)/g, (match, title, tableJson) => {
+    try {
+      const tableData = JSON.parse(tableJson)
+      if (tableData && tableData[0]) {
+        const t = tableData[0]
+        const headers = t.headers || []
+        const rows = t.rows || []
+        let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
+        if (headers.length) {
+          tableHtml += '<thead><tr>'
+          headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
+          tableHtml += '</tr></thead>'
+        }
+        tableHtml += '<tbody>'
+        rows.forEach(row => {
+          tableHtml += '<tr>'
+          row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
+          tableHtml += '</tr>'
+        })
+        tableHtml += '</tbody></table>'
+        return tableHtml
+      }
+    } catch (e) { console.error('Table parse error:', e) }
+    return `<p><em>[${title}表格]</em></p>`
+  })
+  // 处理图表标记 -> 占位符
+  html = html.replace(/!\[([^)]*)\]\((chart:[^)]+)\)/g, '<p><strong>[$1图表]</strong></p>')
+  // 处理段落
+  const lines = html.split('\n')
+  html = lines.map(line => {
+    line = line.trim()
+    if (!line) return ''
+    if (line.match(/^<\/?(h[1-6]|table|thead|tbody|tr|th|td|p|ul|ol|li|hr)/)) return line
+    if (line === '<p></p>') return ''
+    return '<p>' + line + '</p>'
+  }).join('')
+  html = html.replace(/<p><\/p>\s*/g, '')
+  return html
+}
+
+// 生成章节内容
+const handleGenerateContent = async ({ chapter, pageCount }) => {
+  generating.value = true
+  try {
+    const res = await bidStore.generateContentAsync({
+      projectName: bidTitle.value,
+      projectType: '智慧城市',
+      chapterTitle: chapter,
+      chapterPath: chapter,
+      pageCount: pageCount || 3,
+      bidRequirements: '',
+      scoringCriteria: ''
+    })
+    if (res.data?.content) {
+      let html = markdownToHtml(res.data.content)
+      const newBlock = '<div class="chapter-block" data-chapter="' + chapter + '">' +
+        '<h2>' + chapter + '</h2>' + html + '</div>'
+      
+      // 检查是否已存在该章节的内容块
+      const existingRegex = new RegExp('<div class="chapter-block" data-chapter="' + chapter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '">[\\s\\S]*?<\\/div>')
+      
+      if (existingRegex.test(content.value)) {
+        // 替换现有内容块
+        content.value = content.value.replace(existingRegex, newBlock)
+      } else {
+        // 插入到正确位置 - 基于目录顺序
+        const flatOutline = []
+        const flattenOutline = (items) => {
+          items.forEach(item => {
+            flatOutline.push(item.title)
+            if (item.children && item.children.length) {
+              flattenOutline(item.children)
+            }
+          })
+        }
+        flattenOutline(outline.value)
+        
+        // 找到新章节在目录中的位置
+        const chapterIndex = flatOutline.indexOf(chapter)
+        
+        // 找到该位置之前的最后一个章节块
+        let insertPosition = content.value.length
+        for (let i = chapterIndex - 1; i >= 0; i--) {
+          const prevChapter = flatOutline[i]
+          const prevRegex = new RegExp('<div class="chapter-block" data-chapter="' + prevChapter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '">[\\s\\S]*?<\\/div>')
+          const match = content.value.match(prevRegex)
+          if (match && match.index !== undefined) {
+            insertPosition = match.index + match[0].length
+            break
+          }
+        }
+        
+        content.value = content.value.slice(0, insertPosition) + newBlock + content.value.slice(insertPosition)
+      }
+      ElMessage.success(`"${chapter}" 内容生成成功`)
+    }
+  } catch (error) {
+    ElMessage.error('内容生成失败')
+  } finally {
+    generating.value = false
+  }
+}
+
 const handleUpload = (file) => {
   // TODO: 处理文件上传
   console.log('上传文件:', file)
@@ -144,7 +370,17 @@ const handleUpload = (file) => {
 onMounted(async () => {
   const id = route.params.id
   if (id) {
-    // TODO: 加载标书数据
+    try {
+      const res = await getBidDetail(id)
+      if (res.data) {
+        bidTitle.value = res.data.title || ''
+        outline.value = res.data.outline || []
+        content.value = res.data.content || ''
+      }
+    } catch (error) {
+      console.error('加载标书失败:', error)
+      ElMessage.error('加载标书失败')
+    }
   }
 })
 </script>

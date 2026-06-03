@@ -7,5 +7,6 @@ VOLUME ["/chroma/chroma_db"]
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY src/main/python /app
+
 CMD ["uvicorn", "com.aidbid.knowledge.main:app", "--host", "0.0.0.0", "--port", "8086"]

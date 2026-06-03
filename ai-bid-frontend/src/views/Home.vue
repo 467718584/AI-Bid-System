@@ -1,148 +1,339 @@
 <template>
-  <div class="home-container">
-    <el-container>
-      <el-header class="header">
-        <div class="header-left">
-          <h1 class="logo">AI智能投标系统</h1>
-        </div>
-        <div class="header-right">
-          <el-dropdown @command="handleCommand">
-            <span class="user-info">
-              <el-icon><User /></el-icon>
-              <span>{{ userStore.userInfo?.name || '用户' }}</span>
-              <el-icon><ArrowDown /></el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="profile">个人中心</el-dropdown-item>
-                <el-dropdown-item command="settings">系统设置</el-dropdown-item>
-                <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </el-header>
-      <el-container>
-        <el-aside width="220px">
-          <el-menu
-            :default-active="activeMenu"
-            router
-            class="sidebar-menu"
-          >
-            <el-menu-item index="/">
-              <el-icon><HomeFilled /></el-icon>
-              <span>首页</span>
-            </el-menu-item>
-            <el-menu-item index="/bid">
+  <div class="home-view">
+    <!-- 欢迎区域 -->
+    <div class="welcome-section">
+      <h2 class="welcome-title">欢迎使用AI智能投标系统</h2>
+      <p class="welcome-desc">智能、高效、专业的投标文件编制平台</p>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="stats-section">
+      <el-row :gutter="16">
+        <el-col :xs="24" :sm="12" :md="6">
+          <div class="stat-card stat-primary">
+            <div class="stat-icon">
               <el-icon><Document /></el-icon>
-              <span>标书管理</span>
-            </el-menu-item>
-            <el-menu-item index="/project">
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">{{ stats.bidCount }}</div>
+              <div class="stat-label">标书总数</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="6">
+          <div class="stat-card stat-success">
+            <div class="stat-icon">
+              <el-icon><CircleCheck /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">{{ stats.approvedCount }}</div>
+              <div class="stat-label">已完成</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="6">
+          <div class="stat-card stat-warning">
+            <div class="stat-icon">
+              <el-icon><Edit /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">{{ stats.inProgressCount }}</div>
+              <div class="stat-label">编制中</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="6">
+          <div class="stat-card stat-danger">
+            <div class="stat-icon">
               <el-icon><Folder /></el-icon>
-              <span>项目管理</span>
-            </el-menu-item>
-            <el-menu-item index="/material">
-              <el-icon><FolderOpened /></el-icon>
-              <span>素材库</span>
-            </el-menu-item>
-            <el-menu-item index="/knowledge">
-              <el-icon><Collection /></el-icon>
-              <span>知识库</span>
-            </el-menu-item>
-            <el-menu-item index="/workflow">
-              <el-icon><Operation /></el-icon>
-              <span>工作流</span>
-            </el-menu-item>
-            <el-menu-item index="/enterprise">
-              <el-icon><OfficeBuilding /></el-icon>
-              <span>企业资料</span>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
-        <el-main class="main-content">
-          <router-view />
-        </el-main>
-      </el-container>
-    </el-container>
+            </div>
+            <div class="stat-info">
+              <div class="stat-value">{{ stats.materialCount }}</div>
+              <div class="stat-label">素材数量</div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!-- 快捷入口 -->
+    <div class="quick-actions">
+      <h3 class="section-title">快捷操作</h3>
+      <el-row :gutter="16">
+        <el-col :xs="12" :sm="8" :md="6">
+          <div class="quick-card" @click="router.push('/bid/create')">
+            <el-icon class="quick-icon"><Plus /></el-icon>
+            <span>创建标书</span>
+          </div>
+        </el-col>
+        <el-col :xs="12" :sm="8" :md="6">
+          <div class="quick-card" @click="router.push('/material')">
+            <el-icon class="quick-icon"><Upload /></el-icon>
+            <span>上传素材</span>
+          </div>
+        </el-col>
+        <el-col :xs="12" :sm="8" :md="6">
+          <div class="quick-card" @click="router.push('/workflow')">
+            <el-icon class="quick-icon"><Operation /></el-icon>
+            <span>工作流管理</span>
+          </div>
+        </el-col>
+        <el-col :xs="12" :sm="8" :md="6">
+          <div class="quick-card" @click="router.push('/enterprise')">
+            <el-icon class="quick-icon"><OfficeBuilding /></el-icon>
+            <span>企业资料</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!-- 最近标书 -->
+    <div class="recent-section">
+      <h3 class="section-title">最近标书</h3>
+      <el-table :data="recentBids" style="width: 100%">
+        <el-table-column prop="title" label="标书名称" min-width="200" />
+        <el-table-column prop="status" label="状态" width="100">
+          <template #default="{ row }">
+            <el-tag :type="getStatusType(row.status)" size="small">
+              {{ getStatusText(row.status) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="updatedAt" label="更新时间" width="160" />
+        <el-table-column label="操作" width="120" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" link size="small" @click="handleEditBid(row)">
+              编辑
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div v-if="!recentBids.length" class="empty-state">
+        <el-empty description="暂无标书" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
-import { User, ArrowDown, HomeFilled, Document, Folder, FolderOpened, Collection, Operation, OfficeBuilding } from '@element-plus/icons-vue'
+import {
+  Document,
+  Folder,
+  CircleCheck,
+  Edit,
+  Plus,
+  Upload,
+  Operation,
+  OfficeBuilding
+} from '@element-plus/icons-vue'
+import { getBidList } from '@/api/bid'
+import { getMaterialStats } from '@/api/material'
 
 const router = useRouter()
-const route = useRoute()
-const userStore = useUserStore()
 
-const activeMenu = computed(() => route.path)
+// 统计数据
+const stats = ref({
+  bidCount: 0,
+  approvedCount: 0,
+  inProgressCount: 0,
+  materialCount: 0
+})
 
-const handleCommand = async (command) => {
-  switch (command) {
-    case 'logout':
-      await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-      await userStore.logout()
-      router.push('/login')
-      break
-    case 'profile':
-      break
-    case 'settings':
-      break
+// 最近标书
+const recentBids = ref([])
+
+const getStatusText = (status) => {
+  const map = {
+    draft: '草稿',
+    in_progress: '编制中',
+    review: '待审核',
+    approved: '已通过',
+    submitted: '已提交'
+  }
+  return map[status] || status
+}
+
+const getStatusType = (status) => {
+  const map = {
+    draft: 'info',
+    in_progress: 'primary',
+    review: 'warning',
+    approved: 'success',
+    submitted: 'success'
+  }
+  return map[status] || 'info'
+}
+
+const handleEditBid = (row) => {
+  router.push(`/bid/${row.id}`)
+}
+
+// 加载统计数据
+const loadStats = async () => {
+  try {
+    const [bidRes, materialRes] = await Promise.all([
+      getBidList({ page: 1, pageSize: 100 }),
+      getMaterialStats()
+    ])
+    const bids = bidRes.data?.list || []
+    stats.value = {
+      bidCount: bidRes.data?.total || 0,
+      approvedCount: bids.filter(b => b.status === 'approved' || b.status === 'submitted').length,
+      inProgressCount: bids.filter(b => b.status === 'in_progress' || b.status === 'review').length,
+      materialCount: materialRes.data?.total || 0
+    }
+  } catch (error) {
+    // 使用默认值
   }
 }
+
+// 加载最近标书
+const loadRecentBids = async () => {
+  try {
+    const res = await getBidList({ page: 1, pageSize: 5 })
+    recentBids.value = res.data?.list || []
+  } catch (error) {
+    // 使用空列表
+  }
+}
+
+// 初始化
+loadStats()
+loadRecentBids()
 </script>
 
 <style scoped>
-.home-container {
-  width: 100%;
-  height: 100vh;
-}
-
-.header {
+.home-view {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--el-bg-color);
-  border-bottom: 1px solid var(--el-border-color-lighter);
-  padding: 0 var(--el-spacing-lg);
+  flex-direction: column;
+  gap: 20px;
 }
 
-.header-left .logo {
-  font-size: var(--el-font-size-xl);
+.welcome-section {
+  background: linear-gradient(135deg, #409EFF 0%, #337ecc 100%);
+  padding: 32px;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+}
+
+.welcome-title {
+  font-size: 28px;
   font-weight: 600;
-  color: var(--el-color-primary);
-  margin: 0;
+  margin: 0 0 8px;
 }
 
-.header-right .user-info {
+.welcome-desc {
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.stats-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 200px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 16px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  font-size: 28px;
+  color: #fff;
+}
+
+.stat-primary .stat-icon { background: #409EFF; }
+.stat-success .stat-icon { background: #67C23A; }
+.stat-warning .stat-icon { background: #E6A23C; }
+.stat-danger .stat-icon { background: #F56C6C; }
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #303133;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #909399;
+}
+
+.quick-actions,
+.recent-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+  margin: 0 0 16px;
+}
+
+.quick-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 16px;
+  background: #f5f7fa;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: var(--el-border-radius-base);
-  transition: background var(--el-transition-fast-duration);
+  transition: all 0.3s;
 }
 
-.header-right .user-info:hover {
-  background: var(--el-fill-color);
+.quick-card:hover {
+  background: #eef1f5;
+  transform: translateY(-2px);
 }
 
-.sidebar-menu {
-  height: calc(100vh - 60px);
-  border-right: none;
+.quick-icon {
+  font-size: 32px;
+  color: #409EFF;
 }
 
-.main-content {
-  background: var(--el-bg-color-page);
-  padding: var(--el-spacing-lg);
-  overflow-y: auto;
+.quick-card span {
+  font-size: 14px;
+  color: #606266;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
 }
 </style>

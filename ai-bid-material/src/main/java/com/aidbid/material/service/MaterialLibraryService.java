@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -133,6 +135,33 @@ public class MaterialLibraryService {
                 .groupBy(MaterialLibrary::getCategory)
         );
         return materials.stream().map(MaterialLibrary::getCategory).filter(c -> c != null).toList();
+    }
+
+    public Map<String, Object> getStats() {
+        Long total = materialLibraryMapper.selectCount(
+            new LambdaQueryWrapper<MaterialLibrary>().eq(MaterialLibrary::getStatus, "ACTIVE")
+        );
+        Long images = materialLibraryMapper.selectCount(
+            new LambdaQueryWrapper<MaterialLibrary>()
+                .eq(MaterialLibrary::getStatus, "ACTIVE")
+                .eq(MaterialLibrary::getType, "IMAGE")
+        );
+        Long documents = materialLibraryMapper.selectCount(
+            new LambdaQueryWrapper<MaterialLibrary>()
+                .eq(MaterialLibrary::getStatus, "ACTIVE")
+                .eq(MaterialLibrary::getType, "DOCUMENT")
+        );
+        Long videos = materialLibraryMapper.selectCount(
+            new LambdaQueryWrapper<MaterialLibrary>()
+                .eq(MaterialLibrary::getStatus, "ACTIVE")
+                .eq(MaterialLibrary::getType, "VIDEO")
+        );
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("total", total != null ? total : 0);
+        stats.put("images", images != null ? images : 0);
+        stats.put("documents", documents != null ? documents : 0);
+        stats.put("videos", videos != null ? videos : 0);
+        return stats;
     }
 
     public List<MaterialLibrary> recommendByContext(String context, int limit) {

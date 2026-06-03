@@ -1,6 +1,6 @@
 package com.aidbid.project.controller;
 
-import com.aibid.common.core.Result;
+import com.aidbid.common.core.Result;
 import com.aidbid.project.entity.BidProject;
 import com.aidbid.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class ProjectController {
     }
 
     @PostMapping
-    public Result<Void> save(@RequestBody BidProject project) {
-        projectService.save(project);
-        return Result.ok();
+    public Result<BidProject> save(@RequestBody BidProject project) {
+        BidProject saved = projectService.save(project);
+        return Result.ok(saved);
     }
 
     @PutMapping

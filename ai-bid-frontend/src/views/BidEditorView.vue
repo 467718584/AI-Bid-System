@@ -199,10 +199,15 @@ const handleTitleChange = () => {
 const handleGenerateOutline = async (params) => {
   generating.value = true
   try {
-    const res = await bidStore.generateOutlineAsync({
-      ...params,
-      bidId: bidId.value
-    })
+    // 转换前端字段到后端需要的格式
+    const backendParams = {
+      projectName: params.projectName,
+      projectType: params.category === 'technical' ? '技术标' : params.category === 'commercial' ? '商务标' : '综合标',
+      bidRequirements: params.requirements || '',
+      scoringCriteria: '技术方案完整性',
+      pageCount: 10
+    }
+    const res = await bidStore.generateOutlineAsync(backendParams)
     outline.value = bidStore.outline
     ElMessage.success('目录生成成功')
   } catch (error) {

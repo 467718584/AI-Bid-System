@@ -34,7 +34,7 @@
         <el-col v-for="item in bidList" :key="item.id" :xs="24" :sm="12" :md="8" :lg="6">
           <div class="bid-card" @click="handleEdit(item.id)">
             <div class="bid-card-header">
-              <span :class="['status-tag', `status-${item.status}`]">
+              <span :class="['status-tag', 'status-' + item.status]">
                 {{ getStatusText(item.status) }}
               </span>
             </div>
@@ -47,7 +47,7 @@
         </el-col>
       </el-row>
 
-      <div v-if="!bidList.length" class="empty-state">
+      <div v-if="!bidList.length && !loading" class="empty-state">
         <el-empty description="暂无标书" />
         <el-button type="primary" @click="handleCreate">创建第一个标书</el-button>
       </div>
@@ -69,6 +69,8 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search, Plus } from '@element-plus/icons-vue'
+import { getBidList, createBid } from '@/api/bid'
+import { ElMessage } from 'element-plus'
 import dayjs from 'dayjs'
 
 const router = useRouter()
@@ -78,6 +80,7 @@ const bidList = ref([])
 const page = ref(1)
 const pageSize = ref(12)
 const total = ref(0)
+const loading = ref(false)
 
 const getStatusText = (status) => {
   const map = {
@@ -94,8 +97,40 @@ const formatDate = (date) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-const handleCreate = () => {
-  router.push('/bid/create')
+const loadBidList = async () => {
+  loading.value = true
+  try {
+    const res = await getBidList({ page: page.value, pageSize: pageSize.value })
+    bidList.value = res.data?.list || []
+    total.value = res.data?.total || 0
+  } catch (error) {
+    console.error('加载标书列表失败:', error)
+    ElMessage.error('加载标书列表失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleCreate = async () => {
+  try {
+    const res = await createBid({
+      title: '未命名标书',
+      description: '',
+      status: 'draft'
+    })
+    if (res.code === 200 && res.data) {
+      // 优先使用直接返回的ID，否则从列表中获取最新创建的
+      const newBid = res.data.id ? res.data : (res.data.list ? res.data.list[res.data.list.length - 1] : null)
+      if (newBid && newBid.id) {
+        router.push(`/bid/${newBid.id}`)
+      } else {
+        loadBidList()
+      }
+    }
+  } catch (error) {
+    console.error('创建标书失败:', error)
+    ElMessage.error('创建标书失败')
+  }
 }
 
 const handleEdit = (id) => {
@@ -104,15 +139,15 @@ const handleEdit = (id) => {
 
 const handleSearch = () => {
   page.value = 1
-  // TODO: 调用API获取列表
+  loadBidList()
 }
 
 const handlePageChange = () => {
-  // TODO: 调用API获取列表
+  loadBidList()
 }
 
 onMounted(() => {
-  // TODO: 初始化加载数据
+  loadBidList()
 })
 </script>
 
@@ -141,74 +176,59 @@ onMounted(() => {
 }
 
 .bid-list {
-  min-height: 300px;
+  min-height: 200px;
 }
 
 .bid-card {
   background: var(--el-bg-color);
-  border-radius: var(--card-radius);
-  padding: var(--card-padding);
-  margin-bottom: 16px;
+  border-radius: var(--el-border-radius-md);
+  padding: var(--el-spacing-lg);
+  margin-bottom: var(--el-spacing-md);
   cursor: pointer;
-  transition: all var(--el-transition-fast-duration);
-  box-shadow: var(--el-box-shadow-light);
+  transition: all 0.3s;
+  border: 1px solid var(--el-border-color-light);
 }
 
 .bid-card:hover {
-  box-shadow: var(--el-box-shadow-base);
+  box-shadow: var(--el-box-shadow);
   transform: translateY(-2px);
 }
 
 .bid-card-header {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  margin-bottom: var(--el-spacing-md);
 }
 
 .status-tag {
+  display: inline-block;
   padding: 2px 8px;
-  border-radius: var(--el-border-radius-sm);
-  font-size: var(--el-font-size-xs);
-  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
 }
 
-.status-draft { background: var(--bid-status-draft); }
-.status-in_progress { background: var(--bid-status-in-progress); }
-.status-review { background: var(--bid-status-review); }
-.status-approved { background: var(--bid-status-approved); }
-.status-submitted { background: var(--bid-status-submitted); }
+.status-draft { background: var(--el-fill-color); color: var(--el-text-color-secondary); }
+.status-in_progress { background: var(--el-color-primary-light-9); color: var(--el-color-primary); }
+.status-review { background: var(--el-color-warning-light-9); color: var(--el-color-warning); }
+.status-approved { background: var(--el-color-success-light-9); color: var(--el-color-success); }
+.status-submitted { background: var(--el-color-info-light-9); color: var(--el-color-info); }
 
 .bid-title {
-  font-size: var(--el-font-size-lg);
-  font-weight: 500;
-  margin: 0 0 8px;
+  margin: 0 0 var(--el-spacing-sm);
+  font-size: var(--el-font-size-md);
+  font-weight: 600;
+}
+
+.bid-desc {
+  margin: 0 0 var(--el-spacing-md);
+  font-size: var(--el-font-size-sm);
+  color: var(--el-text-color-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.bid-desc {
-  font-size: var(--el-font-size-sm);
-  color: var(--el-text-color-secondary);
-  margin: 0;
-  height: 40px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
 .bid-card-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--el-border-color-lighter);
-}
-
-.bid-date {
   font-size: var(--el-font-size-xs);
-  color: var(--el-text-color-placeholder);
+  color: var(--el-text-color-secondary);
 }
 
 .empty-state {
@@ -216,13 +236,12 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 0;
-  gap: 16px;
+  padding: var(--el-spacing-xxl);
 }
 
 .pagination-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: var(--el-spacing-lg);
 }
 </style>

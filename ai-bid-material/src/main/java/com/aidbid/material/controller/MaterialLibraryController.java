@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/material")
+@RequestMapping("/material")
 @RequiredArgsConstructor
 public class MaterialLibraryController {
 
@@ -161,6 +161,14 @@ public class MaterialLibraryController {
             } catch (IOException ignored) {}
         }
         return Result.ok(results);
+    }
+
+    // ==================== Stats ====================
+
+    @GetMapping("/stats")
+    public Result<java.util.Map<String, Object>> stats() {
+        java.util.Map<String, Object> stats = materialLibraryService.getStats();
+        return Result.ok(stats);
     }
 
     // ==================== Categories ====================

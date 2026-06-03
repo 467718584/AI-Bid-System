@@ -274,7 +274,12 @@ const confirmCreateWorkflow = async () => {
     const res = await createWorkflow(createForm.value)
     ElMessage.success('创建成功')
     createDialogVisible.value = false
-    currentWorkflowId.value = res.data.id
+    // 从响应中获取新创建的工作流ID
+    // API返回格式: { code: 200, data: { list: [...], total: N } }
+    const newWorkflow = res.data?.list?.find(w => w.name === createForm.value.name)
+    if (newWorkflow?.id) {
+      currentWorkflowId.value = newWorkflow.id
+    }
     await workflowStore.fetchWorkflowList()
   } catch (error) {
     // 表单验证失败

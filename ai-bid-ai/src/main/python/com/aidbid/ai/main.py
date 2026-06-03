@@ -7,7 +7,7 @@ import io
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -22,7 +22,6 @@ from .services.table_generator import TableGenerator, create_sample_data
 from .prompts import (
     TECHNICAL_BID_OUTLINE_PROMPT,
     TECHNICAL_BID_CONTENT_PROMPT,
-    TECHNICAL_BID_RICH_CONTENT_PROMPT,
     BID_DOCUMENT_PARSE_PROMPT,
     PARAPHRASE_PROMPT,
     COMPLIANCE_CHECK_PROMPT,
@@ -530,6 +529,10 @@ async def generate_content(req: ContentRequest):
 
         messages = [{"role": "user", "content": prompt}]
         content = await llm_wrapper.chat(messages)
+
+        # 去除思考过程标签
+        import re
+        content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL)
 
         # 如果启用了图文并茂，解析并补充图表
         images_found = []
@@ -1656,6 +1659,160 @@ async def pipeline_resume(job_id: str):
             "status_url": f"/api/ai/pipeline/status/{job_id_new}"
         }
     }
+
+
+@app.post("/api/ai/export/html-to-word")
+async def export_html_to_word(request: Request):
+    """将HTML内容导出为Word文档
+    
+    Request body:
+        {
+            "html": "<h1>标题</h1><p>内容...</p>",
+            "title": "标书标题",  // 可选
+            "template": "standard"  // 可选: standard/technical/commercial/professional/simple
+        }
+    
+    Returns:
+        Word document file download
+    """
+    try:
+        body = await request.json()
+        html_content = body.get("html", "")
+        doc_title = body.get("title", "标书文档")
+        template_type = body.get("template", "standard")
+        
+        if not html_content:
+            raise HTTPException(status_code=400, detail="HTML内容不能为空")
+        
+        # 导入模板系统
+        import sys
+        sys.path.insert(0, '/home/zzy/.openclaw/workspace/workspace-bid/templates')
+        from bid_templates import get_template, list_templates
+        from styled_exporter import StyledDocumentExporter
+        
+        # 获取模板
+        template = get_template(template_type)
+        exporter = StyledDocumentExporter(template)
+        doc = exporter.create_document()
+        
+        # 添加文档标题
+        exporter.add_title(doc, doc_title, level=0)
+        
+        # 解析HTML内容并添加
+        exporter.add_html_content(doc, html_content)
+        
+        # 导出
+        doc_bytes = exporter.export_to_bytes(doc)
+        
+        # 返回文件
+        from fastapi.responses import StreamingResponse
+        import urllib.parse
+        
+        encoded_filename = urllib.parse.quote(doc_title + '.docx')
+        
+        return StreamingResponse(
+            io.BytesIO(doc_bytes),
+            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            headers={
+                "Content-Disposition": f"attachment; filename*=UTF-8''{encoded_filename}"
+            }
+        )
+    except Exception as e:
+        logger.error(f"HTML to Word export failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/ai/export/templates")
+async def list_export_templates():
+    """列出所有可用的导出模板"""
+    import sys
+    sys.path.insert(0, '/home/zzy/.openclaw/workspace/workspace-bid/templates')
+    from bid_templates import list_templates
+    return {"code": 200, "data": list_templates()}
+
+
+def _add_html_content_to_doc(doc, html_content: str, exporter: DocumentExporter):
+    """解析HTML内容并添加到Word文档"""
+    from bs4 import BeautifulSoup
+    
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    for element in soup.children:
+        if element.name is None:  # 文本节点
+            continue
+            
+        if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+            level = int(element.name[1])
+            text = element.get_text().strip()
+            if text:
+                exporter.add_title(doc, text, level=level if level <= 6 else 6)
+                
+        elif element.name == 'p':
+            text = element.get_text().strip()
+            if text:
+                # 检查是否加粗
+                strong = element.find('strong')
+                exporter.add_paragraph(doc, text, bold=strong is not None)
+                
+        elif element.name == 'div':
+            # 递归处理div（可能是章节块）
+            div_html = str(element)
+            _add_html_content_to_doc(doc, div_html, exporter)
+            
+        elif element.name == 'strong' or element.name == 'b':
+            text = element.get_text().strip()
+            if text:
+                exporter.add_paragraph(doc, text, bold=True)
+                
+        elif element.name == 'table':
+            _add_html_table_to_doc(doc, element, exporter)
+            
+        elif element.name == 'ul':
+            for li in element.find_all('li', recursive=False):
+                text = li.get_text().strip()
+                if text:
+                    para = doc.add_paragraph(style='List Bullet')
+                    para.add_run(text)
+                    
+        elif element.name == 'ol':
+            for li in element.find_all('li', recursive=False):
+                text = li.get_text().strip()
+                if text:
+                    para = doc.add_paragraph(style='List Number')
+                    para.add_run(text)
+                    
+        elif element.name == 'hr':
+            # 分隔线 - 添加空行
+            doc.add_paragraph()
+
+
+def _add_html_table_to_doc(doc, table_element, exporter: DocumentExporter):
+    """将HTML表格转换为Word表格"""
+    from bs4 import BeautifulSoup
+    
+    rows = table_element.find_all('tr')
+    if not rows:
+        return
+    
+    # 获取表头
+    header_row = rows[0] if rows else None
+    headers = []
+    if header_row:
+        for th in header_row.find_all(['th', 'td']):
+            headers.append(th.get_text().strip())
+    
+    # 获取数据行
+    data_rows = []
+    for tr in rows[1:]:
+        row_data = []
+        for td in tr.find_all('td'):
+            row_data.append(td.get_text().strip())
+        if row_data:
+            data_rows.append(row_data)
+    
+    # 添加表格
+    if headers or data_rows:
+        exporter.add_styled_table(doc, data_rows, headers if headers else None)
 
 
 # ============================================================

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("bid_qualification")
-public class Qualification extends BaseEntity {
+public abstract class Qualification extends BaseEntity {
 
     /** 资质名称 */
     private String name;

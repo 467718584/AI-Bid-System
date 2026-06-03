@@ -603,7 +603,7 @@ const getCompletenessColor = (percentage) => {
 
 .toolbar-left h2 {
   margin: 0;
-  font-size: var(--el-font-size-large);
+  font-size: var(--el-font-size-md);
   font-weight: 600;
 }
 

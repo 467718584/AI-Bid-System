@@ -28,12 +28,17 @@ public class ProjectService {
     }
 
     public List<BidProject> listByStatus(String status) {
-        // Simplified - would need to filter in query
-        return projectMapper.selectList();
+        return projectMapper.selectList().stream()
+            .filter(p -> status.equals(p.getStatus()))
+            .toList();
     }
 
-    public void save(BidProject project) {
+    public BidProject save(BidProject project) {
+        if (project.getId() == null) {
+            project.setId(System.currentTimeMillis());
+        }
         projectMapper.insert(project);
+        return project;
     }
 
     public void update(BidProject project) {
