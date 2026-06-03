@@ -168,7 +168,7 @@ const knowledgeDrawerVisible = ref(false)
 
 onMounted(async () => {
   if (bidId.value) {
-    await loadBidDetail(bidId.value)
+    await loadBidDetail(String(bidId.value))
   }
 })
 

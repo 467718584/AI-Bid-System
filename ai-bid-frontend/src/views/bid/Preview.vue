@@ -64,7 +64,7 @@ onMounted(async () => {
   const id = route.params.id
   if (id) {
     try {
-      const res = await getBidDetail(id)
+      const res = await getBidDetail(String(id))
       bidTitle.value = res.data?.title || '标书预览'
       content.value = res.data?.content || ''
       outline.value = res.data?.outline || []

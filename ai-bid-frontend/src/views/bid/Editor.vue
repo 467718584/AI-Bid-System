@@ -371,7 +371,7 @@ onMounted(async () => {
   const id = route.params.id
   if (id) {
     try {
-      const res = await getBidDetail(id)
+      const res = await getBidDetail(String(id))
       if (res.data) {
         bidTitle.value = res.data.title || ''
         outline.value = res.data.outline || []
@@ -379,7 +379,9 @@ onMounted(async () => {
       }
     } catch (error) {
       console.error('加载标书失败:', error)
-      ElMessage.error('加载标书失败')
+      console.error('Error response:', error.response)
+      console.error('Error message:', error.message)
+      ElMessage.error('加载标书失败: ' + (error.message || '未知错误'))
     }
   }
 })

@@ -260,7 +260,7 @@ public class BidController {
 
     private Map<String, Object> convertToMap(BidProject p) {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("id", p.getId());
+        map.put("id", String.valueOf(p.getId()));
         map.put("title", p.getName());
         map.put("name", p.getName());
         map.put("description", p.getDescription());
