@@ -318,7 +318,7 @@ const markdownToHtml = (md) => {
         if (cells.length > 0) rows.push(cells)
       }
       if (headers.length === 0) return match
-      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">')
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
       tableHtml += '<thead><tr>'
       headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
       tableHtml += '</tr></thead>'
