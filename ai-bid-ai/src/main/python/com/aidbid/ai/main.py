@@ -22,6 +22,7 @@ from .services.table_generator import TableGenerator, create_sample_data
 from .prompts import (
     TECHNICAL_BID_OUTLINE_PROMPT,
     TECHNICAL_BID_CONTENT_PROMPT,
+    TECHNICAL_BID_RICH_CONTENT_PROMPT,
     BID_DOCUMENT_PARSE_PROMPT,
     PARAPHRASE_PROMPT,
     COMPLIANCE_CHECK_PROMPT,
