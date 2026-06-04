@@ -305,33 +305,42 @@ const markdownToHtml = (md) => {
   html = html.replace(/!\[([^]]*)\]\(([^)]*图表[^)]*)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
   // 处理普通图片 -> 如果URL不是有效网络地址,转换为占位符
   html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
-  // ========== MD表格转换（兼容<p>包裹和无换行格式）==========
-  // 先把<p>|xxx|</p>格式的表格统一处理
-  html = html.replace(/(<p>\|([^|<\n]+)\|<\/p>\s*<p>\|[-:|\s]+\|<\/p>)([\s\S]*?)(?=<p>(?:(?!\|)[^<])+<\/p>|\n<h[123]>|\n<p>```|\n<p>\*\*|$)/g, (match, tableStart, headerRow, bodyContent) => {
-    try {
-      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
-      const rows = []
-      const cellRegex = /<p>\|(.+?)\|<\/p>/g
-      let m
-      while ((m = cellRegex.exec(bodyContent)) !== null) {
-        const cells = m[1].split('|').filter(c => c.trim()).map(c => c.trim())
-        if (cells.length > 0) rows.push(cells)
+  // ========== MD表格转换（支持所有变体）==========
+  // 查找所有 <p>|header|</p><p>|---|</p> 然后收集后续行
+  ;(function() {
+    const headerPat = /<p>\|([^<]+)\|<\/p>\s*<p>\|[-:|\s]+\|<\/p>/g;
+    let lastEnd = 0;
+    let result = html;
+    let match;
+    while ((match = headerPat.exec(html)) !== null) {
+      const headerLine = match[1].trim();
+      const headers = headerLine.split('|').map(c => c.trim()).filter(c => c);
+      if (headers.length < 2) continue;
+      const tableStart = match.index;
+      const tableEnd = match.index + match[0].length;
+      // Find body rows
+      let pos = tableEnd;
+      const rows = [];
+      while (pos < html.length && rows.length < 100) {
+        const pMatch = html.substring(pos).match(/^<p>\|([^<]+)\|<\/p>/);
+        if (!pMatch) break;
+        const line = pMatch[1].trim();
+        if (/^[-:|\s]+$/.test(line)) { pos += pMatch[0].length; continue; }
+        const cells = line.split('|').map(c => c.trim()).filter(c => c);
+        if (cells.length > 0) rows.push(cells);
+        pos += pMatch[0].length;
       }
-      if (headers.length === 0) return match
-      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">' 
-      tableHtml += '<thead><tr>'
-      headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
-      tableHtml += '</tr></thead><tbody>'
-      rows.forEach(row => {
-        tableHtml += '<tr>'
-        row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
-        tableHtml += '</tr>'
-      })
-      tableHtml += '</tbody></table>'
-      return tableHtml
-    } catch (e) { console.error('MD Table(p) parse error:', e) }
-    return match
-  })
+      if (rows.length === 0) continue;
+      // Build table HTML
+      const ths = headers.map(h => \`<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">\${h}</th>\`).join('');
+      const trs = rows.map(row => \`<tr>\${row.map(c => \`<td style="border:1px solid #ddd;padding:8px 12px;">\${c}</td>\`).join('')}</tr>\`).join('');
+      const tableHtml = \`<table style="border-collapse:collapse;width:100%;margin:16px 0;"><thead><tr>\${ths}</tr></thead><tbody>\${trs}</tbody></table>\`;
+      result = result.substring(0, tableStart) + tableHtml + result.substring(pos);
+      html = result;
+      headerPat.lastIndex = tableStart + tableHtml.length;
+    }
+    html = result;
+  })()
   // 行级MD表格处理（标准MD格式，有换行）
   html = html.replace(/\|([^|\n]+)\|\n\|[-:\s]+\|\n((?:\|[^|\n]+\|\n?)*)/g, (match, headerLine, bodyLines) => {
     try {
