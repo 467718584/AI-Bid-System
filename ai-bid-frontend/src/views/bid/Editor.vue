@@ -282,7 +282,7 @@ const markdownToHtml = (md) => {
         const t = tableData[0]
         const headers = t.headers || []
         const rows = t.rows || []
-        let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
+        let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">' 
         if (headers.length) {
           tableHtml += '<thead><tr>'
           headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
@@ -305,7 +305,34 @@ const markdownToHtml = (md) => {
   html = html.replace(/!\[([^]]*)\]\(([^)]*图表[^)]*)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
   // 处理普通图片 -> 如果URL不是有效网络地址,转换为占位符
   html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
-  // 处理MD表格语法: | col1 | col2 | 行 -> HTML表格（兼容所有变体）
+  // ========== MD表格转换（兼容<p>包裹和无换行格式）==========
+  // 先把<p>|xxx|</p>格式的表格统一处理
+  html = html.replace(/(<p>\|([^|<\n]+)\|<\/p>\s*<p>\|[-:\s]+\|<\/p>)([\s\S]*?)(?=<p>(?:(?!\|)[^<])+<\/p>|\n<h[123]>|\n<p>```|\n<p>\*\*|$)/g, (match, tableStart, headerRow, bodyContent) => {
+    try {
+      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
+      const rows = []
+      const cellRegex = /<p>\|(.+?)\|<\/p>/g
+      let m
+      while ((m = cellRegex.exec(bodyContent)) !== null) {
+        const cells = m[1].split('|').filter(c => c.trim()).map(c => c.trim())
+        if (cells.length > 0) rows.push(cells)
+      }
+      if (headers.length === 0) return match
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">' 
+      tableHtml += '<thead><tr>'
+      headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
+      tableHtml += '</tr></thead><tbody>'
+      rows.forEach(row => {
+        tableHtml += '<tr>'
+        row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
+        tableHtml += '</tr>'
+      })
+      tableHtml += '</tbody></table>'
+      return tableHtml
+    } catch (e) { console.error('MD Table(p) parse error:', e) }
+    return match
+  })
+  // 行级MD表格处理（标准MD格式，有换行）
   html = html.replace(/\|([^|\n]+)\|\n\|[-:\s]+\|\n((?:\|[^|\n]+\|\n?)*)/g, (match, headerLine, bodyLines) => {
     try {
       const headers = headerLine.split('|').filter(c => c.trim()).map(c => c.trim())
@@ -316,11 +343,10 @@ const markdownToHtml = (md) => {
         if (cells.length > 0) rows.push(cells)
       }
       if (headers.length === 0) return match
-      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">' 
       tableHtml += '<thead><tr>'
       headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
-      tableHtml += '</tr></thead>'
-      tableHtml += '<tbody>'
+      tableHtml += '</tr></thead><tbody>'
       rows.forEach(row => {
         tableHtml += '<tr>'
         row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
@@ -329,33 +355,6 @@ const markdownToHtml = (md) => {
       tableHtml += '</tbody></table>'
       return tableHtml
     } catch (e) { console.error('MD Table parse error:', e) }
-    return match
-  })
-  // 备选：处理已被<p>包裹的MD表格（原版markdown格式）
-  html = html.replace(/<p>\|([^|\n]+)\|<\/p>\s*<p>\|[-:\s]+\|<\/p>([\s\S]*?)(?=<p>\|[^|]|<p>```|<h[123]>|$)/g, (match, headerRow, bodyContent) => {
-    try {
-      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
-      const rows = []
-      const cellRegex = /<p>\|(.+?)\|<\/p>/g
-      let match
-      while ((match = cellRegex.exec(bodyContent)) !== null) {
-        const cells = match[1].split('|').filter(c => c.trim()).map(c => c.trim())
-        if (cells.length > 0) rows.push(cells)
-      }
-      if (headers.length === 0) return match
-      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
-      tableHtml += '<thead><tr>'
-      headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
-      tableHtml += '</tr></thead>'
-      tableHtml += '<tbody>'
-      rows.forEach(row => {
-        tableHtml += '<tr>'
-        row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
-        tableHtml += '</tr>'
-      })
-      tableHtml += '</tbody></table>'
-      return tableHtml
-    } catch (e) { console.error('MD Table(p) parse error:', e) }
     return match
   })
   const lines = html.split('\n')
