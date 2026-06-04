@@ -130,45 +130,45 @@ const handleSubmit = async () => {
   }
 }
 
-// 重新排序内容，基于目录顺序
+// 重新排序内容,基于目录顺序
 const handleReorder = () => {
   if (!content.value || !outline.value.length) {
     ElMessage.warning('没有内容可排序')
     return
   }
-  
+
   // 提取所有章节块并按目录顺序重新排列
   const chapterBlocks = []
-  
-  // 尝试匹配新版格式：<div class="chapter-block" data-chapter="...">
+
+  // 尝试匹配新版格式:<div class="chapter-block" data-chapter="...">
   let regex = /<div class="chapter-block" data-chapter="([^"]+)">([\s\S]*?)<\/div>/g
   let match
   while ((match = regex.exec(content.value)) !== null) {
     chapterBlocks.push({ chapter: match[1], block: match[0] })
   }
-  
-  // 如果没有新版格式，尝试匹配旧版格式：<h1>或<h2>或<h3>标题</h...>
+
+  // 如果没有新版格式,尝试匹配旧版格式:<h1>或<h2>或<h3>标题</h...>
   if (chapterBlocks.length === 0) {
     // 匹配所有级别的标题标签 <h1>, <h2>, <h3>
     const hRegex = /<h([1-3])(?:[^>]*)>([\s\S]*?)<\/h\1>/g
     const hPositions = []
     let hMatch
     while ((hMatch = hRegex.exec(content.value)) !== null) {
-      hPositions.push({ 
-        level: parseInt(hMatch[1]), 
-        title: hMatch[2].trim(), 
-        pos: hMatch.index, 
+      hPositions.push({
+        level: parseInt(hMatch[1]),
+        title: hMatch[2].trim(),
+        pos: hMatch.index,
         len: hMatch[0].length,
         content: hMatch[2]
       })
     }
-    
+
     if (hPositions.length > 0) {
       // 按位置切分内容块 - 每个标题到下一个同级或更高级标题之前
       for (let i = 0; i < hPositions.length; i++) {
         const startPos = hPositions[i].pos
         const currentLevel = hPositions[i].level
-        
+
         // 找下一个同级或更高级的标题位置
         let endPos = content.value.length
         for (let j = i + 1; j < hPositions.length; j++) {
@@ -177,8 +177,8 @@ const handleReorder = () => {
             break
           }
         }
-        
-        // 确保每个块都包含完整内容（从标题开始到下一个标题之前）
+
+        // 确保每个块都包含完整内容(从标题开始到下一个标题之前)
         const blockContent = content.value.substring(startPos, endPos).trim()
         if (blockContent) {
           chapterBlocks.push({ chapter: hPositions[i].title, block: blockContent })
@@ -186,16 +186,16 @@ const handleReorder = () => {
       }
     }
   }
-  
+
   if (chapterBlocks.length === 0) {
     ElMessage.warning('未找到可识别的章节内容')
     return
   }
-  
+
   // 按目录顺序排序
   const orderedChapters = []
   const flatOutline = []
-  
+
   // 展平目录结构 - 支持嵌套层级
   const flattenOutline = (items) => {
     items.forEach(item => {
@@ -206,18 +206,18 @@ const handleReorder = () => {
     })
   }
   flattenOutline(outline.value)
-  
-  // 辅助函数：检查标题是否匹配（支持模糊匹配）
+
+  // 辅助函数:检查标题是否匹配(支持模糊匹配)
   const titleMatches = (blockTitle, outlineTitle) => {
     // 精确匹配
     if (blockTitle === outlineTitle) return true
     // 去掉"第X章"前缀后匹配
     const normalize = (t) => t.replace(/^第[一二三四五六七八九十]+章\s*/, '').replace(/^第\d+章\s*/, '')
-    return normalize(blockTitle) === normalize(outlineTitle) || 
-           blockTitle.includes(outlineTitle) || 
+    return normalize(blockTitle) === normalize(outlineTitle) ||
+           blockTitle.includes(outlineTitle) ||
            outlineTitle.includes(blockTitle)
   }
-  
+
   // 按目录顺序重新排列
   flatOutline.forEach(chapterTitle => {
     // 优先精确匹配
@@ -230,15 +230,15 @@ const handleReorder = () => {
       orderedChapters.push(block.block)
     }
   })
-  
-  // 保留未识别的章节块（按原顺序放在最后）
+
+  // 保留未识别的章节块(按原顺序放在最后)
   const usedChapters = new Set(orderedChapters.map(b => b.chapter))
   chapterBlocks.forEach(b => {
     if (!usedChapters.has(b.chapter)) {
       orderedChapters.push(b.block)
     }
   })
-  
+
   content.value = orderedChapters.join('\n')
   ElMessage.success('内容已按目录顺序重新排序')
 }
@@ -303,18 +303,16 @@ const markdownToHtml = (md) => {
   // 处理图表标记 -> chart:前缀 或 包含"图表"文字的URL -> 转为占位符显示
   html = html.replace(/!\[([^]]*)\]\((chart:[^)]+)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
   html = html.replace(/!\[([^]]*)\]\(([^)]*图表[^)]*)\)/g, '<div class="chart-placeholder" data-title="$1"><span class="chart-icon">📊</span><span class="chart-title">[$1图表]</span></div>')
-  // 处理普通图片 -> 如果URL不是有效网络地址，转换为占位符
+  // 处理普通图片 -> 如果URL不是有效网络地址,转换为占位符
   html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
-  // 处理MD表格语法: | col1 | col2 | -> HTML表格
-  html = html.replace(/<p>\|(.+)\|<\/p>\n<p>\|[-\s|]+\|<\/p>([\s\S]*?)(?=<p>\|\S|\n<p>```|\n<h[123]>|\n<p>\*\*|$)/g, (match, headerRow, bodyRows) => {
+  // 处理MD表格语法: | col1 | col2 | 行 -> HTML表格（兼容所有变体）
+  html = html.replace(/\|([^|\n]+)\|\n\|[-:\s]+\|\n((?:\|[^|\n]+\|\n?)*)/g, (match, headerLine, bodyLines) => {
     try {
-      // 解析表头
-      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
-      // 解析表体
+      const headers = headerLine.split('|').filter(c => c.trim()).map(c => c.trim())
       const rows = []
-      const rowMatches = bodyRows.matchAll(/<p>\|(.+)\|<\/p>/g)
-      for (const rowMatch of rowMatches) {
-        const cells = rowMatch[1].split('|').filter(c => c.trim()).map(c => c.trim())
+      const bodyLineArr = bodyLines.trim().split('\n')
+      for (const rowLine of bodyLineArr) {
+        const cells = rowLine.split('|').filter(c => c.trim()).map(c => c.trim())
         if (cells.length > 0) rows.push(cells)
       }
       if (headers.length === 0) return match
@@ -331,6 +329,33 @@ const markdownToHtml = (md) => {
       tableHtml += '</tbody></table>'
       return tableHtml
     } catch (e) { console.error('MD Table parse error:', e) }
+    return match
+  })
+  // 备选：处理已被<p>包裹的MD表格（原版markdown格式）
+  html = html.replace(/<p>\|([^|\n]+)\|<\/p>\s*<p>\|[-:\s]+\|<\/p>([\s\S]*?)(?=<p>\|[^|]|<p>```|<h[123]>|$)/g, (match, headerRow, bodyContent) => {
+    try {
+      const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
+      const rows = []
+      const cellRegex = /<p>\|(.+?)\|<\/p>/g
+      let match
+      while ((match = cellRegex.exec(bodyContent)) !== null) {
+        const cells = match[1].split('|').filter(c => c.trim()).map(c => c.trim())
+        if (cells.length > 0) rows.push(cells)
+      }
+      if (headers.length === 0) return match
+      let tableHtml = '<table style="border-collapse:collapse;width:100%;margin:16px 0;">'
+      tableHtml += '<thead><tr>'
+      headers.forEach(h => { tableHtml += `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>` })
+      tableHtml += '</tr></thead>'
+      tableHtml += '<tbody>'
+      rows.forEach(row => {
+        tableHtml += '<tr>'
+        row.forEach(cell => { tableHtml += `<td style="border:1px solid #ddd;padding:8px 12px;">${cell}</td>` })
+        tableHtml += '</tr>'
+      })
+      tableHtml += '</tbody></table>'
+      return tableHtml
+    } catch (e) { console.error('MD Table(p) parse error:', e) }
     return match
   })
   const lines = html.split('\n')
@@ -362,10 +387,10 @@ const handleGenerateContent = async ({ chapter, pageCount }) => {
       let html = markdownToHtml(res.data.content)
       const newBlock = '<div class="chapter-block" data-chapter="' + chapter + '">' +
         '<h2>' + chapter + '</h2>' + html + '</div>'
-      
+
       // 检查是否已存在该章节的内容块
       const existingRegex = new RegExp('<div class="chapter-block" data-chapter="' + chapter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '">[\\s\\S]*?<\\/div>')
-      
+
       if (existingRegex.test(content.value)) {
         // 替换现有内容块
         content.value = content.value.replace(existingRegex, newBlock)
@@ -381,10 +406,10 @@ const handleGenerateContent = async ({ chapter, pageCount }) => {
           })
         }
         flattenOutline(outline.value)
-        
+
         // 找到新章节在目录中的位置
         const chapterIndex = flatOutline.indexOf(chapter)
-        
+
         // 找到该位置之前的最后一个章节块
         let insertPosition = content.value.length
         for (let i = chapterIndex - 1; i >= 0; i--) {
@@ -396,7 +421,7 @@ const handleGenerateContent = async ({ chapter, pageCount }) => {
             break
           }
         }
-        
+
         content.value = content.value.slice(0, insertPosition) + newBlock + content.value.slice(insertPosition)
       }
       ElMessage.success(`"${chapter}" 内容生成成功`)
@@ -421,7 +446,7 @@ onMounted(async () => {
       if (res.data) {
         bidTitle.value = res.data.title || ''
         outline.value = res.data.outline || []
-        content.value = res.data.content || ''
+        content.value = markdownToHtml(res.data.content) || ''
       }
     } catch (error) {
       console.error('加载标书失败:', error)
