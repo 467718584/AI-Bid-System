@@ -94,9 +94,9 @@ export const exportBidToWord = (data) => api.post(`/ai/bid/export`, data, {
 // 导出标书(返回Base64)
 export const exportBidToWordBase64 = (data) => api.post(`/ai/bid/export`, data)
 
-// HTML内容导出为Word
-export const exportHtmlToWord = (html, title, template = 'standard') => {
-  return api.post('/ai/export/html-to-word', { html, title, template }, {
+// HTML内容导出为Word（使用模板，支持HTML表格）
+export const exportHtmlToWordTemplate = (content, title, template = 'standard') => {
+  return api.post('/api/ai/export/word', { content, title, template_type: template }, {
     responseType: 'blob'
   }).then(res => {
     const blob = res.data || res

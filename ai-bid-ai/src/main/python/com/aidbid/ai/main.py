@@ -1817,6 +1817,65 @@ def _add_html_table_to_doc(doc, table_element, exporter: DocumentExporter):
 
 
 # ============================================================
+# Word模板导出端点
+# ============================================================
+
+sys.path.insert(0, '/home/zzy/.openclaw/workspace/workspace-bid/templates')
+try:
+    from styled_exporter import StyledDocumentExporter
+    from bid_templates import get_template, list_templates, TemplateType
+    TEMPLATES_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Template exporter not available: {e}")
+    TEMPLATES_AVAILABLE = False
+
+class WordExportRequest(BaseModel):
+    title: str = "标书文档"
+    content: str  # HTML格式内容
+    template_type: str = "standard"
+
+@app.post("/api/ai/export/word")
+async def export_word(request: WordExportRequest):
+    """使用模板导出Word文档（支持HTML表格）"""
+    if not TEMPLATES_AVAILABLE:
+        raise HTTPException(status_code=500, detail="模板系统未安装")
+    try:
+        template_type_map = {
+            "standard": TemplateType.STANDARD,
+            "technical": TemplateType.TECHNICAL,
+            "commercial": TemplateType.COMMERCIAL,
+            "professional": TemplateType.PROFESSIONAL,
+            "simple": TemplateType.SIMPLE,
+        }
+        template = get_template(template_type_map.get(request.template_type, TemplateType.STANDARD))
+        exporter = StyledDocumentExporter(template=template)
+        doc = exporter.create_document()
+        exporter.add_title(doc, request.title, level=0)
+        exporter.add_html_content(doc, request.content)
+        from io import BytesIO
+        buffer = BytesIO()
+        doc.save(buffer)
+        buffer.seek(0)
+        from fastapi.responses import StreamingResponse
+        return StreamingResponse(
+            iter([buffer.getvalue()]),
+            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            headers={"Content-Disposition": f"attachment; filename*=UTF-8''{request.title}.docx"}
+        )
+    except Exception as e:
+        logger.error(f"Word export failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/ai/export/templates")
+async def list_templates_api():
+    """列出可用模板"""
+    if not TEMPLATES_AVAILABLE:
+        return {"templates": [], "error": "模板系统不可用"}
+    templates = list_templates()
+    return {"templates": [{"id": t.template_type.value, "name": t.name, "description": t.description} for t in templates]}
+
+
+# ============================================================
 # 启动服务
 # ============================================================
 

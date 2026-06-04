@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-01T01:32:22.223Z",
+  "updatedAt": "2026-06-04T02:14:53.913Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -9,13 +9,13 @@
       "endLine": 35,
       "source": "memory",
       "snippet": "# 2026-04-15 工作日志 ## 今日主要工作 ### 1. Skills 安装 - 为标书撰写项目安装了以下skills： - `bid` - 标书服务 - `proposal-writing` - 提案撰写 - `openclaw-skill-search-web` - 网络搜索 - `word-docx` - Word文档处理 ### 2. 飞书文档读取问题排查 - 问题：飞书文件下载API返回234008错误（应用不是资源发送者） - 原因：用户上传的文件，App没有权限通过API直接下载 - 解决：用户提供了飞书文档链接，成功读取 ### 3. 标书文档梳理 - 文档：《复杂工况下引水渠道闸门流量智能稳定控制研究与应用投标技术方案》 - 读取链接：https://ncna4otapfvs.feishu.cn/docx/XJFZdYofforpuQxY2jJcEO6Jnvd - 完成内容：梳理\"服务方案\"及后续章节（第六至第十章） - 输出文件：`/home/zzy/.openclaw/workspace/workspace-bid/服务方案及后续章节内容梳理.md` ### 4. 北溪船闸智能巡检项目资料搜集 - 用户需求：北溪船闸智能巡检项目 - 四大核心场景： 1. 坝体裂缝检测 2. 闸室水面油污监测 3. 船闸设备金属锈蚀识别 4. 系船柱状态识别 - 搜集整理了真实可靠的技术资料、政策动态、行业案例和专利信息 ## 关键问题记录 ### 飞书文件下载权限问题 - 错误码：234008",
-      "recallCount": 20,
+      "recallCount": 21,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7.07433974214061,
-      "maxScore": 0.5951195204645623,
+      "totalScore": 7.859932267703624,
+      "maxScore": 0.7855925255630151,
       "firstRecalledAt": "2026-04-17T16:39:15.593Z",
-      "lastRecalledAt": "2026-05-21T16:50:16.386Z",
+      "lastRecalledAt": "2026-06-04T02:14:53.913Z",
       "queryHashes": [
         "c12f7c098432",
         "dream-module-2026-04-18",
@@ -35,10 +35,10 @@
         "0a95967ed376",
         "822f402d8779",
         "e3fc820a6c29",
-        "2e80763a2586"
+        "2e80763a2586",
+        "3cac361eb005"
       ],
       "recallDays": [
-        "2026-04-20",
         "2026-04-22",
         "2026-04-23",
         "2026-04-25",
@@ -53,7 +53,8 @@
         "2026-05-19",
         "2026-05-20",
         "2026-05-21",
-        "2026-05-22"
+        "2026-05-22",
+        "2026-06-04"
       ],
       "conceptTags": [
         "网络",
@@ -1226,20 +1227,22 @@
       "endLine": 67,
       "source": "memory",
       "snippet": "- ✅ 添加 StripPrefix=1 过滤器 ### 3. ai-bid-user 服务修复 - ✅ **问题**：MyBatis-Plus 与 Spring Boot 3.2.5 (Spring 6.1) 兼容性问题 - 错误：`Invalid value type for attribute 'factoryBeanObjectType': java.lang.String` - ✅ **解决方案**：将 mybatis-plus-boot-starter 替换为 mybatis-spring-boot-starter (3.0.4) - ✅ 重写 UserMapper.java，使用 MyBatis 注解替代 BaseMapper - ✅ 更新 UserService.java，移除 LambdaQueryWrapper ### 4. ai-bid-project 服务修复 - ✅ 将 mybatis-plus-boot-starter 替换为 mybatis-spring-boot-starter (3.0.4) - ✅ 重写 ProjectMapper.java - ✅ 更新 ProjectService.java - ⚠️ 启动失败：SecurityUtils bean 缺失（common-security 模块依赖问题） ## 待解决问题 ### 高优先级 1. **ai-bid-project SecurityUtils 问题** - 错误：JwtAuthenticationFilter 需要 SecurityUtils bean -",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.535987290220231,
-      "maxScore": 0.7883425770520984,
+      "totalScore": 2.3370596024375097,
+      "maxScore": 0.8010723122172786,
       "firstRecalledAt": "2026-05-28T13:29:28.419Z",
-      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-06-04T02:14:53.913Z",
       "queryHashes": [
         "a6e3280919fd",
-        "fe71245e818d"
+        "fe71245e818d",
+        "3cac361eb005"
       ],
       "recallDays": [
         "2026-05-28",
-        "2026-06-01"
+        "2026-06-01",
+        "2026-06-04"
       ],
       "conceptTags": [
         "ai-bid-user",
@@ -1321,20 +1324,22 @@
       "endLine": 70,
       "source": "memory",
       "snippet": "- `onMounted`为空，没有调用API - `handleCreate`创建成功后不跳转 - **WorkflowView.vue 修复**: - `confirmCreateWorkflow` 获取新工作流ID的逻辑错误 ### 当前系统状态 | 服务 | 端口 | 状态 | |------|------|------| | Gateway | 8090 | ✅ 运行中 | | ai-bid-user | 8081 | ✅ 运行中 | | ai-bid-project | 8082 | ✅ 运行中 | | ai-bid-material | 8083 | ✅ 运行中 | | ai-bid-document | 8084 | ✅ 运行中 | | ai-bid-workflow | 8085 | ✅ 运行中 | | ai-bid-knowledge | 8086 | ✅ 运行中 | | ai-bid-ai | 8087 | ✅ 运行中 | | ai-bid-enterprise | 8088 | ✅ 运行中 | | 前端Vue | 3000 | ✅ 运行中 | ### 已验证的API功能 | 模块 | API | 状态 | |------|-----|------| | 用户 | /api/user/list | ✅ 200 | | 项目 | /api/project/list, /api/project (POST) | ✅ 200 | | 素材 | /api/material/list, /upload, /image/upload | ✅ 200",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.6125613974811175,
+      "totalScore": 2.3872474532741057,
       "maxScore": 0.8351171964624975,
       "firstRecalledAt": "2026-05-31T01:12:00.981Z",
-      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-06-04T02:14:53.913Z",
       "queryHashes": [
         "120ee078a9b2",
-        "fe71245e818d"
+        "fe71245e818d",
+        "3cac361eb005"
       ],
       "recallDays": [
         "2026-05-31",
-        "2026-06-01"
+        "2026-06-01",
+        "2026-06-04"
       ],
       "conceptTags": [
         "gateway",
@@ -1511,18 +1516,20 @@
       "endLine": 80,
       "source": "memory",
       "snippet": "| Gateway | 8090 | ❌ 未运行 | 需要启动 | | ai-bid-ai | 8087 | ❌ 未运行 | Python服务 | | ai-bid-knowledge | 8086 | ❌ 未运行 | Python服务 | | ai-bid-user | 8081 | ❌ 未运行 | 需要检查 | | ai-bid-project | 8082 | ✅ 运行中 | 已修复 | | ai-bid-material | 8083 | ✅ 运行中 | MyBatis迁移50% | | ai-bid-document | 8084 | ❌ 未运行 | MyBatis-Plus迁移未完成 | ### 数据库状态 - ⚠️ aidbid数据库存在但表未创建 - schema.sql 和 init-db.sql 使用MySQL语法（inline COMMENT），PostgreSQL不兼容 - 需要修复SQL脚本或手动创建表 ### 修复进展 - ✅ SecurityUtils @Component 修复 - ✅ ai-bid-project 完全修复并运行 - ✅ MaterialMapper + MaterialService 完成MyBatis迁移 - 🔄 MaterialLibraryService 等其他Service仍使用MyBatis-Plus - ❌ DocumentService 迁移未完成 ### 待解决问题 1. 数据库初始化脚本不兼容PostgreSQL 2. MaterialService部分Mapper仍使用MyBatis-Plus 3.",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.7669177296810811,
-      "maxScore": 0.7669177296810811,
+      "totalScore": 1.5640128969481735,
+      "maxScore": 0.7970951672670923,
       "firstRecalledAt": "2026-05-31T16:49:29.303Z",
-      "lastRecalledAt": "2026-05-31T16:49:29.303Z",
+      "lastRecalledAt": "2026-06-04T02:14:53.913Z",
       "queryHashes": [
-        "fe71245e818d"
+        "fe71245e818d",
+        "3cac361eb005"
       ],
       "recallDays": [
-        "2026-06-01"
+        "2026-06-01",
+        "2026-06-04"
       ],
       "conceptTags": [
         "gateway",
@@ -1595,6 +1602,37 @@
         "ai-bid-workflow",
         "ai-bid-knowledge",
         "ai-bid-ai"
+      ]
+    },
+    "memory:memory/2026-05-29.md:1:38": {
+      "key": "memory:memory/2026-05-29.md:1:38",
+      "path": "memory/2026-05-29.md",
+      "startLine": 1,
+      "endLine": 38,
+      "source": "memory",
+      "snippet": "# 2026-05-29 Daily Memory ## 系统状态 - 时间: 2026-05-29 00:51 (Asia/Shanghai) - 连续无活动: 0天（用户5月26日已恢复活动） - 项目状态: AI智能投标系统 Phase 2进行中 ## 今日主要工作 (2026-05-28深夜至05-29凌晨) ### 问题修复记录 #### 1. 上传功能修复 - **PrivateImageController路径问题**: - 原因: Gateway的StripPrefix=1会去掉`/api`，但Controller期望的路径错误 - 修复: `@RequestMapping(\"/api/material/image\")` → `@RequestMapping(\"/material/image\")` - **上传目录问题**: - 原因: `/data/images` 需要root权限 - 修复: 改为 `/home/zzy/.openclaw/workspace/workspace-bid/uploads/images` #### 2. 工作流服务修复 - **ID类型不匹配**: Long类型ID与前端String不匹配 - 修复: 在WorkflowController中添加ID转换逻辑 - **方法参数名问题**: Spring Boot 3.x 编译后参数名丢失 - 修复: 添加 `-parameters` 编译参数 + 显式@PathVariable(\"id\") #### 3. 前端页面修复 - **bid/In",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8743382108995679,
+      "maxScore": 0.8743382108995679,
+      "firstRecalledAt": "2026-06-04T02:14:53.913Z",
+      "lastRecalledAt": "2026-06-04T02:14:53.913Z",
+      "queryHashes": [
+        "3cac361eb005"
+      ],
+      "recallDays": [
+        "2026-06-04"
+      ],
+      "conceptTags": [
+        "gateway",
+        "asia/shanghai",
+        "2026-05-28深夜至05-29凌晨",
+        "api/material/image",
+        "material/image",
+        "data/images",
+        "home/zzy",
+        "3.x"
       ]
     }
   }

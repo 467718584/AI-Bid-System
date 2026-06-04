@@ -32,7 +32,7 @@ import { useRouter, useRoute } from 'vue-router'
 import BidPreview from '@/components/bid/BidPreview.vue'
 import { ArrowLeft, Download } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { getBidDetail, exportHtmlToWord } from '@/api/bid'
+import { getBidDetail, exportHtmlToWordTemplate } from '@/api/bid'
 
 const router = useRouter()
 const route = useRoute()
@@ -52,7 +52,7 @@ const handleExport = async () => {
     return
   }
   try {
-    await exportHtmlToWord(content.value, bidTitle.value || '标书', selectedTemplate.value)
+    await exportHtmlToWordTemplate(content.value, bidTitle.value || '标书', selectedTemplate.value)
     ElMessage.success('导出成功')
   } catch (error) {
     console.error('Export failed:', error)
