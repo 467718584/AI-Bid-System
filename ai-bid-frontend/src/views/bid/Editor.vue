@@ -307,7 +307,7 @@ const markdownToHtml = (md) => {
   html = html.replace(/!\[([^]]*)\]\((?!http|data:)([^)]+)\)/g, '<div class="image-placeholder" data-title="$1"><span class="image-icon">🖼️</span><span class="image-title">[$1图片]</span></div>')
   // ========== MD表格转换（兼容<p>包裹和无换行格式）==========
   // 先把<p>|xxx|</p>格式的表格统一处理
-  html = html.replace(/(<p>\|([^|<\n]+)\|<\/p>\s*<p>\|[-:\s]+\|<\/p>)([\s\S]*?)(?=<p>(?:(?!\|)[^<])+<\/p>|\n<h[123]>|\n<p>```|\n<p>\*\*|$)/g, (match, tableStart, headerRow, bodyContent) => {
+  html = html.replace(/(<p>\|([^|<\n]+)\|<\/p>\s*<p>\|[-:|\s]+\|<\/p>)([\s\S]*?)(?=<p>(?:(?!\|)[^<])+<\/p>|\n<h[123]>|\n<p>```|\n<p>\*\*|$)/g, (match, tableStart, headerRow, bodyContent) => {
     try {
       const headers = headerRow.split('|').filter(c => c.trim()).map(c => c.trim())
       const rows = []
