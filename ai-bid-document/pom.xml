@@ -15,7 +15,11 @@
     <name>AI Bid Document</name>
 
     <dependencies>
-        <dependency>
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+<dependency>
             <groupId>com.aidbid</groupId>
             <artifactId>common-core</artifactId>
             <version>${project.version}</version>
@@ -50,6 +54,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <parameters>true</parameters>
                 </configuration>
             </plugin>
             <plugin>

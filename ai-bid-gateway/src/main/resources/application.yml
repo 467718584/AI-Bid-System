@@ -18,12 +18,12 @@ spring:
         locator:
           enabled: false
       routes:
-        # AI服务 (Python)
+        # AI服务 (Python) - 路径保持不变 /api/ai/** -> http://localhost:8087/api/ai/**
         - id: ai-service
           uri: http://localhost:8087
           predicates:
             - Path=/api/ai/**
-        # 知识库服务 (Python)
+        # 知识库服务 (Python) - 路径保持不变 /api/knowledge/** -> http://localhost:8086/api/knowledge/**
         - id: knowledge-service
           uri: http://localhost:8086
           predicates:
@@ -61,6 +61,13 @@ spring:
           uri: http://localhost:8085
           predicates:
             - Path=/api/bid/**
+          filters:
+            - StripPrefix=1
+        # 标书服务 (Java) - /bid/** -> http://localhost:8085/bid/** (兼容前端)
+        - id: bid-service-alt
+          uri: http://localhost:8085
+          predicates:
+            - Path=/bid/**
           filters:
             - StripPrefix=1
         # 工作流服务 (Java) - /api/workflow/** -> http://localhost:8085/workflow/**

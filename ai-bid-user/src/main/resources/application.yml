@@ -37,3 +37,11 @@ logging:
   level:
     root: INFO
     com.aidbid.user: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

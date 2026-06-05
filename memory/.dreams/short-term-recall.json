@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-04T02:14:53.913Z",
+  "updatedAt": "2026-06-04T17:07:20.212Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -695,13 +695,13 @@
       "endLine": 53,
       "source": "memory",
       "snippet": "# 2026-05-17 ## 对话记录 --- ## 📋 bid-admin Session Sync (2026-05-17 09:00) **Sessions**: 1个 **Messages**: 3条 ### 用户消息 (1条) - [00:38] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) --- ## 🌀 Dream Module v26 — 进化报告 **BID管理 | 2026-05-18 00:49 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | 🔴 归档冻结 | 31天无活动 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天提醒机制进度 **31/30天满足（100%）** — 已触发归档决策点。 ### 🔍 跨会话Pattern提取 | Pattern | 状态 | 备注 | |---------|------|------| | 用户交互频率 | ⚠️ 极低 | 连续31天无主动会话 | | Cron重复触发 | ⚠️ 待修复 | 单次计划多次执行记录 | | 项目激活意愿 | 🔴 低 | 北溪船闸无激活迹象 | ### 🧠 进化建议 1. **项目归档决策**：北溪船闸项目已",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5.2693823973578935,
+      "totalScore": 6.028273526359767,
       "maxScore": 0.7715890281965568,
       "firstRecalledAt": "2026-05-20T05:43:27.523Z",
-      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
         "8e82d8575dc1",
         "d77cf508a012",
@@ -709,13 +709,15 @@
         "b6537cc56682",
         "cadd5c73354a",
         "20f86c200001",
-        "09b789f91664"
+        "09b789f91664",
+        "e4f221c17d9b"
       ],
       "recallDays": [
         "2026-05-20",
         "2026-05-25",
         "2026-05-28",
-        "2026-05-29"
+        "2026-05-29",
+        "2026-06-05"
       ],
       "conceptTags": [
         "bid-admin",
@@ -768,25 +770,27 @@
       "endLine": 123,
       "source": "memory",
       "snippet": "**BID管理 | 2026-05-22 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | **37天** | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **37/30天满足（123%）** — 归档阈值已超出23%，项目正式进入长期归档观察期。 ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结第**37天**（自4月17日起算） - 系统正常待机 ### Pattern识别 1. **归档长期化**：37天无活动，远超30天阈值 2. **用户沉默**：连续37天无真实用户交互（仅cron系统触发） 3. **系统稳定**：Dream Module持续自检运行 4. **Memory Checkpoint故障**：BID Checkpoint cron持续328次错误（Feishu投递目标缺失） 5. **Dream任务正常**：BID Dream job运行正常（94363ms），无连续错误 ### 行动建议 - 短期：无需干预，系统正常运行 - 中期：修复Memory Checkpoint的Feishu投递配置（缺少target） - 长期：北溪船闸项目需用户决策（归档 or 重新激活） ### 结论 🟡 **黄灯状态** — 系统运行正常，项目长期归档，用户沉默中 ### 下次检查 2026-05-23 00:50 --- *最后更新：",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4.528814640091452,
-      "maxScore": 0.7619053018337909,
+      "totalScore": 5.292669983626489,
+      "maxScore": 0.7638553435350366,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
         "d77cf508a012",
         "60065b2ddb11",
         "b6537cc56682",
         "cadd5c73354a",
         "20f86c200001",
-        "09b789f91664"
+        "09b789f91664",
+        "e4f221c17d9b"
       ],
       "recallDays": [
         "2026-05-25",
         "2026-05-28",
-        "2026-05-29"
+        "2026-05-29",
+        "2026-06-05"
       ],
       "conceptTags": [
         "37/30天满足",
@@ -806,24 +810,26 @@
       "endLine": 56,
       "source": "memory",
       "snippet": "# 2026-05-22 ## 对话记录 --- ## 🌙 Dream Module v28 — 进化报告 **BID管理 | 2026-05-22 00:50 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | **37天** | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **37/30天满足（123%）** — 归档阈值已超出23%，项目正式进入长期归档观察期。 --- ## 🌀 Dream Module v28 — 进化报告 **BID管理 | 2026-05-22 00:50 (CST)** ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结第**37天**（自4月17日起算） - 系统正常待机 - 无用户会话活动（仅cron系统触发） ### Pattern识别 - **归档长期化**：37天无活动，远超30天阈值 - **用户沉默**：连续37天无真实用户交互 - **系统稳定**：Dream Module持续自检运行，cron正常触发 - **待激活状态**：北溪船闸4大核心场景资料已搜集，标书撰写待激活 ### 结论 🟡 **黄灯状态** — 系统运行正常，项目长期归档，用户沉默中 ### 下次检查 2026-05-23 00:50 --- *最后更新：2026-05-22 00:50 CST* --- ## 📋 bid-a",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.7484313845297894,
-      "maxScore": 0.7568742352140547,
+      "totalScore": 4.507322513531663,
+      "maxScore": 0.7588911290018735,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-28T23:42:09.224Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
         "d77cf508a012",
         "60065b2ddb11",
         "b6537cc56682",
         "cadd5c73354a",
-        "09b789f91664"
+        "09b789f91664",
+        "e4f221c17d9b"
       ],
       "recallDays": [
         "2026-05-25",
         "2026-05-28",
-        "2026-05-29"
+        "2026-05-29",
+        "2026-06-05"
       ],
       "conceptTags": [
         "37/30天满足",
@@ -843,21 +849,23 @@
       "endLine": 56,
       "source": "memory",
       "snippet": "# 2026-05-21 ## 对话记录 --- ## 🌙 Dream Module v27 — 进化报告 **BID管理 | 2026-05-21 00:50 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 | |------|------|------| | 北溪船闸智能巡检 | ⚠️ 归档冻结 | 36天 | | 引水渠道闸门 | ✅ 交付完毕 | — | | 系统 | 🟢 正常待机 | — | ### 📈 30天归档进度 **36/30天满足（120%）** — 归档阈值已超出20%，项目已正式进入长期归档观察期。 --- ## 🌀 Dream Module v27 — 进化报告 **BID管理 | 2026-05-21 00:50 (CST)** ### 关键变化 - 无重大变化 - 北溪船闸项目归档冻结满**36天**（自4月17日起算） - 系统正常待机 ### Pattern识别 - 北溪船闸项目已归档满36天，4大核心场景资料已搜集，待激活标书撰写 - 长时间无用户活动，建议向用户推送状态确认 ### 结论 🟡 **黄灯状态** — 系统运行正常，项目待用户决策 ## 检查点记录 (18:00) - 检查时间: 2026-05-21 18:04 - 状态: 系统正常待机，无新会话活动 - Dream Module 运行中，北溪船闸项目归档冻结第36天 --- ## 检查点记录 (19:28) - 检查时间: 2026-05-21 19:28 - 状态: 系统正常待机，无新会话活动 - Dream",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.2311139637279647,
-      "maxScore": 0.7533211046101174,
+      "totalScore": 2.9864985470408754,
+      "maxScore": 0.7553845833129107,
       "firstRecalledAt": "2026-05-24T16:53:11.538Z",
-      "lastRecalledAt": "2026-05-28T16:39:39.735Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
         "d77cf508a012",
         "60065b2ddb11",
-        "cadd5c73354a"
+        "cadd5c73354a",
+        "e4f221c17d9b"
       ],
       "recallDays": [
         "2026-05-25",
-        "2026-05-29"
+        "2026-05-29",
+        "2026-06-05"
       ],
       "conceptTags": [
         "36/30天满足",
@@ -939,18 +947,20 @@
       "endLine": 83,
       "source": "memory",
       "snippet": "- [08:35] Pre-compaction memory flush. Store durable memories only in memory/2026-04-15.md (create memory/ if needed). Treat workspace bootstrap/reference files... - [08:38] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b52c093db4884b3782fecb5cfef3\", \"reply_to_id\": \"om_x100b52c5fbbfa4b0b3dd7c8... ### 助手回复 (99条) - [08:38] [思考: 记忆已保存。这是一个预编译内存刷新回合，我已将今日的重要工作记录到memory/2026-04-15...] NO_REPLY... - [08:38] [思考: The user seems to be referring to my earlier messa...]你好，看起来这是一条空消息或者回复了你自己的消息？ 请问有什么需要帮忙的吗？你之前提到的： - 📋 **库塔干渠标书**服务方案章节内容梳理（已完成） - 🔍 **北溪船闸**智能... - [05:24] 服务方案及后续章节内容梳理.docx...",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.841254842843736,
-      "maxScore": 0.841254842843736,
+      "totalScore": 1.6950497261857027,
+      "maxScore": 0.8537948833419667,
       "firstRecalledAt": "2026-05-28T02:43:56.399Z",
-      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
-        "08cd9c30beb4"
+        "08cd9c30beb4",
+        "e4f221c17d9b"
       ],
       "recallDays": [
-        "2026-05-28"
+        "2026-05-28",
+        "2026-06-05"
       ],
       "conceptTags": [
         "pre-compaction",
@@ -1001,18 +1011,20 @@
       "endLine": 70,
       "source": "memory",
       "snippet": "## 待用户确认 北溪船闸智能巡检项目已连续31天无活动，30天归档阈值已超出5天，请确认： 1. **正式归档** — 项目归档，不再追踪 2. **重新激活** — 恢复标书撰写推进 3. **暂缓处理** — 继续保持冻结状态 ## 系统问题追踪 - Cron重复触发问题：持续中 - Gateway超时问题：持续中（历史一致） --- ## 📋 Dream Module v26 进化报告 ### 基本信息 - 日期：2026-05-16 02:10 (UTC+8) - 连续无活动：31天（自4月17日起） - 项目状态：北溪船闸项目冻结归档中 ### 今日进化 | 维度 | 状态 | 备注 | |------|------|------| | 系统健康 | ✅ 正常 | Dream Module持续运行 | | 项目进度 | ⚠️ 冻结 | 北溪船闸项目待激活 | | 30天阈值 | ✅ 已超出 | 31/30天（103%），超时5天 | | Cron稳定性 | ⚠️ 需关注 | 重复触发问题持续 | ### 趋势分析 - 连续无活动状态已进入第31天 - 用户参与度极低（仅cron系统触发） - 归档阈值已超出5天，需要正式处理 - 北溪船闸项目：4大核心场景资料已搜集，待标书撰写 ### 行动建议 1. **紧急**：向用户推送北溪船闸项目归档决策确认 2. **系统**：修复Cron重复触发问题 3. **长期**：考虑降低cron频率或调整触发策略 ### 进化结论",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.7622513638020004,
-      "maxScore": 0.7622513638020004,
+      "totalScore": 1.536232556856479,
+      "maxScore": 0.7739811930544785,
       "firstRecalledAt": "2026-05-28T02:43:56.399Z",
-      "lastRecalledAt": "2026-05-28T02:43:56.399Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
       "queryHashes": [
-        "08cd9c30beb4"
+        "08cd9c30beb4",
+        "e4f221c17d9b"
       ],
       "recallDays": [
-        "2026-05-28"
+        "2026-05-28",
+        "2026-06-05"
       ],
       "conceptTags": [
         "gateway",
@@ -1633,6 +1645,68 @@
         "data/images",
         "home/zzy",
         "3.x"
+      ]
+    },
+    "memory:memory/2026-05-16.md:63:102": {
+      "key": "memory:memory/2026-05-16.md:63:102",
+      "path": "memory/2026-05-16.md",
+      "startLine": 63,
+      "endLine": 102,
+      "source": "memory",
+      "snippet": "- 北溪船闸项目：4大核心场景资料已搜集，待标书撰写 ### 行动建议 1. **紧急**：向用户推送北溪船闸项目归档决策确认 2. **系统**：修复Cron重复触发问题 3. **长期**：考虑降低cron频率或调整触发策略 ### 进化结论 🟡 **黄灯状态** — 系统运行正常，项目归档阈值已超出，需用户决策 --- *进化版本：v26 |下次检查：2026-05-17* --- ## 📋 bid-admin Session Sync (2026-05-16 09:00) **Sessions**: 1个 **Messages**: 4条 ### 用户消息 (1条) - [00:57] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) 请执行记忆检查点： 1. 读取今天的记忆文件: memory/2026-05-07... ### 助手回复 (3条) - [00:58] [思考: This is a cron job asking me to perform a memory c...]... - [00:58] [思考: The memory file exists and has significant content...]... - [00:59] [思考: Check completed. Memory file exists with substanti...] M",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7484678162194711,
+      "maxScore": 0.7484678162194711,
+      "firstRecalledAt": "2026-06-04T17:07:20.212Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
+      "queryHashes": [
+        "e4f221c17d9b"
+      ],
+      "recallDays": [
+        "2026-06-05"
+      ],
+      "conceptTags": [
+        "bid-admin",
+        "1778122170042-4gycwm85k",
+        "memory/2026-05-07",
+        "船闸",
+        "项目",
+        "核心",
+        "场景",
+        "资料"
+      ]
+    },
+    "memory:memory/2026-05-20.md:1:42": {
+      "key": "memory:memory/2026-05-20.md:1:42",
+      "path": "memory/2026-05-20.md",
+      "startLine": 1,
+      "endLine": 42,
+      "source": "memory",
+      "snippet": "# 2026-05-20 ## 对话记录 --- ## 📋 bid-admin Session Sync (2026-05-20 09:00) **Sessions**: 1个 **Messages**: 3条 ### 用户消息 (1条) - [00:37] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) 请执行记忆检查点： 1. 读取今天的记忆文件: memory/2026-05-07... ### 助手回复 (2条) - [00:37] [思考: This is a cron job asking me to perform a memory c...]... - [00:38] [思考: The memory file for 2026-05-07 exists and has sign...]... ```json { \"agent\": \"BID管理\", \"time\": \"2026-05-20 08:37\", \"memoryExists\": true, \"hasContent\": true, \"actionTaken\": \"none\", \"summary\": \"Cron任务正常触发，memory/2026-05-07.md存在且有内容\" } ``` --- ## 检查点记录 (13:43) - 检查时间: 2026-05-20 13:43 - 状态:",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7477830998971291,
+      "maxScore": 0.7477830998971291,
+      "firstRecalledAt": "2026-06-04T17:07:20.212Z",
+      "lastRecalledAt": "2026-06-04T17:07:20.212Z",
+      "queryHashes": [
+        "e4f221c17d9b"
+      ],
+      "recallDays": [
+        "2026-06-05"
+      ],
+      "conceptTags": [
+        "bid-admin",
+        "1778122170042-4gycwm85k",
+        "memory/2026-05-07",
+        "memory/2026-05-07.md存在且有内容",
+        "对话",
+        "记录",
+        "bid",
+        "admin"
       ]
     }
   }
