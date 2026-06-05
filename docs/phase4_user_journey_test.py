@@ -151,6 +151,21 @@ def test_user_journey():
         print(f"  ❌ 获取文档失败: {resp.status_code}")
         results.append(("文档列表", False))
     
+    # Step 11: Word导出测试
+    print("\n[Step 11] Word导出测试")
+    word_data = {
+        "html": "<h1>智慧城市技术方案</h1><h2>第一章 项目概述</h2><p>本项目旨在建设智慧城市基础设施。</p>",
+        "title": "测试文档",
+        "template": "standard"
+    }
+    resp = requests.post(f"{BASE_URL}/api/ai/export/html-to-word", json=word_data, timeout=30)
+    if resp.status_code == 200 and len(resp.content) > 1000:
+        print(f"  ✅ Word导出成功 (大小: {len(resp.content)} bytes)")
+        results.append(("Word导出", True))
+    else:
+        print(f"  ⚠️ Word导出响应: {resp.status_code}, 大小: {len(resp.content) if hasattr(resp, 'content') else 0}")
+        results.append(("Word导出", False))
+    
     # 汇总结果
     print("\n" + "=" * 70)
     print("测试结果汇总")
