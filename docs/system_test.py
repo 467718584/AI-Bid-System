@@ -107,24 +107,35 @@ def main():
     print("-" * 70)
     
     api_tests = [
-        ("/api/user/list", "GET", "用户列表查询"),
-        ("/api/user/1", "GET", "用户详情查询"),
-        ("/api/project/list", "GET", "项目列表查询"),
-        ("/api/project/list", "GET", "项目详情查询(真实ID)"),
-        ("/api/material/list", "GET", "素材列表查询"),
-        ("/api/material/1", "GET", "素材详情查询"),
-        ("/api/document/list", "GET", "文档列表查询"),
-        ("/api/document/list", "GET", "文档详情查询(真实ID)"),
-        ("/api/bid/list", "GET", "投标列表查询"),
-        ("/api/bid/1", "GET", "投标详情查询"),
-        ("/api/ai/export/templates", "GET", "获取模板列表"),
-        ("/api/ai/generate/outline", "POST", "AI生成大纲"),
+        ("/api/user/list", "GET", None, "用户列表查询"),
+        ("/api/user/1", "GET", None, "用户详情查询"),
+        ("/api/project/list", "GET", None, "项目列表查询"),
+        ("/api/project/list", "GET", None, "项目详情查询(真实ID)"),
+        ("/api/material/list", "GET", None, "素材列表查询"),
+        ("/api/material/1", "GET", None, "素材详情查询"),
+        ("/api/document/list", "GET", None, "文档列表查询"),
+        ("/api/document/list", "GET", None, "文档详情查询(真实ID)"),
+        ("/api/bid/list", "GET", None, "投标列表查询"),
+        ("/api/bid/1", "GET", None, "投标详情查询"),
+        ("/api/ai/export/templates", "GET", None, "获取模板列表"),
+        ("/api/ai/generate/outline", "POST", {
+            "projectName": "智慧城市基础设施建设项目",
+            "projectType": "政府采购",
+            "bidRequirements": "包含系统集成、软件开发",
+            "scoringCriteria": "技术方案40分",
+            "pageCount": 60
+        }, "AI生成大纲"),
     ]
     
     passed = 0
     failed = 0
-    for endpoint, method, desc in api_tests:
-        result = test_api(endpoint, method, description=desc)
+    for test in api_tests:
+        if len(test) == 4:
+            endpoint, method, data, desc = test
+        else:
+            endpoint, method, desc = test
+            data = None
+        result = test_api(endpoint, method, data=data, description=desc)
         status_icon = "[OK]" if result["success"] else "[FAIL]"
         print(f"{status_icon} {result['method']:<6} {endpoint:<35} {result['status']:<6} {result['elapsed_ms']:<8}ms {result['description']}")
         if result["success"]:

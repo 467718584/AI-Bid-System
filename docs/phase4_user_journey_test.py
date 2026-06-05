@@ -34,7 +34,7 @@ def test_user_journey():
         "type": "政府采购",
         "amount": 5000000,
         "tenderer": "某市政府采购中心",
-        "deadline": "2026-07-15",
+        "deadline": "2026-07-15T10:00:00",
         "status": "draft",
         "description": "智慧城市基础设施建设项目，包含系统集成、软件开发等"
     }
