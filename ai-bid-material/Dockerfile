@@ -1,12 +1,13 @@
-FROM maven:3.9-eclipse-temurin-17-alpine AS build
+FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
+COPY settings.xml /root/.m2/settings.xml
 COPY src ./src
-RUN mvn package -DskipTests -B
+RUN apk add --no-cache maven && \
+    mvn clean package -DskipTests
 
-FROM eclipse-temurin-17-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8083
 ENTRYPOINT ["java", "-jar", "app.jar"]
