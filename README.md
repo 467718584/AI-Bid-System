@@ -34,9 +34,9 @@
 | Phase 1 | 架构设计 + 基础设施 + 核心CRUD | 100% | ✅ 完成 |
 | Phase 2 | AI能力层 + 技术标核心 | 100% | ✅ 完成 |
 | Phase 3 | 前后端联调 + 功能修复 | 100% | ✅ 完成 |
-| Phase 4 | 完整功能验证 + 性能优化 | 80% | 🔄 进行中 |
+| Phase 4 | 完整功能验证 + Docker部署 | 90% | 🔄 进行中 |
 
-**当前重点：Phase 4 测试验证接近完成 (用户旅程 11/11通过 ✅)**
+**当前重点：Phase 4 接近完成 - Docker部署配置完成 ✅**
 
 ---
 
@@ -247,6 +247,56 @@ npm run dev
 ```
 
 访问 `http://localhost:3000`
+
+---
+
+## 🐳 Docker部署（推荐）
+
+### 一键启动所有服务
+```bash
+# 克隆仓库
+git clone https://github.com/467718584/AI-Bid-System.git
+cd AI-Bid-System
+
+# 配置环境变量
+cp .env.example .env
+# 编辑 .env 填入 MINIMAX_API_KEY
+
+# 一键启动（包含所有服务和基础设施）
+docker-compose up -d
+
+# 查看服务状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f
+```
+
+### 服务列表（docker-compose）
+| 服务 | 端口 | 说明 |
+|------|------|------|
+| postgres | 5432 | PostgreSQL数据库 |
+| redis | 6379 | Redis缓存 |
+| ai-bid-gateway | 8090 | API网关 |
+| ai-bid-user | 8081 | 用户服务 |
+| ai-bid-project | 8082 | 项目服务 |
+| ai-bid-material | 8083 | 物料服务 |
+| ai-bid-document | 8084 | 文档服务 |
+| ai-bid-bid | 8085 | 标书服务 |
+| ai-bid-ai | 8087 | AI服务 |
+| ai-bid-knowledge | 8086 | 知识库服务 |
+| ai-bid-frontend | 3000 | 前端界面 |
+
+### 停止服务
+```bash
+docker-compose down
+```
+
+### 重新构建
+```bash
+docker-compose build --no-cache
+docker-compose up -d
+```
 
 ---
 
