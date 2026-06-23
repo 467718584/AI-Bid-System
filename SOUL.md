@@ -60,6 +60,57 @@ Gateway(8090)
 
 ---
 
+## 🌐 EdgeHub 远控集成 (v3.2)
+
+### 智能体注册信息
+| 项目 | 值 |
+|------|-----|
+| Agent ID | bid-agent |
+| Agent Name | BID智能投标助手 |
+| Agent Type | openclaw |
+| API Key | `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ` |
+| 注册时间 | 2026-06-23 |
+
+### 项目信息
+| 项目 | 值 |
+|------|-----|
+| Project ID | 10 |
+| Project Name | 智能投标平台 |
+| 关联设备 | WEI-PC (82785476b5753520) |
+| Status | active |
+
+### EdgeHub API
+| 端点 | 说明 |
+|------|------|
+| POST /api/v1/agents/register | 智能体注册 |
+| POST /api/v1/agents/me/login | 登录验证 |
+| POST /api/v1/agents/me/projects | 创建项目 |
+| GET /api/v1/agents/me/projects/{id}/tasks | 获取任务 |
+| POST /api/v1/agents/me/projects/{id}/commands | 执行命令 |
+| POST /api/v1/devices/{device_id}/commands | 设备命令(Agent Key) |
+
+### 快速命令
+```bash
+# 登录
+curl -X POST http://1.13.247.173/api/v1/agents/me/login \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id":"bid-agent","api_key":"al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"}'
+
+# 在项目10中执行命令
+curl -X POST http://1.13.247.173/api/v1/agents/me/projects/10/commands \
+  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"ipconfig","timeout":30000}'
+
+# 直接对WEI-PC下发命令
+curl -X POST http://1.13.247.173/api/v1/devices/82785476b5753520/commands \
+  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"hostname","timeout_ms":5000}'
+```
+
+---
+
 ## 🔧 已知问题
 
 1. SOUL.md过大(75KB)导致bootstrap截断48%
