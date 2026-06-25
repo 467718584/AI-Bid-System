@@ -86,28 +86,44 @@ Gateway(8090)
 | POST /api/v1/agents/me/login | 登录验证 |
 | POST /api/v1/agents/me/projects | 创建项目 |
 | GET /api/v1/agents/me/projects/{id}/tasks | 获取任务 |
-| POST /api/v1/agents/me/projects/{id}/commands | 执行命令 |
-| POST /api/v1/devices/{device_id}/commands | 设备命令(Agent Key) |
+| POST /api/v1/agents/me/projects/{id}/commands | ✅ 执行命令（推荐-记项目日志） |
+| GET /api/v1/commands/{command_id} | ✅ 查询命令结果（Agent Key可用） |
+| POST /api/v1/devices/{device_id}/commands | ⚠️ 设备命令（不记项目日志） |
+
+### ⚠️ 两种命令端点的区别
+- **项目端点** `/agents/me/projects/:id/commands` → 自动记录到项目日志 ✅
+- **设备端点** `/devices/:id/commands` → 不记录，仅紧急运维 ⚠️
 
 ### 快速命令
 ```bash
-# 登录
-curl -X POST http://1.13.247.173/api/v1/agents/me/login \
-  -H "Content-Type: application/json" \
-  -d '{"agent_id":"bid-agent","api_key":"al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"}'
+EDGEHUB_KEY="al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"
+PROJECT_ID=10
 
-# 在项目10中执行命令
-curl -X POST http://1.13.247.173/api/v1/agents/me/projects/10/commands \
-  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+# 1. 在项目10中执行命令（推荐）
+curl -X POST "http://1.13.247.173/api/v1/agents/me/projects/${PROJECT_ID}/commands" \
+  -H "X-API-Key: $EDGEHUB_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"command":"ipconfig","timeout":30000}'
+  -d '{"command":"hostname","timeout_ms":30000}'
 
-# 直接对WEI-PC下发命令
-curl -X POST http://1.13.247.173/api/v1/devices/82785476b5753520/commands \
-  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+# 2. 查询命令执行结果
+curl "http://1.13.247.173/api/v1/commands/cmd_xxx" \
+  -H "X-API-Key: $EDGEHUB_KEY"
+# 响应: {status, stdout, stderr, exit_code}
+
+# 3. 设备端点（不记录到项目日志）
+curl -X POST "http://1.13.247.173/api/v1/devices/82785476b5753520/commands" \
+  -H "X-API-Key: $EDGEHUB_KEY" \
   -H "Content-Type: application/json" \
   -d '{"command":"hostname","timeout_ms":5000}'
 ```
+
+### 命令执行流程
+1. 投递命令 → 返回 `command_id` + `status: pending`
+2. Agent接收 → 目标设备需运行 EdgeHub Agent polling
+3. 执行并回调 → Agent 执行后回调结果
+
+### ⚠️ 当前限制
+- WEI-PC 无 EdgeHub Agent 进程，命令 pending 无法执行
 
 ---
 
@@ -119,4 +135,5 @@ curl -X POST http://1.13.247.173/api/v1/devices/82785476b5753520/commands \
 
 ---
 
-*最后更新: 2026-05-29*
+*最后更新: 2026-06-25*
+*更新内容: EdgeHub API用法纠错 - 增加GET /commands/:id查询、明确项目端点vs设备端点区别*
