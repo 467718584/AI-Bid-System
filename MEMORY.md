@@ -5,6 +5,11 @@
 - Workspace: workspace-bid
 - 专长：标书撰写、技术方案、投标管理
 
+## 🌀 自我进化规律 (2026-06-28更新)
+- **用户沉寂周期**: 已从16.9天→46h→10h，持续改善
+- **Cron触发频率**: 高频多次，存在重复触发问题待优化
+- **Phase 4收尾**: 长期停滞(20天+)，需主动推进
+
 ## 🌐 EdgeHub 远控集成 (2026-06-23)
 
 ### bid-agent 注册信息
@@ -1841,3 +1846,114 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 1. **等待用户回归**：沉寂14.5天，可能是出差/度假/完成阶段性目标
 2. **Phase 4收尾**：Docker构建测试 + 浏览器UI验证（用户回归后可继续）
 3. **MEMORY.md归档**：将历史进化报告拆分到memory/archive/目录
+
+---
+
+## 2026-06-25 Dream Module v60 进化报告
+
+### 基本信息
+- **日期**: 2026-06-25 03:13 (UTC+8)
+- **连续无活动**: **~453小时**（约18.9天，用户6月5日18:13后完全沉寂）
+- **沉寂趋势**: 持续加速（+1天）
+- **项目状态**: AI智能投标系统 Phase 4 收尾阶段（90%），服务大部分离线
+
+### 📊 系统状态（上次检查 2026-06-24）
+
+| 服务 | 状态 | 备注 |
+|------|------|------|
+| nginx | ✅ 运行中 | 持续 |
+| ai-bid-knowledge | ✅ 运行中 | 唯一存活业务服务 |
+| Gateway | ❌ 离线 | 17天+ |
+| 其他8服务 | ❌ 离线 | 全部离线 |
+| 前端 | ❌ 离线 | 离线18天+ |
+| 北溪船闸 | ⚠️ 归档冻结 | 73天+ |
+
+### 🔍 跨会话Pattern分析 (v56-v60)
+
+| Pattern | 状态 | 趋势 |
+|---------|------|------|
+| 用户沉寂周期 | 📈 18.9天 | 加速增长 |
+| 服务可用性 | 📉 仅knowledge存活 | 18天无变化 |
+| Phase 4收尾 | 🔄 停滞19天+ | Docker构建+UI验证 |
+| EdgeHub集成 | 🔄 进行中 | WebSocket认证问题待解决 |
+| MEMORY.md | ⚠️ ~1700行 | 需要分文件 |
+| 北溪船闸 | ⚠️ 归档冻结 | 73天+冻结 |
+
+### EdgeHub新进展 (2026-06-23/24)
+- ✅ bid-agent 注册成功 (API Key: `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ`)
+- ✅ Project ID 10 创建
+- ✅ WEI-PC (82785476b5753520) 绑定
+- ❌ WebSocket认证失败 (edgehub_secret_key缺失)
+- 🔄 替代方案：SSH直连部署待探索
+
+### ⚠️ 待处理问题
+
+| 优先级 | 问题 | 状态 |
+|--------|------|------|
+| P1 | EdgeHub WebSocket认证 | edgehub_secret_key缺失 |
+| P2 | MEMORY.md分文件 | ~1700行超阈值 |
+| P2 | Phase 4 Docker/UI | 90%后停滞19天 |
+| P3 | 北溪船闸归档 | 73天+冻结 |
+| P3 | Cron重复触发 | 62天+历史遗留 |
+
+### 进化结论
+
+🔴 **红灯状态** — 用户沉寂18.9天，Phase 4 90%停滞19天+，EdgeHub集成遭遇WebSocket认证瓶颈。仅knowledge服务存活。系统保持低频监测。
+
+---
+
+## 2026-06-27 Dream Module v61 进化报告
+
+### 基本信息
+- **日期**: 2026-06-27 16:03 (UTC+8)
+- **连续无活动**: **~46小时**（沉寂大幅改善）
+- **项目状态**: AI智能投标系统 Phase 4 收尾阶段（90%），EdgeHub部署调试中
+
+### 📊 用户活动记录
+- **EdgeHub部署工作**: 多次docker命令执行（镜像检查、构建等）
+- **系统连接**: 保持活跃，用户通过EdgeHub进行部署调试
+
+### 📈 趋势变化
+
+| Pattern | 状态 | 变化 |
+|---------|------|------|
+| 用户沉寂周期 | 📉 46h（改善） | 从18.9天→46h，大幅改善 |
+| EdgeHub部署 | 🔄 进行中 | WebSocket认证问题待解决 |
+| Phase 4收尾 | 🔄 停滞19天+ | Docker构建+UI验证 |
+
+### 明天工作安排
+1. AI智能投标系统Phase 4收尾
+2. Docker构建测试 + 浏览器UI验证
+3. EdgeHub部署问题排查
+
+### 进化结论
+
+🟡 **黄灯状态** — 用户沉寂大幅改善（46h），EdgeHub部署进行中，Phase 4收尾停滞。系统保持低频监测。
+
+---
+*记录时间: 2026-06-27 16:03 GMT+8*
+
+---
+
+## 2026-06-28 工作记录
+
+### Docker构建失败修复
+
+**问题**: Windows机器 (C:\ai-bid) Maven构建失败
+- 根因: ai-bid-user/Dockerfile 被错误修改，增加了 `COPY parent_pom.xml /tmp/parent_pom.xml` 和 `RUN mvn validate -f /tmp/parent_pom.xml`
+- 错误文件位置: `C:\ai-bid\ai-bid-user\Dockerfile`
+- 正确文件位置: `/home/zzy/.openclaw/workspace/workspace-bid/ai-bid-user/Dockerfile`
+
+**修复状态**: 
+- 本地文件正确
+- Windows文件已删除待修复
+- EdgeHub推送修复未成功（PowerShell转义问题）
+- 需手动修复Windows文件
+
+**明天继续**:
+1. 验证Docker构建修复结果
+2. 检查其他Java服务(ai-bid-gateway/project/material/bid/document)是否有同样问题
+3. Phase 4收尾推进
+
+---
+*记录时间: 2026-06-28 05:50 GMT+8*
