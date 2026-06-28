@@ -1957,3 +1957,30 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 
 ---
 *记录时间: 2026-06-28 05:50 GMT+8*
+
+---
+
+## 2026-06-28 工作记录
+
+### Dockerfile 批量修复完成
+
+**问题**: Windows 机器 (C:\ai-bid) 所有 6 个 Java 服务 Dockerfile 被错误修改，增加了不存在的 `parent_pom.xml` 引用
+
+**修复状态**: 全部 6 个服务已修复
+- ai-bid-user (8081) ✅
+- ai-bid-gateway (8090) ✅  
+- ai-bid-project (8082) ✅
+- ai-bid-material (8083) ✅
+- ai-bid-document (8084) ✅
+- ai-bid-bid (8085) ✅
+
+**Docker 构建**: 部分镜像已构建完成，其他服务仍在构建中
+
+### 待继续
+
+- 等待 Docker 构建完成
+- 启动所有服务
+- Phase 4 收尾验证
+
+---
+*记录时间: 2026-06-29 00:51 GMT+8*
