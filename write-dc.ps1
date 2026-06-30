@@ -1,8 +1,7 @@
+$content = @"
 version: '3.8'
 
 services:
-  # ========== 基础设施 ==========
-  
   postgres:
     image: postgres:16-alpine
     container_name: ai-bid-postgres
@@ -37,8 +36,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # ========== Python服务 ==========
 
   ai-bid-knowledge:
     build:
@@ -85,8 +82,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-
-  # ========== Java服务 ==========
 
   ai-bid-gateway:
     build:
@@ -198,8 +193,6 @@ services:
     networks:
       - bid-network
 
-  # ========== 前端 ==========
-
   ai-bid-frontend:
     build:
       context: ./ai-bid-frontend
@@ -221,3 +214,7 @@ volumes:
 networks:
   bid-network:
     driver: bridge
+"@
+
+[System.IO.File]::WriteAllText("C:\ai-bid\docker-compose.yml", $content, [System.Text.Encoding]::UTF8)
+Write-Host "Done"

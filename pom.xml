@@ -19,6 +19,7 @@
         <module>ai-bid-project</module>
         <module>ai-bid-material</module>
         <module>ai-bid-bid</module>
+        <module>ai-bid-document</module>
     </modules>
 
     <properties>

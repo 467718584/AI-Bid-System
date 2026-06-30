@@ -332,9 +332,9 @@ const markdownToHtml = (md) => {
       }
       if (rows.length === 0) continue;
       // Build table HTML
-      const ths = headers.map(h => \`<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">\${h}</th>\`).join('');
-      const trs = rows.map(row => \`<tr>\${row.map(c => \`<td style="border:1px solid #ddd;padding:8px 12px;">\${c}</td>\`).join('')}</tr>\`).join('');
-      const tableHtml = \`<table style="border-collapse:collapse;width:100%;margin:16px 0;"><thead><tr>\${ths}</tr></thead><tbody>\${trs}</tbody></table>\`;
+      const ths = headers.map(h => `<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;font-weight:600;">${h}</th>`).join('');
+      const trs = rows.map(row => `<tr>${row.map(c => `<td style="border:1px solid #ddd;padding:8px 12px;">${c}</td>`).join('')}</tr>`).join('');
+      const tableHtml = `<table style="border-collapse:collapse;width:100%;margin:16px 0;"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
       result = result.substring(0, tableStart) + tableHtml + result.substring(pos);
       html = result;
       headerPat.lastIndex = tableStart + tableHtml.length;

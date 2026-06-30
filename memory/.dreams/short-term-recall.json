@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T16:50:45.037Z",
+  "updatedAt": "2026-06-30T01:51:02.894Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -362,13 +362,13 @@
       "endLine": 76,
       "source": "memory",
       "snippet": "2. 提取跨会话的pat... ### 助手回复 (9条) - [16:56] [思考: Now I have enough context. Let me update the MEMOR...]... - [16:57] [思考: Now update today's memory file. ...]... - [16:57] [思考: Done. Now generate the evolution report. ...] --- ## 🌀 Dream Module v18 — 进化报告 **BID管理 | 2026-05-06 00:54 (CST)** ### 📊 状态概览 | 项目 | 状态 | 天数 ...",
-      "recallCount": 22,
+      "recallCount": 23,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 17.532398164909868,
+      "totalScore": 18.338732624954442,
       "maxScore": 0.8237047392733639,
       "firstRecalledAt": "2026-05-12T16:53:50.395Z",
-      "lastRecalledAt": "2026-06-23T16:50:45.037Z",
+      "lastRecalledAt": "2026-06-29T17:02:08.396Z",
       "queryHashes": [
         "0430d955a324",
         "c3e88e79496d",
@@ -391,7 +391,6 @@
         "f938c26849b2"
       ],
       "recallDays": [
-        "2026-05-13",
         "2026-05-14",
         "2026-05-17",
         "2026-05-18",
@@ -406,7 +405,8 @@
         "2026-06-19",
         "2026-06-20",
         "2026-06-21",
-        "2026-06-24"
+        "2026-06-24",
+        "2026-06-30"
       ],
       "conceptTags": [
         "提取",
@@ -983,13 +983,13 @@
       "endLine": 83,
       "source": "memory",
       "snippet": "- [08:35] Pre-compaction memory flush. Store durable memories only in memory/2026-04-15.md (create memory/ if needed). Treat workspace bootstrap/reference files... - [08:38] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b52c093db4884b3782fecb5cfef3\", \"reply_to_id\": \"om_x100b52c5fbbfa4b0b3dd7c8... ### 助手回复 (99条) - [08:38] [思考: 记忆已保存。这是一个预编译内存刷新回合，我已将今日的重要工作记录到memory/2026-04-15...] NO_REPLY... - [08:38] [思考: The user seems to be referring to my earlier messa...]你好，看起来这是一条空消息或者回复了你自己的消息？ 请问有什么需要帮忙的吗？你之前提到的： - 📋 **库塔干渠标书**服务方案章节内容梳理（已完成） - 🔍 **北溪船闸**智能... - [05:24] 服务方案及后续章节内容梳理.docx...",
-      "recallCount": 8,
+      "recallCount": 9,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 6.8701323787027055,
-      "maxScore": 0.8660925776802285,
+      "totalScore": 7.737442943670292,
+      "maxScore": 0.8673105649675865,
       "firstRecalledAt": "2026-05-28T02:43:56.399Z",
-      "lastRecalledAt": "2026-06-23T16:50:45.037Z",
+      "lastRecalledAt": "2026-06-25T14:05:52.290Z",
       "queryHashes": [
         "08cd9c30beb4",
         "e4f221c17d9b",
@@ -997,7 +997,8 @@
         "a725ef9308b4",
         "425edd8eecae",
         "3826609beb4e",
-        "f938c26849b2"
+        "f938c26849b2",
+        "3c23a8319781"
       ],
       "recallDays": [
         "2026-05-28",
@@ -1007,7 +1008,8 @@
         "2026-06-14",
         "2026-06-21",
         "2026-06-23",
-        "2026-06-24"
+        "2026-06-24",
+        "2026-06-25"
       ],
       "conceptTags": [
         "pre-compaction",
@@ -1058,13 +1060,13 @@
       "endLine": 70,
       "source": "memory",
       "snippet": "## 待用户确认 北溪船闸智能巡检项目已连续31天无活动，30天归档阈值已超出5天，请确认： 1. **正式归档** — 项目归档，不再追踪 2. **重新激活** — 恢复标书撰写推进 3. **暂缓处理** — 继续保持冻结状态 ## 系统问题追踪 - Cron重复触发问题：持续中 - Gateway超时问题：持续中（历史一致） --- ## 📋 Dream Module v26 进化报告 ### 基本信息 - 日期：2026-05-16 02:10 (UTC+8) - 连续无活动：31天（自4月17日起） - 项目状态：北溪船闸项目冻结归档中 ### 今日进化 | 维度 | 状态 | 备注 | |------|------|------| | 系统健康 | ✅ 正常 | Dream Module持续运行 | | 项目进度 | ⚠️ 冻结 | 北溪船闸项目待激活 | | 30天阈值 | ✅ 已超出 | 31/30天（103%），超时5天 | | Cron稳定性 | ⚠️ 需关注 | 重复触发问题持续 | ### 趋势分析 - 连续无活动状态已进入第31天 - 用户参与度极低（仅cron系统触发） - 归档阈值已超出5天，需要正式处理 - 北溪船闸项目：4大核心场景资料已搜集，待标书撰写 ### 行动建议 1. **紧急**：向用户推送北溪船闸项目归档决策确认 2. **系统**：修复Cron重复触发问题 3. **长期**：考虑降低cron频率或调整触发策略 ### 进化结论",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4.656110667384744,
+      "totalScore": 5.451070368355578,
       "maxScore": 0.7955783819362686,
       "firstRecalledAt": "2026-05-28T02:43:56.399Z",
-      "lastRecalledAt": "2026-06-22T16:54:10.348Z",
+      "lastRecalledAt": "2026-06-29T17:02:08.396Z",
       "queryHashes": [
         "08cd9c30beb4",
         "e4f221c17d9b",
@@ -1079,7 +1081,8 @@
         "2026-06-09",
         "2026-06-10",
         "2026-06-14",
-        "2026-06-23"
+        "2026-06-23",
+        "2026-06-30"
       ],
       "conceptTags": [
         "gateway",
@@ -1813,20 +1816,23 @@
       "endLine": 198,
       "source": "memory",
       "snippet": "- [00:23] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b6eb9880ea0a0c32f62e1af25cf7\", \"sender_id\": \"ou_cd4135e17a9df9cd43a4186eca... - [00:48] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b6eba699becb0c25886a16944e4d\", \"sender_id\": \"ou_cd4135e17a9df9cd43a4186eca... - [00:42] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) 请执行记忆检查点： 1. 读取今天的记忆文件: memory/2026-05-07... ### 助手回复 (10条) - [00:49] [思考: Claude Code is running in background. Let me check...] Claude Code 多专家协作已启动，正在审查并修复前后端问题。 **正在处理的问题：** 1. 🔍 AI章节正文生成为空 - 检查 ai-bid-ai 服务 2. 🔍 项... - [00:42] [思考: Let me ch",
-      "recallCount": 7,
+      "recallCount": 11,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5.89358723065653,
-      "maxScore": 0.8464515066686792,
+      "totalScore": 9.28788156833769,
+      "maxScore": 0.8494964841468574,
       "firstRecalledAt": "2026-06-08T17:01:52.379Z",
-      "lastRecalledAt": "2026-06-23T16:50:45.037Z",
+      "lastRecalledAt": "2026-06-30T01:51:02.894Z",
       "queryHashes": [
         "bdf5321cf9e7",
         "4862a5e69634",
         "becb0e84f04c",
         "316aac3b5091",
         "425edd8eecae",
-        "f938c26849b2"
+        "f938c26849b2",
+        "3c23a8319781",
+        "92e394cd00b9",
+        "0f9a12749557"
       ],
       "recallDays": [
         "2026-06-09",
@@ -1834,7 +1840,10 @@
         "2026-06-19",
         "2026-06-20",
         "2026-06-21",
-        "2026-06-24"
+        "2026-06-24",
+        "2026-06-25",
+        "2026-06-26",
+        "2026-06-30"
       ],
       "conceptTags": [
         "message-id",
@@ -1948,6 +1957,260 @@
         "bid/list",
         "完成",
         "修复"
+      ]
+    },
+    "memory:memory/2026-06-08.md:1:34": {
+      "key": "memory:memory/2026-06-08.md:1:34",
+      "path": "memory/2026-06-08.md",
+      "startLine": 1,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "# 2026-06-08 Dream Module 自我进化日志 ## 📅 日期：2026-06-08 ## 星期：星期一 ## 时间：00:58 (UTC+8) --- ## 🌙 Dream Module v46 进化报告 ### 基本信息 - **距上次活跃**: ~30小时（6月7日00:50后沉寂，正常范围） - **项目状态**: AI智能投标系统 Phase 4 90%完成 ### 系统状态 | 服务 | 状态 | |------|------| | Gateway (8090) | ✅ 健康 | | frontend (3000) | ✅ 运行中 | | 微服务 8081-8088 | ✅ 正常 | ### 今日Pattern 1. 用户沉寂30h属正常周期 2. 系统所有服务健康运行 3. Phase 4收尾工作待用户激活 ### 待办 - Docker构建测试 - 浏览器UI验证 - MEMORY.md优化（文件过大） --- *记录时间: 2026-06-08 00:58 GMT+8*",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.6202217529321246,
+      "maxScore": 0.8744678001464975,
+      "firstRecalledAt": "2026-06-25T03:13:05.280Z",
+      "lastRecalledAt": "2026-06-30T01:51:02.894Z",
+      "queryHashes": [
+        "eec28ba117e3",
+        "4503e11d7811",
+        "0f9a12749557"
+      ],
+      "recallDays": [
+        "2026-06-25",
+        "2026-06-29",
+        "2026-06-30"
+      ],
+      "conceptTags": [
+        "gateway",
+        "8081-8088",
+        "memory.md优化",
+        "dream",
+        "module",
+        "自我",
+        "进化",
+        "日志"
+      ]
+    },
+    "memory:memory/2026-04-30.md:1:56": {
+      "key": "memory:memory/2026-04-30.md:1:56",
+      "path": "memory/2026-04-30.md",
+      "startLine": 1,
+      "endLine": 56,
+      "source": "memory",
+      "snippet": "# 2026-04-30 工作日志 ## 日期说明 - 北京时间：2026年4月30日 00:54 - UTC时间：2026年4月29日 16:54 ## Dream Module 自检 - Cron触发器正常运行 - 仅Dream Module自检，无任何用户会话活动 ## 项目状态 - **北溪船闸智能巡检项目**：连续第15天无活动（自4月17日起） - 状态：🔴 已归档冻结 - 无重启迹象 - **引水渠道闸门项目**：✅ 正常交付完毕 ## 关键Pattern - 4/15 完成资料搜集 - 4/17 开始停滞（至今15天） - Dream Module连续自检运行，系统正常待机 ## 进化记录 - Dream Module v12 自检完成 - 系统状态：正常待机 - 30天提醒机制：15/30天满足，过半阈值 - 持续监测：用户已连续15天未触发会话 --- ## 📋 bid-admin Session Sync (2026-05-07 00:48) **Sessions**: 1个 **Messages**: 3条 ### 用户消息 (1条) - [15:07] [cron:1776651337077-tnp042lxa EO Memory Sync - BID管理] 📋 Memory Sync - Daily Summary (BID管理) 请执行每日记忆同步： 今天是周一 (2026-04-20)。 1. 读取今天的记忆文件: memory/202... ### 助手回复 (2条) - [15:07] [思考: L",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8456246194134495,
+      "maxScore": 0.8456246194134495,
+      "firstRecalledAt": "2026-06-25T03:13:05.280Z",
+      "lastRecalledAt": "2026-06-25T03:13:05.280Z",
+      "queryHashes": [
+        "eec28ba117e3"
+      ],
+      "recallDays": [
+        "2026-06-25"
+      ],
+      "conceptTags": [
+        "4/15",
+        "4/17",
+        "15/30天满足",
+        "bid-admin",
+        "1776651337077-tnp042lxa",
+        "memory/202",
+        "工作",
+        "日志"
+      ]
+    },
+    "memory:memory/2026-06-25.md:36:50": {
+      "key": "memory:memory/2026-06-25.md:36:50",
+      "path": "memory/2026-06-25.md",
+      "startLine": 36,
+      "endLine": 50,
+      "source": "memory",
+      "snippet": "| 项目 | 状态 | |------|------| | AI智能投标系统 | Phase 4 90%停滞中 | | 服务 | 大部分离线 | | 北溪船闸 | 归档冻结70天+ | | EdgeHub | WebSocket认证问题待解决 | ## 明日计划 1. 获取edgehub_secret_key解决WebSocket认证 2. 继续EdgeHub部署方案 3. 或切换为SSH直连方式部署 --- *记录时间: 2026-06-25 02:44 GMT+8*",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.6450860971734236,
+      "maxScore": 0.8237885112485773,
+      "firstRecalledAt": "2026-06-25T14:05:52.290Z",
+      "lastRecalledAt": "2026-06-29T17:02:08.396Z",
+      "queryHashes": [
+        "3c23a8319781",
+        "bdf5321cf9e7"
+      ],
+      "recallDays": [
+        "2026-06-25",
+        "2026-06-30"
+      ],
+      "conceptTags": [
+        "项目",
+        "状态",
+        "智能",
+        "投标",
+        "系统",
+        "phase",
+        "停滞",
+        "服务"
+      ]
+    },
+    "memory:memory/2026-05-07.md:34:68": {
+      "key": "memory:memory/2026-05-07.md:34:68",
+      "path": "memory/2026-05-07.md",
+      "startLine": 34,
+      "endLine": 68,
+      "source": "memory",
+      "snippet": "- 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 --- ## 📋 2026-05-09 04:00 北京时间 / 2026-05-08 20:00 UTC 检查 - 状态: 无会话活动 - 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 --- ## 📋 2026-05-09 05:02 北京时间 / 2026-05-08 21:02 UTC 检查 - 状态: 无会话活动 - 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 --- ## 📋 2026-05-09 06:03 北京时间 / 2026-05-08 22:03 UTC 检查 - 状态: 无会话活动 - 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 --- ## 📋 2026-05-09 07:04 北京时间 / 2026-05-08 23:04 UTC 检查 - 状态: 无会话活动 - 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 ## 📋 检查点 (2026-05-11 03:14 北京时间 / 2026-05-10 19:14 UTC) [本次] - Cron ID: 1778122170042-4gycwm85k - 触发说明: 计划执行时间2026-05-07 18:00，实际执",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8905355868116538,
+      "maxScore": 0.8905355868116538,
+      "firstRecalledAt": "2026-06-26T08:23:47.739Z",
+      "lastRecalledAt": "2026-06-26T08:23:47.739Z",
+      "queryHashes": [
+        "92e394cd00b9"
+      ],
+      "recallDays": [
+        "2026-06-26"
+      ],
+      "conceptTags": [
+        "1778122170042-4gycwm85k",
+        "计划执行时间2026-05-07",
+        "船闸",
+        "项目",
+        "连续",
+        "活动",
+        "提醒",
+        "机制"
+      ]
+    },
+    "memory:memory/2026-05-07.md:1:41": {
+      "key": "memory:memory/2026-05-07.md:1:41",
+      "path": "memory/2026-05-07.md",
+      "startLine": 1,
+      "endLine": 41,
+      "source": "memory",
+      "snippet": "# 2026-05-07 工作日志 ## 日期说明 - 北京时间：2026年5月7日 01:12 - UTC时间：2026年5月6日 17:12 ## Dream Module 自检 - Cron触发器正常运行（bid-admin agent） - 仅Dream Module自检，无任何用户会话活动 ## 项目状态 - **北溪船闸智能巡检项目**：连续第22天无活动（自4月17日起） - 状态：🔴 已归档冻结 - 无重启迹象 - 30天提醒机制：22/30天满足（73%），剩余8天即将触发 - **引水渠道闸门项目**：✅ 正常交付完毕 ## 进化记录 - Dream Module v19 自检完成 - 系统状态：正常待机 - 30天提醒机制：22/30天满足（73%阈值） - 即将触发30天提醒阈值（剩余8天） ## 检查点记录 (18:00) - 检查时间: 2026-05-07 18:00 (北京时间) - 状态: 无会话活动或记忆已过期 - 北溪船闸项目: 连续第22天无活动，30天提醒机制73%满足，剩余8天 --- ## 📋 2026-05-08 18:00 UTC 检查 (cron:1778122170042-4gycwm85k) - 北京时间: 2026-05-09 02:00 - 状态: 无会话活动 - 北溪船闸项目: 连续第24天无活动（自4月17日起），30天提醒机制80%满足，剩余6天 - 系统正常待机 --- ## 📋 2026-05-09 04:00 北京时间 / 2026-05-08 20:00 UTC 检查",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8706799100247382,
+      "maxScore": 0.8706799100247382,
+      "firstRecalledAt": "2026-06-26T08:23:47.739Z",
+      "lastRecalledAt": "2026-06-26T08:23:47.739Z",
+      "queryHashes": [
+        "92e394cd00b9"
+      ],
+      "recallDays": [
+        "2026-06-26"
+      ],
+      "conceptTags": [
+        "bid-admin",
+        "22/30天满足",
+        "1778122170042-4gycwm85k",
+        "工作",
+        "日志",
+        "日期",
+        "说明",
+        "北京"
+      ]
+    },
+    "memory:memory/2026-06-27.md:37:86": {
+      "key": "memory:memory/2026-06-27.md:37:86",
+      "path": "memory/2026-06-27.md",
+      "startLine": 37,
+      "endLine": 86,
+      "source": "memory",
+      "snippet": "2. **EdgeHub部署受阻**: WebSocket需要edgehub_secret_key，API Key认证失败 3. **系统状态无变化**: 服务大部分离线问题仍未解决 4. **Cron重复触发问题**: 仍在持续（之前已记录） --- ## ⚠️ 待处理事项 | 优先级 | 事项 | 状态 | |--------|------|------| | P1 | EdgeHub WebSocket认证 | 待获取secret_key | | P2 | MEMORY.md归档 | ~1700行，建议拆分 | | P3 | 北溪船闸长期归档 | 73天+，正式归档决策 | --- ## ✅ 进化结论 🟡 **黄灯状态** — 用户沉寂改善（46h），但EdgeHub部署受阻，Phase 4收尾停滞18天+。系统保持低频监测。 --- *记录时间: 2026-06-27 00:55 GMT+8* --- ## 📝 用户工作记录 (16:03补充) ### 今日完成 - EdgeHub部署工作：多次docker命令执行（镜像检查、构建等） - 系统保持活跃连接 ### 明天继续 - AI智能投标系统Phase 4收尾 - Docker构建测试 + 浏览器UI验证 - EdgeHub部署问题排查 ### 当前系统状态 | 服务 | 状态 | 备注 | |------|------|------| | nginx | ✅ 运行中 | 持续 | | ai-bid-knowledge | ✅ 运行中 | 唯一存活业务服务 | | 其他服务 | ❌ 离线",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8244263885991054,
+      "maxScore": 0.8244263885991054,
+      "firstRecalledAt": "2026-06-30T01:51:02.894Z",
+      "lastRecalledAt": "2026-06-30T01:51:02.894Z",
+      "queryHashes": [
+        "0f9a12749557"
+      ],
+      "recallDays": [
+        "2026-06-30"
+      ],
+      "conceptTags": [
+        "websocket需要edgehub-secret-key",
+        "待获取secret-key",
+        "memory.md归档",
+        "ai-bid-knowledge",
+        "edgehub",
+        "部署",
+        "受阻",
+        "websocket"
+      ]
+    },
+    "memory:memory/2026-06-27.md:1:46": {
+      "key": "memory:memory/2026-06-27.md:1:46",
+      "path": "memory/2026-06-27.md",
+      "startLine": 1,
+      "endLine": 46,
+      "source": "memory",
+      "snippet": "# 2026-06-27 Dream Module 进化报告 ## 🌙 Dream Module 自我进化日志 ### 基本信息 - **日期**: 2026-06-27 00:55 (UTC+8) - **上次活跃**: 2026-06-25 02:44 (约2天前) - **用户沉寂**: ~46小时（较上次16.9天大幅缩短） --- ## 📊 系统状态检查 | 项目 | 状态 | 说明 | |------|------|------| | AI智能投标系统 | ⚠️ Phase 4 90%停滞 | Docker/UI未完成 | | 服务状态 | ❌ 大部分离线 | 仅knowledge存活 | | 北溪船闸 | ⚠️ 归档冻结 | 约73天+ | | EdgeHub | ⚠️ WebSocket认证问题 | 待获取edgehub_secret_key | --- ## 🔍 Pattern分析 | Pattern | 当前状态 | 趋势 | |---------|---------|------| | 用户活跃周期 | 46小时沉寂后恢复 | 📈 改善（从16.9天→46h）| | 系统可用性 | 仅knowledge服务 | 依然脆弱 | | Phase 4收尾 | 停滞18天+ | 持续 | | EdgeHub集成 | WebSocket认证失败 | ⚠️ 阻塞 | --- ## 📈 进化观察 1. **用户沉寂改善**: 6月25日有过活动（EdgeHub部署尝试），沉寂从16.9天降至46小时 2. **EdgeHub部署受阻**:",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8227310021317068,
+      "maxScore": 0.8227310021317068,
+      "firstRecalledAt": "2026-06-30T01:51:02.894Z",
+      "lastRecalledAt": "2026-06-30T01:51:02.894Z",
+      "queryHashes": [
+        "0f9a12749557"
+      ],
+      "recallDays": [
+        "2026-06-30"
+      ],
+      "conceptTags": [
+        "较上次16.9天大幅缩短",
+        "docker/ui未完成",
+        "待获取edgehub-secret-key",
+        "从16.9天",
+        "沉寂从16.9天降至46小时",
+        "dream",
+        "module",
+        "进化"
+      ]
+    },
+    "memory:memory/2026-06-28.md:1:48": {
+      "key": "memory:memory/2026-06-28.md:1:48",
+      "path": "memory/2026-06-28.md",
+      "startLine": 1,
+      "endLine": 48,
+      "source": "memory",
+      "snippet": "# 2026-06-28 Dream Module 进化报告 ## 🌙 Dream Module 自我进化日志 ### 基本信息 - **日期**: 2026-06-28 01:49 (UTC+8) - **上次活跃**: 2026-06-27 16:03 (约10小时前) - **用户沉寂**: ~10小时（持续高频） --- ## 📊 系统状态检查 | 项目 | 状态 | 说明 | |------|------|------| | AI智能投标系统 | ⚠️ Phase 4 90%停滞 | Docker/UI未完成 | | 服务状态 | ❌ 大部分离线 | 仅knowledge存活 | | 北溪船闸 | ⚠️ 归档冻结 | 约76天+ | | EdgeHub | ⚠️ 部署受阻 | 缺少secret_key | --- ## 🔍 Pattern分析 | Pattern | 当前状态 | 趋势 | |---------|---------|------| | 用户活跃周期 | 10小时（持续高频） | 📈 显著改善 | | 系统可用性 | 仅knowledge服务 | 依然脆弱 | | Phase 4收尾 | 停滞20天+ | 持续 | | EdgeHub集成 | WebSocket认证受阻 | ⚠️ 阻塞 | | Cron触发频率 | 高频多次 | ⚠️ 需优化 | --- ## 📈 进化观察 1. **用户沉寂大幅改善**: 从16.9天→46h→10h，持续高频互动 2. **EdgeHub部署停滞**: WebSocket需要edgeh",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8188020878430061,
+      "maxScore": 0.8188020878430061,
+      "firstRecalledAt": "2026-06-30T01:51:02.894Z",
+      "lastRecalledAt": "2026-06-30T01:51:02.894Z",
+      "queryHashes": [
+        "0f9a12749557"
+      ],
+      "recallDays": [
+        "2026-06-30"
+      ],
+      "conceptTags": [
+        "docker/ui未完成",
+        "缺少secret-key",
+        "从16.9天",
+        "dream",
+        "module",
+        "进化",
+        "报告",
+        "自我"
       ]
     }
   }

@@ -1,13 +1,20 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:17 AS builder
+RUN apt-get update && apt-get install -y maven && apt-get clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
+# Copy entire project for multi-module Maven build
 COPY pom.xml .
 COPY settings.xml /root/.m2/settings.xml
-COPY src ./src
-RUN apk add --no-cache maven && \
-    mvn clean package -DskipTests
+COPY common/common-core ./common/common-core
+COPY common/common-security ./common/common-security
+COPY ai-bid-gateway ./ai-bid-gateway
+COPY ai-bid-user ./ai-bid-user
+COPY ai-bid-project ./ai-bid-project
+COPY ai-bid-material ./ai-bid-material
+COPY ai-bid-bid ./ai-bid-bid
+RUN mvn clean package -DskipTests -pl ai-bid-project -am
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/ai-bid-project/target/*.jar app.jar
 EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]

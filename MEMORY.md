@@ -5,10 +5,17 @@
 - Workspace: workspace-bid
 - 专长：标书撰写、技术方案、投标管理
 
-## 🌀 自我进化规律 (2026-06-28更新)
-- **用户沉寂周期**: 已从16.9天→46h→10h，持续改善
+## 🌀 自我进化规律 (2026-06-30更新)
+- **用户沉寂周期**: 已从16.9天→46h→10h→~35h，持续改善
 - **Cron触发频率**: 高频多次，存在重复触发问题待优化
-- **Phase 4收尾**: 长期停滞(20天+)，需主动推进
+- **Phase 4收尾**: 长期停滞(25天+)，EdgeHub部署重启希望
+
+## 🔥 EdgeHub 部署突破 (2026-06-28)
+- **问题**: Windows机器Dockerfile被错误修改，引用不存在的parent_pom.xml
+- **解决**: 通过EdgeHub API批量修复6个Java服务Dockerfile
+- **修复服务**: user(8081), gateway(8090), project(8082), material(8083), document(8084), bid(8085)
+- **已构建镜像**: ai-bid-ai, ai-bid-knowledge ✅
+- **方法**: base64编码避免PowerShell转义问题，分批写入Dockerfile
 
 ## 🌐 EdgeHub 远控集成 (2026-06-23)
 
@@ -1984,3 +1991,149 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 
 ---
 *记录时间: 2026-06-29 00:51 GMT+8*
+
+---
+
+## 2026-06-29 Dream Module v62 进化报告
+
+### 基本信息
+- **日期**: 2026-06-29 00:56 (UTC+8)
+- **连续无活动**: **~46小时**（用户沉寂大幅改善）
+- **项目状态**: AI智能投标系统 Phase 4 收尾阶段，Docker构建进行中
+
+### 📊 系统状态
+
+| 服务 | 状态 | 备注 |
+|------|------|------|
+| AI智能投标系统 | 🔄 Phase 4收尾 | Docker构建+服务启动 |
+| 北溪船闸 | ⚠️ 归档冻结 | 74天+ |
+| EdgeHub | 🔄 集成完成 | WebSocket问题已绕过 |
+| 系统 | ✅ 正常 | Dream Module fallback有效 |
+
+### 🔍 跨会话Pattern分析 (2026-06-28)
+
+**重大进展**:
+1. **Dockerfile批量修复** ✅ - 6个Java服务Dockerfile错误修改问题解决
+2. **Docker镜像构建** 🔄 - ai-bid-ai/knowledge已完成，其他服务构建中
+3. **EdgeHub集成** ✅ - API对接成功，可执行远程命令
+
+**持续性Pattern**:
+| Pattern | 状态 | 备注 |
+|---------|------|------|
+| 用户沉寂 | ✅ 46h（大幅改善） | 从18.9天→46h，改善显著 |
+| Phase 4收尾 | 🔄 停滞中 | Docker构建+UI验证待完成 |
+| 深夜工作 | 🌙 深夜型 | 21:00-01:00活跃 |
+| Cron重复触发 | ⚠️ 仍存在 | 65天+未修复 |
+
+### 2026-06-28 关键事件
+
+| 时间 | 事件 |
+|------|------|
+| ~01:49 | Dream Module v61执行 |
+| 05:20-05:50 | Dockerfile问题排查，发现Windows机器文件被错误修改 |
+| 21:00-00:50 | Dockerfile批量修复完成（6个服务） |
+
+### ⚠️ 待处理事项
+
+| 优先级 | 事项 | 状态 |
+|--------|------|------|
+| P1 | Docker构建完成验证 | 等待构建完成 |
+| P1 | Phase 4收尾 | Docker测试+UI验证 |
+| P2 | MEMORY.md分文件 | ~1700行超阈值 |
+| P3 | 北溪船闸归档 | 74天+冻结 |
+| P3 | Cron重复触发修复 | 65天+历史遗留 |
+
+### 进化结论
+
+🟢 **绿灯状态** — 用户沉寂大幅改善（46h），Dockerfile修复成功，EdgeHub集成完成，Phase 4收尾推进中。系统保持稳定运行。
+
+---
+*进化版本：v62 | 下次检查：待用户活动*
+
+---
+
+## 2026-06-30 Phase 4 Docker部署完成
+
+### 重大突破：全部8个Docker镜像构建成功 + 10个服务启动
+
+**构建完成（2026-06-29 15:00 - 02:00）：**
+
+| 镜像 | 大小 | 状态 |
+|------|------|------|
+| ai-bid-bid | 354MB | ✅ |
+| ai-bid-document | 337MB | ✅ |
+| ai-bid-material | 337MB | ✅ |
+| ai-bid-gateway | 346MB | ✅ |
+| ai-bid-project | 353MB | ✅ |
+| ai-bid-user | 353MB | ✅ |
+| ai-bid-ai | 446MB | ✅ (重建增加matplotlib) |
+| ai-bid-knowledge | 645MB | ✅ |
+
+**关键修复：**
+1. `ai-bid-bid/Dockerfile` - 添加 `ai-bid-document` 目录支持
+2. `ai-bid-document/Dockerfile` - 添加 `ai-bid-document` 目录支持
+3. `ai-bid-ai/Dockerfile` - 添加 `matplotlib` 依赖修复
+4. `ai-bid-ai/requirements.txt` - 添加 `matplotlib` 缺失包
+5. `pom.xml` - 添加 `ai-bid-document` 模块
+
+**服务启动（02:00 - 02:10）：**
+
+| 服务 | 状态 | 端口 |
+|------|------|------|
+| ai-bid-postgres | ✅ healthy | 5432 |
+| ai-bid-redis | ✅ healthy | 6379 |
+| ai-bid-gateway | ✅ | 8090 |
+| ai-bid-user | ✅ | 8081 |
+| ai-bid-project | ✅ | 8082 |
+| ai-bid-material | ✅ | 8083 |
+| ai-bid-document | ✅ | 8084 |
+| ai-bid-bid | ✅ | 8085 |
+| ai-bid-ai | ✅ | 8087 |
+| ai-bid-knowledge | ⚠️ unhealthy | 8086 |
+
+**遗留问题：**
+- `ai-bid-knowledge` 健康检查未通过（初始化中或配置问题）
+- `ai-bid-frontend` 前端未构建（需要 node:18-alpine，网络问题）
+
+**Phase 4 状态：**
+- Docker镜像构建：✅ 完成
+- 后端服务启动：✅ 完成（9/10 healthy）
+- 前端UI：❌ 未完成
+- 整体进度：95%
+
+### 明日待办
+1. 验证 ai-bid-knowledge 健康状态
+2. 构建 ai-bid-frontend 前端
+3. 前后端联调测试
+4. Phase 4 收尾
+
+*记录时间: 2026-06-30 02:34 GMT+8*
+
+---
+
+## 2026-06-30 白天工作记录
+
+### 重大进展
+1. **本地前端构建成功** - ai-bid-frontend:latest (95.7MB)，修复Editor.vue模板字符串错误
+2. **EdgeHub远控完全打通** - 可成功在WEI-PC执行任意命令
+3. **WEI-PC后端9/10服务正常运行** - gateway/user/project/material/document/bid/ai/postgres/redis
+4. **端口分配说明书创建** - 已下发到C:\ai-bid和C:\ivp
+
+### 发现问题
+1. **Redis端口冲突** - ai-bid-redis(6379) vs industrial-vision-redis(6379) 不能同时启动
+2. **前端npm install失败** - 网络问题，Docker构建node:18-alpine超时
+3. **knowledge服务unhealthy** - 需要重启
+
+### EdgeHub文件下发限制
+- 命令长度限制：Windows命令行最大约32KB
+- base64膨胀：文件base64后约133%
+- 大文件需分段传输或HTTP下载
+
+### 今日Git提交
+- `6fdea35` - docs: 添加WEI-PC端口分配说明书
+- `1354b6f` - docs: 更新端口分配说明书 v1.1 - 增加Redis冲突警告
+
+### 明日计划
+1. 解决前端部署（npm镜像/Vite/容器化）
+2. 重启knowledge服务
+3. Phase 4最终验收
