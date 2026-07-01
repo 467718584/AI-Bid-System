@@ -5,10 +5,11 @@
 - Workspace: workspace-bid
 - 专长：标书撰写、技术方案、投标管理
 
-## 🌀 自我进化规律 (2026-06-30更新)
-- **用户沉寂周期**: 已从16.9天→46h→10h→~35h，持续改善
+## 🌀 自我进化规律 (2026-07-01更新)
+- **用户沉寂周期**: 已从16.9天→46h→10h→~35h→~49h后恢复，震荡改善
 - **Cron触发频率**: 高频多次，存在重复触发问题待优化
-- **Phase 4收尾**: 长期停滞(25天+)，EdgeHub部署重启希望
+- **Phase 4收尾**: 长期停滞(25天+) → 突破(2026-06-30)，EdgeHub部署完全打通
+- **关键Pattern**: 用户深夜型活跃(22:00-02:00)，长沉寂后必有密集开发期
 
 ## 🔥 EdgeHub 部署突破 (2026-06-28)
 - **问题**: Windows机器Dockerfile被错误修改，引用不存在的parent_pom.xml
@@ -118,6 +119,7 @@ curl -X POST http://1.13.247.173/api/v1/devices/82785476b5753520/commands \
 - **2026-06-22：Dream Module v57 — 🔴 红灯状态** 用户沉寂15.9天（382h+），Phase 4 90%停滞16天+，Gateway超时常态化，仅knowledge服务存活。北溪船闸70天+冻结。
 - **2026-06-23：Dream Module v58 — 🔴 红灯状态** 用户沉寂16.9天（406h+），Phase 4 90%停滞17天+，Gateway超时常态化，仅knowledge服务存活。北溪船闸71天+冻结。
 - **2026-06-24：Dream Module v59 — 🔴 红灯状态** 用户沉寂17.9天（430h+），Phase 4 90%停滞18天+，Gateway超时常态化，仅knowledge服务可能存活。北溪船闸72天+冻结。
+- **2026-06-30：Dream Module v60 — 🟢 重大突破！** Docker部署完全打通，8个后端镜像构建成功，9/10服务启动。EdgeHub远控部署流程验证成功。
 
 ## 2026-05-29 工作进度记录
 
@@ -2137,3 +2139,66 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 1. 解决前端部署（npm镜像/Vite/容器化）
 2. 重启knowledge服务
 3. Phase 4最终验收
+
+---
+
+## 2026-07-01 Dream Module 进化记录
+
+### 基本信息
+- **日期**: 2026-07-01 00:10 (UTC+8)
+- **连续无活动**: ~1小时（用户沉寂大幅改善）
+- **项目状态**: AI智能投标系统 Phase 4 收尾阶段
+
+### 📊 系统状态
+
+| 项目 | 状态 | 备注 |
+|------|------|------|
+| AI智能投标系统 | 🔄 Phase 4收尾 | 前端部署卡在文件传输 |
+| Phase 4进度 | ~95% | 还差前端Docker化 |
+| 北溪船闸 | ⚠️ 归档冻结 | 77天+ |
+| EdgeHub | ✅ 正常 | 新文件传输API可用 |
+
+### 🔍 今日关键事件
+
+**前端Docker化部署尝试**：
+1. 修改了Dockerfile（多阶段构建：node:20-alpine + nginx）
+2. 远程WEIPC npm install网络超时
+3. 发现EdgeHub Push模式的限制（local_path是服务器路径，非agent路径）
+
+**EdgeHub文件传输系统 v2.4**：
+- 新增 Push/Pull 双向传输API
+- `POST /api/v1/transfers` - Push模式
+- `POST /api/v1/transfers/pull` - Pull模式
+- `GET /api/v1/transfers/{id}` - 查询状态
+- **关键限制**：Push模式的local_path是EdgeHub服务器本地路径
+
+### ⚠️ 待解决问题
+
+| 优先级 | 问题 | 状态 |
+|--------|------|------|
+| P0 | 前端部署 - 文件传输问题 | 待解决 |
+| P1 | knowledge服务健康检查 | 待进行 |
+| P1 | 前后端联调测试 | 待进行 |
+| P2 | Redis端口冲突 | 已知问题 |
+
+### 🔧 技术笔记
+
+**EdgeHub Push API使用方式**：
+```bash
+# 1. 先上传文件到EdgeHub服务器 /tmp/ 目录
+# 2. 然后用Push API推送到设备
+curl -X POST http://1.13.247.173/api/v1/transfers \
+  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -d '{"device_id":"82785476b5753520","direction":"push","local_path":"/tmp/file.tar.gz","remote_path":"C:\\ai-bid\\file.tar.gz"}'
+```
+
+### 📝 明日待办
+1. 使用EdgeHub Push API传输前端文件到WEIPC
+2. 解压并启动nginx容器
+3. 验证前端访问 http://1.13.247.173:3000
+4. knowledge服务健康检查
+
+---
+
+*进化版本：v63 | 下次检查：待用户活动*
+*最后更新: 2026-07-02 00:10 GMT+8*
