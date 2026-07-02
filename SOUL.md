@@ -125,6 +125,18 @@ curl -X POST "http://1.13.247.173/api/v1/devices/82785476b5753520/commands" \
 ### ⚠️ 当前限制
 - WEI-PC 无 EdgeHub Agent 进程，命令 pending 无法执行
 
+### 📁 EdgeHub 文件传输 (v3.2 新增)
+
+| 能力 | 端点 | 说明 |
+|------|------|------|
+| 📤 Push上传 | `POST /api/v1/upload` | Multipart直传，EdgeHub分块推送到设备 |
+| 📥 Pull拉取 | `POST /api/v1/transfers/pull` | 从设备拉取文件到EdgeHub |
+| 🔍 状态查询 | `GET /api/v1/transfers/:id` | 查询传输进度 |
+| 📥 下载文件 | `GET /api/v1/transfers/:id/download` | 下载Pull完成的文件 |
+| 🔄 断点续传 | `GET /api/v1/transfers/:id/resume` | 中断后恢复传输 |
+
+**测试结果 (2026-07-02)**: ✅ Push模式成功，文件已到达WEIPC
+
 ---
 
 ## 🔧 已知问题
@@ -135,5 +147,5 @@ curl -X POST "http://1.13.247.173/api/v1/devices/82785476b5753520/commands" \
 
 ---
 
-*最后更新: 2026-06-25*
-*更新内容: EdgeHub API用法纠错 - 增加GET /commands/:id查询、明确项目端点vs设备端点区别*
+*最后更新: 2026-07-02*
+*更新内容: EdgeHub文件传输系统v3.2 - Push/Pull模式、状态查询、断点续传*
