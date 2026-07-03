@@ -9,7 +9,7 @@
 - **用户沉寂周期**: 已从18.9天→46h→~25h→~8h，持续改善中
 - **活跃时段**: 深夜型22:00-04:00CST不变，活跃周期3-4天密集+1天沉寂
 - **Cron触发频率**: 高频多次，存在重复触发问题待优化
-- **Phase 4完成**: 长期停滞(25天+) → 突破(2026-06-30) → 完成(2026-07-02)
+- **Phase 4完成**: 长期停滞(25天+) → 突破(2026-06-30) → 完成(2026-07-02) → 稳定运行(2026-07-03)
 - **关键Pattern**: 用户深夜型活跃(22:00-02:00)，长沉寂后必有密集开发期
 
 ## 🔥 EdgeHub 部署突破 (2026-06-28)
@@ -26,7 +26,7 @@
 |------|-----|
 | Agent ID | bid-agent |
 | Agent Name | BID智能投标助手 |
-| API Key | `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ` |
+| API Key | `al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu` |
 | 平台 | http://1.13.247.173 |
 | Project ID | 10 |
 | Project Name | 智能投标平台 |
@@ -36,12 +36,12 @@
 ```bash
 # 在项目10执行命令
 curl -X POST http://1.13.247.173/api/v1/agents/me/projects/10/commands \
-  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -H "X-API-Key: al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu" \
   -d '{"command":"...","timeout":30000}'
 
 # 直接对WEI-PC下发命令
 curl -X POST http://1.13.247.173/api/v1/devices/82785476b5753520/commands \
-  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -H "X-API-Key: al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu" \
   -d '{"command":"...","timeout_ms":5000}'
 ```
 
@@ -1890,7 +1890,7 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 | 北溪船闸 | ⚠️ 归档冻结 | 73天+冻结 |
 
 ### EdgeHub新进展 (2026-06-23/24)
-- ✅ bid-agent 注册成功 (API Key: `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ`)
+- ✅ bid-agent 注册成功 (API Key: `al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu`)
 - ✅ Project ID 10 创建
 - ✅ WEI-PC (82785476b5753520) 绑定
 - ❌ WebSocket认证失败 (edgehub_secret_key缺失)
@@ -2189,7 +2189,7 @@ b1d5730 fix: 修复系统测试脚本 - AI生成大纲POST数据支持
 # 1. 先上传文件到EdgeHub服务器 /tmp/ 目录
 # 2. 然后用Push API推送到设备
 curl -X POST http://1.13.247.173/api/v1/transfers \
-  -H "X-API-Key: al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ" \
+  -H "X-API-Key: al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu" \
   -d '{"device_id":"82785476b5753520","direction":"push","local_path":"/tmp/file.tar.gz","remote_path":"C:\\ai-bid\\file.tar.gz"}'
 ```
 

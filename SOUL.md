@@ -68,7 +68,7 @@ Gateway(8090)
 | Agent ID | bid-agent |
 | Agent Name | BID智能投标助手 |
 | Agent Type | openclaw |
-| API Key | `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ` |
+| API Key | `al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu` |
 | 注册时间 | 2026-06-23 |
 
 ### 项目信息
@@ -96,7 +96,7 @@ Gateway(8090)
 
 ### 快速命令
 ```bash
-EDGEHUB_KEY="al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"
+EDGEHUB_KEY="al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu"
 PROJECT_ID=10
 
 # 1. 在项目10中执行命令（推荐）

@@ -43,12 +43,14 @@ Add whatever helps you do your job. This is your cheat sheet.
 
 ## EdgeHub 远控配置 (2026-06-25 更新)
 
+## EdgeHub 远控配置 (2026-07-03 更新)
+
 ### 智能体凭证
 | 项目 | 值 |
 |------|-----|
 | 平台 | http://1.13.247.173 |
 | Agent ID | bid-agent |
-| API Key | `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ` |
+| API Key | `al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu` |
 
 ### 设备绑定
 | 设备 | Device ID | 关联项目 |
@@ -65,7 +67,7 @@ Add whatever helps you do your job. This is your cheat sheet.
 ### 核心API
 
 ```bash
-EDGEHUB_KEY="al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"
+EDGEHUB_KEY="al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu"
 PROJECT_ID=10
 DEVICE_ID=82785476b5753520
 
@@ -92,7 +94,7 @@ curl -X POST "http://1.13.247.173/api/v1/devices/${DEVICE_ID}/commands" \
 1. **投递命令** → EdgeHub 返回 `command_id` + `status: pending`
 2. **Agent接收** → WEI-PC 上需运行 EdgeHub Agent 客户端 polling 命令队列
 3. **执行命令** → Agent 在设备上执行
-4. **结果回调** → Agent 回调结果（需要 `edgehub_secret_key`，或通过 GET /commands/:id 查询）
+4. **结果回调** → Agent 回调结果（通过 GET /commands/:id 查询）
 
 ### ⚠️ 当前限制
 - WEI-PC 无 EdgeHub Agent 进程运行，命令 pending 无法执行
@@ -100,7 +102,7 @@ curl -X POST "http://1.13.247.173/api/v1/devices/${DEVICE_ID}/commands" \
 
 ### 协议文档
 - `docs/EDGEHUB_PROTOCOL.md` - EdgeHub v3.2 API完整说明
-- http://1.13.247.173/edgehub-agent-manual.html - 官方接入手册
+- http://1.13.247.173/edgehub-agent-manual.html - 官方接入手册 (v3.3)
 
 ---
 
@@ -114,7 +116,7 @@ curl -X POST "http://1.13.247.173/api/v1/devices/${DEVICE_ID}/commands" \
 
 ### 凭证
 ```bash
-EDGEHUB_KEY="al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ"
+EDGEHUB_KEY="al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu"
 DEVICE_ID="82785476b5753520"
 PROJECT_ID=10
 ```
