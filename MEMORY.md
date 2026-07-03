@@ -2254,3 +2254,39 @@ curl -X POST http://1.13.247.173/api/v1/transfers \
 
 ---
 *最后更新: 2026-07-03 00:28 GMT+8*
+
+---
+
+## 2026-07-03 工作总结 (EdgeHub API Key v3.3更新)
+
+### EdgeHub API Key更新
+- **新API Key**: `al_TaUQ1V8uR2JYLNC6Z1lc64bhdtycE8Lu` (v3.3)
+- **旧API Key**: `al_fWbIEQS4rySxY972aeIqVqCFsMloInrZ` (已废弃)
+- **Git提交**: `0ce1c7b` - 更新EdgeHub API Key至v3.3版本
+
+### EdgeHub端点全面测试结果
+
+| 端点 | 方法 | 状态 | 备注 |
+|------|------|------|------|
+| `/agents/me/login` | POST | ✅ | 登录验证 |
+| `/agents/me/projects` | GET | ✅ | 项目列表 |
+| `/devices` | GET | ✅ | 设备列表（1台在线） |
+| `/agents/me/projects/:id/commands` | POST | ✅ | 命令投递(WS) |
+| `/commands/:id` | GET | ✅ | 命令状态查询 |
+| `/transfers` | GET | ✅ | 传输记录 |
+| `/upload` | POST | ✅ | **Multipart上传正常** |
+| `/:device_id/files/push` | POST | ❌ | 服务端BUG |
+| `/devices/:id/commands` | POST | ✅ | 设备命令 |
+
+### 关键发现
+- `/upload` multipart是当前唯一可靠的文件传输方式
+- `/files/push` 旧API有服务端bug（`pushFileLegacy is not a function`）
+- 命令投递均通过WebSocket实时推送（`delivered_via_ws`）
+
+### 系统状态
+- AI智能投标系统: ✅ Phase 4完成
+- 前端: http://1.13.247.173:3000
+- knowledge服务: ⚠️ unhealthy（待排查）
+
+---
+*最后更新: 2026-07-04 02:35 GMT+8*
