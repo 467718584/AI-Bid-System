@@ -5,12 +5,13 @@
 - Workspace: workspace-bid
 - 专长：标书撰写、技术方案、投标管理
 
-## 🌀 自我进化规律 (2026-07-03更新)
-- **用户沉寂周期**: 已从18.9天→46h→~25h→~8h，持续改善中
+## 🌀 自我进化规律 (2026-07-07更新)
+- **用户沉寂周期**: ~20h(7/5) → ~44h(7/7)，沉寂反弹，需持续观察
 - **活跃时段**: 深夜型22:00-04:00CST不变，活跃周期3-4天密集+1天沉寂
 - **Cron触发频率**: 高频多次，存在重复触发问题待优化
 - **Phase 4完成**: 长期停滞(25天+) → 突破(2026-06-30) → 完成(2026-07-02) → 稳定运行(2026-07-03)
 - **关键Pattern**: 用户深夜型活跃(22:00-02:00)，长沉寂后必有密集开发期
+- **⚠️ 异常**: 本地服务全离线(7/7)，Gateway/Frontend不可达，原因待确认
 
 ## 🔥 EdgeHub 部署突破 (2026-06-28)
 - **问题**: Windows机器Dockerfile被错误修改，引用不存在的parent_pom.xml
@@ -2289,4 +2290,121 @@ curl -X POST http://1.13.247.173/api/v1/transfers \
 - knowledge服务: ⚠️ unhealthy（待排查）
 
 ---
-*最后更新: 2026-07-04 02:35 GMT+8*
+
+## 2026-07-04 ~ 2026-07-05 工作总结
+
+### EdgeHub API v3.3 端点完整测试
+- 11个端点全面测试完成
+- `/upload` multipart是唯一可靠传输方式
+- `/files/push` 服务端bug已记录
+
+### 系统状态 (2026-07-05)
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| AI智能投标系统 | ✅ Phase 4 完成 | 前端Port 3000 |
+| EdgeHub | ✅ 正常 | v3.3 API Key |
+| Cron | ⚠️ 重复触发 | 71天+未修复 |
+| 北溪船闸 | ⚠️ 归档冻结 | 79天+ |
+
+### 明日待办
+1. Phase 4 UI端到端功能测试
+2. knowledge服务健康状态确认
+
+---
+
+## 2026-07-07 Dream Module v69 进化报告
+
+### 基本信息
+- **日期**: 2026-07-07 00:55 (UTC+8)
+- **连续无活动**: ~44小时（沉寂反弹）
+- **项目状态**: AI智能投标系统 Phase 4完成，服务状态待确认
+
+### 📊 系统状态
+
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 本地服务 | ❌ 全离线 | Gateway/Frontend不可达 |
+| WEI-PC EdgeHub | ⚠️ pending | 命令投递成功但未执行 |
+| AI智能投标系统 | ⚠️ 未知 | WEI-PC状态待确认 |
+| EdgeHub | ✅ 正常 | v3.3 API Key |
+| Cron | ⚠️ 重复触发 | 72天+未修复 |
+| 北溪船闸 | ⚠️ 归档冻结 | 83天+ |
+
+### 🔍 Pattern分析
+
+| Pattern | 状态 | 趋势 |
+|---------|------|------|
+| 用户沉寂周期 | ~44h | ⚠️ 反弹（20h→44h） |
+| 活跃时段 | 深夜型22:00-04:00 | → 稳定 |
+| 本地服务 | ❌ 全离线 | 原因待确认 |
+| EdgeHub命令 | ⚠️ pending | Agent未执行 |
+
+### 关键发现
+1. **本地服务全离线**: Gateway(8090)/Frontend(3000)不可达，可能机器关机/重启
+2. **EdgeHub命令pending**: cmd_1783357030756_awo8v4ne 状态null，Agent未执行
+3. **用户沉寂44h**: 从7月5日04:33后无活动，沉寂期反弹
+
+### 行动建议
+
+| 优先级 | 行动 | 说明 |
+|--------|------|------|
+| P1 | 确认本地机器状态 | 可能关机或重启 |
+| P1 | 确认WEI-PC AI-BID | EdgeHub Agent是否运行 |
+| P2 | 观察沉寂趋势 | 是否重回加速延长模式 |
+| P3 | Cron重复触发修复 | 72天+历史遗留 |
+
+### 进化结论
+
+🟡 **黄灯状态** — 本地服务离线，EdgeHub命令未执行，用户沉寂44h（反弹）。Phase 4完成但服务状态待确认，系统需用户介入排查。
+
+---
+*进化版本：v69 | 上次进化：v68 (2026-07-05 04:33)*
+*记录时间: 2026-07-07 00:55 GMT+8*
+
+---
+
+## 2026-07-07 工作总结 (夜间更新)
+
+### ai-bid-material 服务修复 ✅
+- **问题**：`BidMaterial.type` 列名冲突（MyBatis/PostgreSQL保留字）
+  - 错误：`BindingException: Parameter 'type' not found`
+- **修复**：`type` → `material_type` (DB列) + `materialType` (Java字段)
+- **方法**：EdgeHub + Python JAR热补丁（`-EncodedCommand`绕过JSON转义）
+  1. `docker cp` 复制 app.jar 到宿主机
+  2. Python脚本替换 JAR 中的 class 文件
+  3. `docker cp` 回容器 + restart
+- **额外修复**：创建缺失的 `material_library` 表
+- **Git**：commit `6d707e0` 已推送
+- **验证**：`/material/list` 和 `/bid-material/list` 均返回 200
+
+### EdgeHub -EncodedCommand 技术突破 🎯
+- **问题**：PowerShell JSON转义导致长命令失败（+符号被误解为连接符）
+- **解决**：使用 `-EncodedCommand` 参数（UTF-16LE base64）绕过所有转义
+- **成功**：分块写入8KB Python脚本 + 8KB/3.5KB class文件b64数据
+
+### 系统状态 (2026-07-07)
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| ai-bid-material | ✅ 修复完成 | 端口8083，API 200 |
+| ai-bid-postgres | ✅ 正常 | ai_bid 数据库 |
+| WEI-PC Docker | ✅ 运行中 | 8服务存活 |
+| EdgeHub | ✅ 正常 | v3.3 API |
+| Phase 4 | ✅ 完成 | 功能可用 |
+| knowledge服务 | ⚠️ unhealthy | 待排查 |
+| Cron | ⚠️ 重复触发 | 73天+历史遗留 |
+
+### 待处理问题
+| 优先级 | 问题 | 说明 |
+|--------|------|------|
+| P1 | knowledge服务 | unhealthy状态待查 |
+| P1 | 本地Gateway | Linux端Gateway不通 |
+| P3 | Cron重复触发 | 73天+历史遗留 |
+
+### 技术笔记
+- EdgeHub `-EncodedCommand`: `powershell -NoProfile -EncodedCommand <base64>`
+  编码：`[cmd].encode('utf-16-le') | base64.b64encode()`
+- Windows JAR热补丁：复制+Python替换+复制回+重启
+- WEI-PC Docker容器内无 `cmd` 命令，用 `/bin/sh`
+
+---
+*最后更新: 2026-07-07 01:00 GMT+8*

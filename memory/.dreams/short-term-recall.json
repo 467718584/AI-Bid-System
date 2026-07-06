@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-03T17:00:03.815Z",
+  "updatedAt": "2026-07-05T16:50:58.890Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:35": {
       "key": "memory:memory/2026-04-15.md:1:35",
@@ -158,13 +158,13 @@
       "endLine": 39,
       "source": "memory",
       "snippet": "# 2026-05-05 ## 对话记录 (从session恢复) **恢复时间**: 2026-05-06T16:06:05.250633 ### 用户消息 (2条) 1. [15:09] [cron:1776651337077-tnp042lxa EO Memory Sync - BID管理] 📋 Memory Sync - Daily Summary (BID管理) 请执行每日记忆同步： 今天是周一 (2026-04-20)。 1. 读取今天的记忆文件: memory/2026-04-20.md 2. 如果文件存在，提取以下内容： - ## 决策 - 重要决定和原因 ... 2. [16:54] [cron:1776653137208-vzvizr73v EO Dream - BID管理] 🌙 Dream Module - Daily Evolution (BID管理) 请执行Dream Module的自我进化流程： 1. 分析今天 BID管理 的所有会话记录 2. 提取跨会话的pattern 3. 更新本workspace的MEMORY.md（如果有重要发现） 4. 生成进化报告 ... ### 助手回复摘要 (12条) 1. [思考: The file only has 60 lines. Let me read the full file. ...]... 2. [思考: Today is May 6, 2026. So today we're tracking May 6 (today, no activity yet) and",
-      "recallCount": 10,
+      "recallCount": 11,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7.63332197751836,
-      "maxScore": 0.82938781046853,
+      "totalScore": 8.46442789550351,
+      "maxScore": 0.8311059179851502,
       "firstRecalledAt": "2026-05-10T21:16:17.233Z",
-      "lastRecalledAt": "2026-06-30T23:27:14.349Z",
+      "lastRecalledAt": "2026-07-05T16:50:58.890Z",
       "queryHashes": [
         "ce018f9340f1",
         "0430d955a324",
@@ -174,7 +174,8 @@
         "496edf78b502",
         "6661bda2ea6b",
         "a6e3280919fd",
-        "ac49095da1f4"
+        "ac49095da1f4",
+        "940fd8451e79"
       ],
       "recallDays": [
         "2026-05-11",
@@ -185,7 +186,8 @@
         "2026-05-22",
         "2026-05-23",
         "2026-05-28",
-        "2026-07-01"
+        "2026-07-01",
+        "2026-07-06"
       ],
       "conceptTags": [
         "2026-05-06t16",
@@ -296,22 +298,24 @@
       "endLine": 35,
       "source": "memory",
       "snippet": "# 2026-04-19 ## 对话记录 (从session恢复) **恢复时间**: 2026-05-06T16:06:05.252099 ### 用户消息 (2条) 1. [16:40] [cron:1776341434638-pfxd1prjp EO Dream - BID管理] 🌙 Dream Module - Daily Evolution (BID管理) 请执行Dream Module的自我进化流程： 1. 分析今天 BID管理 的所有会话记录 2. 提取跨会话的pattern 3. 更新本workspace的MEMORY.md（如果有重要发现） 4. 生成进化报告 ... 2. [14:00] [cron:1776355896034-ycwql0p71 EO Memory Sync - BID管理] 📋 Memory Sync - Daily Summary (BID管理) 请执行每日记忆同步： 今天是周五 (2026-04-17)。 1. 读取今天的记忆文件: memory/2026-04-17.md 2. 如果文件存在，提取以下内容： - ## 决策 - 重要决定和原因 ... ### 助手回复摘要 (9条) 1. [思考: Now I have a good picture of what happened. Let me compile the evolution report based on the analysi...]... 2. [思考: Now I have all the context I need to",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.3713300061158447,
-      "maxScore": 0.8123725502074165,
+      "totalScore": 3.208030464319309,
+      "maxScore": 0.8367004582034643,
       "firstRecalledAt": "2026-05-12T16:53:50.395Z",
-      "lastRecalledAt": "2026-05-21T16:50:16.386Z",
+      "lastRecalledAt": "2026-07-05T16:50:58.890Z",
       "queryHashes": [
         "0430d955a324",
         "4bd92e843bc3",
-        "2e80763a2586"
+        "2e80763a2586",
+        "940fd8451e79"
       ],
       "recallDays": [
         "2026-05-13",
         "2026-05-21",
-        "2026-05-22"
+        "2026-05-22",
+        "2026-07-06"
       ],
       "conceptTags": [
         "2026-05-06t16",
@@ -1828,13 +1832,13 @@
       "endLine": 198,
       "source": "memory",
       "snippet": "- [00:23] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b6eb9880ea0a0c32f62e1af25cf7\", \"sender_id\": \"ou_cd4135e17a9df9cd43a4186eca... - [00:48] Conversation info (untrusted metadata): ```json { \"message_id\": \"om_x100b6eba699becb0c25886a16944e4d\", \"sender_id\": \"ou_cd4135e17a9df9cd43a4186eca... - [00:42] [cron:1778122170042-4gycwm85k EO Memory Checkpoint - BID管理] 📋 Memory Checkpoint - BID管理 (2026-05-07 18:00) 请执行记忆检查点： 1. 读取今天的记忆文件: memory/2026-05-07... ### 助手回复 (10条) - [00:49] [思考: Claude Code is running in background. Let me check...] Claude Code 多专家协作已启动，正在审查并修复前后端问题。 **正在处理的问题：** 1. 🔍 AI章节正文生成为空 - 检查 ai-bid-ai 服务 2. 🔍 项... - [00:42] [思考: Let me ch",
-      "recallCount": 13,
+      "recallCount": 14,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 10.98885410163866,
-      "maxScore": 0.8510597144280342,
+      "totalScore": 11.840218102606187,
+      "maxScore": 0.8513640009675262,
       "firstRecalledAt": "2026-06-08T17:01:52.379Z",
-      "lastRecalledAt": "2026-07-03T17:00:03.815Z",
+      "lastRecalledAt": "2026-07-05T16:50:58.890Z",
       "queryHashes": [
         "bdf5321cf9e7",
         "4862a5e69634",
@@ -1844,7 +1848,8 @@
         "f938c26849b2",
         "3c23a8319781",
         "92e394cd00b9",
-        "0f9a12749557"
+        "0f9a12749557",
+        "940fd8451e79"
       ],
       "recallDays": [
         "2026-06-09",
@@ -1857,7 +1862,8 @@
         "2026-06-26",
         "2026-06-30",
         "2026-07-01",
-        "2026-07-04"
+        "2026-07-04",
+        "2026-07-06"
       ],
       "conceptTags": [
         "message-id",
@@ -2048,23 +2054,25 @@
       "endLine": 50,
       "source": "memory",
       "snippet": "| 项目 | 状态 | |------|------| | AI智能投标系统 | Phase 4 90%停滞中 | | 服务 | 大部分离线 | | 北溪船闸 | 归档冻结70天+ | | EdgeHub | WebSocket认证问题待解决 | ## 明日计划 1. 获取edgehub_secret_key解决WebSocket认证 2. 继续EdgeHub部署方案 3. 或切换为SSH直连方式部署 --- *记录时间: 2026-06-25 02:44 GMT+8*",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.278267077253757,
+      "totalScore": 4.091135260608449,
       "maxScore": 0.8237885112485773,
       "firstRecalledAt": "2026-06-25T14:05:52.290Z",
-      "lastRecalledAt": "2026-07-03T17:00:03.815Z",
+      "lastRecalledAt": "2026-07-05T16:50:58.890Z",
       "queryHashes": [
         "3c23a8319781",
         "bdf5321cf9e7",
-        "becb0e84f04c"
+        "becb0e84f04c",
+        "940fd8451e79"
       ],
       "recallDays": [
         "2026-06-25",
         "2026-06-30",
         "2026-07-01",
-        "2026-07-04"
+        "2026-07-04",
+        "2026-07-06"
       ],
       "conceptTags": [
         "项目",
