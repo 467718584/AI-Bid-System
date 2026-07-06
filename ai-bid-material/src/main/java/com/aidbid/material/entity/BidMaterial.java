@@ -14,7 +14,7 @@ public class BidMaterial extends BaseEntity {
     private String name;
 
     /** 材料类型 */
-    private String type;
+    private String materialType;
 
     /** 所属项目ID */
     private Long projectId;
