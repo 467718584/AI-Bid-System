@@ -18,68 +18,68 @@ spring:
         locator:
           enabled: false
       routes:
-        # AI服务 (Python) - 路径保持不变 /api/ai/** -> http://localhost:8087/api/ai/**
+        # AI服务 (Python) - 使用Docker服务名
         - id: ai-service
-          uri: http://localhost:8087
+          uri: http://ai-bid-ai:8087
           predicates:
             - Path=/api/ai/**
-        # 知识库服务 (Python) - 路径保持不变 /api/knowledge/** -> http://localhost:8086/api/knowledge/**
+        # 知识库服务 (Python) - 使用Docker服务名
         - id: knowledge-service
-          uri: http://localhost:8086
+          uri: http://ai-bid-knowledge:8086
           predicates:
             - Path=/api/knowledge/**
-        # 用户服务 (Java)
+        # 用户服务 (Java) - 使用Docker服务名
         - id: user-service
-          uri: http://localhost:8081
+          uri: http://ai-bid-user:8081
           predicates:
             - Path=/api/user/**
           filters:
             - StripPrefix=1
-        # 项目服务 (Java)
+        # 项目服务 (Java) - 使用Docker服务名
         - id: project-service
-          uri: http://localhost:8082
+          uri: http://ai-bid-project:8082
           predicates:
             - Path=/api/project/**
           filters:
             - StripPrefix=1
-        # 物料服务 (Java)
+        # 物料服务 (Java) - 使用Docker服务名
         - id: material-service
-          uri: http://localhost:8083
+          uri: http://ai-bid-material:8083
           predicates:
             - Path=/api/material/**
           filters:
             - StripPrefix=1
-        # 文档服务 (Java)
+        # 文档服务 (Java) - 使用Docker服务名
         - id: document-service
-          uri: http://localhost:8084
+          uri: http://ai-bid-document:8084
           predicates:
             - Path=/api/document/**
           filters:
             - StripPrefix=1
-        # 标书服务 (Java) - /api/bid/** -> http://localhost:8085/bid/**
+        # 标书服务 (Java) - 使用Docker服务名
         - id: bid-service
-          uri: http://localhost:8085
+          uri: http://ai-bid-bid:8085
           predicates:
             - Path=/api/bid/**
           filters:
             - StripPrefix=1
-        # 标书服务 (Java) - /bid/** -> http://localhost:8085/bid/** (兼容前端)
+        # 标书服务 (Java) - /bid/** -> http://ai-bid-bid:8085/bid/** (兼容前端)
         - id: bid-service-alt
-          uri: http://localhost:8085
+          uri: http://ai-bid-bid:8085
           predicates:
             - Path=/bid/**
           filters:
             - StripPrefix=1
-        # 工作流服务 (Java) - /api/workflow/** -> http://localhost:8085/workflow/**
+        # 工作流服务 (Java) - 使用Docker服务名
         - id: workflow-service
-          uri: http://localhost:8085
+          uri: http://ai-bid-bid:8085
           predicates:
             - Path=/api/workflow/**
           filters:
             - StripPrefix=1
-        # 企业服务 (Java) - /api/enterprise/** -> http://localhost:8085/enterprise/**
+        # 企业服务 (Java) - 使用Docker服务名
         - id: enterprise-service
-          uri: http://localhost:8085
+          uri: http://ai-bid-bid:8085
           predicates:
             - Path=/api/enterprise/**
           filters:
